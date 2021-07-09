@@ -8,6 +8,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
 public class EmailServiceImp implements EmailService{
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -35,5 +37,16 @@ public class EmailServiceImp implements EmailService{
     @Override
     public boolean verifyEmail(String send, String receive) {
         return send.equals(receive);
+    }
+
+    @Override
+    public String generateVerificationCode() {
+        Random random = new Random();
+        StringBuilder code = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            code.append(random.nextInt(10));
+        }
+        logger.info("验证码是："+code.toString());
+        return code.toString();
     }
 }

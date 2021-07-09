@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -61,4 +60,26 @@ public class EmployeeRepositoryTest extends BaseTest {
         Assert.assertEquals(employees,actualEmployees);
     }
 
+    @Test
+    @Transactional
+    public void findMaxAccountNumberTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+
+        int max = employeeRepository.findMaxAccountNumber();
+
+        Assert.assertEquals(max,8);
+    }
+
+    @Test
+    @Transactional
+    public void findByAccountNumberTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+
+        Employee employee = employeeRepository.findByAccountNumber(6);
+
+        Employee actualEmployee = employeeMap.get(6);
+
+        Assert.assertEquals(employee,actualEmployee);
+
+    }
 }

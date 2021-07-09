@@ -32,10 +32,22 @@ public class ExperienceRepositoryTest extends BaseTest {
         List<Experience> experiences = experienceRepository.findAllByAccountNumber(5);
 
         List<Experience> actualExperiences = new ArrayList<>();
-        actualExperiences.add(experienceMap.get(15));
-        actualExperiences.add(experienceMap.get(25));
+        actualExperiences.add(experienceMap.get(5121));
+        actualExperiences.add(experienceMap.get(5221));
 
         Assert.assertEquals(experiences,actualExperiences);
+    }
+
+    @Test
+    @Transactional
+    public void findByAccountNumberAndCompanyIdAndDepartmentIdAndPositionIdTest() throws Exception{
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+
+        Experience experience = experienceRepository.findByAccountNumberAndCompanyIdAndDepartmentIdAndPositionId(5,1,2,1);
+
+        Experience actualExperience = experienceMap.get(5121);
+
+        Assert.assertEquals(experience,actualExperience);
     }
 
 }

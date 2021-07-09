@@ -49,10 +49,10 @@ public class RetrieveServiceImpTest extends BaseTest {
 
         List<Employee> actualEmployees = new ArrayList<>();
 
-        actualEmployees.add(new Employee(employeeMap.get(5),experienceMap.get(15),experienceMap.get(25)));
-        actualEmployees.add(new Employee(employeeMap.get(6),experienceMap.get(16),experienceMap.get(26)));
-        actualEmployees.add(new Employee(employeeMap.get(7),experienceMap.get(17),experienceMap.get(27)));
-        actualEmployees.add(new Employee(employeeMap.get(8),experienceMap.get(18),experienceMap.get(28)));
+        actualEmployees.add(new Employee(employeeMap.get(5),experienceMap.get(5121),experienceMap.get(5221)));
+        actualEmployees.add(new Employee(employeeMap.get(6),experienceMap.get(6121),experienceMap.get(6221)));
+        actualEmployees.add(new Employee(employeeMap.get(7),experienceMap.get(7121),experienceMap.get(7221)));
+        actualEmployees.add(new Employee(employeeMap.get(8),experienceMap.get(8121),experienceMap.get(8221)));
 
         Assert.assertEquals(employees,actualEmployees);
     }
@@ -66,8 +66,8 @@ public class RetrieveServiceImpTest extends BaseTest {
         List<Employee> employees = retrieveService.retrievePresentEmployeesByCompany(1);
 
         List<Employee> actualEmployees = new ArrayList<>();
-        actualEmployees.add(new Employee(employeeMap.get(5),experienceMap.get(15),experienceMap.get(25)));
-        actualEmployees.add(new Employee(employeeMap.get(6),experienceMap.get(16),experienceMap.get(26)));
+        actualEmployees.add(new Employee(employeeMap.get(5),experienceMap.get(5121),experienceMap.get(5221)));
+        actualEmployees.add(new Employee(employeeMap.get(6),experienceMap.get(6121),experienceMap.get(6221)));
 
         Assert.assertEquals(employees,actualEmployees);
     }

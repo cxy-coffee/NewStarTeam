@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ExperienceRepository extends JpaRepository<Experience,Long> {
     List<Experience> findAllByAccountNumber(int accountNumber);
+    Experience findByAccountNumberAndCompanyIdAndDepartmentIdAndPositionId(int accountNumber,int companyId,int departmentId,int positionId);
 }
