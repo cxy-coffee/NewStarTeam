@@ -3,6 +3,7 @@ package com.rookiestar.starmanager.repository;
 import com.rookiestar.starmanager.BaseTest;
 import com.rookiestar.starmanager.entity.Employee;
 import com.rookiestar.starmanager.util.DataBaseUtil;
+import com.rookiestar.starmanager.util.DateUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ public class EmployeeRepositoryTest extends BaseTest {
     @Autowired
     private ExperienceRepository experienceRepository;
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private final Map<Integer,Employee> employeeMap;
 
     public EmployeeRepositoryTest() throws Exception{
@@ -34,7 +34,7 @@ public class EmployeeRepositoryTest extends BaseTest {
 
         List<Employee> employees = employeeRepository.findAllEmployeesByCompany(1);
         for (Employee employee:employees) {
-            employee.setBirthday(sdf.parse(sdf.format(employee.getBirthday())));
+            employee.setBirthday(DateUtil.format(employee.getBirthday()));
         }
 
         List<Employee> actualEmployees = new ArrayList<>(employeeMap.values());
@@ -50,7 +50,7 @@ public class EmployeeRepositoryTest extends BaseTest {
 
         List<Employee> employees = employeeRepository.findPresentEmployeesByCompany(1);
         for (Employee employee:employees) {
-            employee.setBirthday(sdf.parse(sdf.format(employee.getBirthday())));
+            employee.setBirthday(DateUtil.format(employee.getBirthday()));
         }
 
         List<Employee> actualEmployees = new ArrayList<>();

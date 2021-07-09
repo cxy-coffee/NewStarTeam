@@ -4,6 +4,7 @@ import com.rookiestar.starmanager.entity.Employee;
 import com.rookiestar.starmanager.entity.Experience;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
+import com.rookiestar.starmanager.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +26,9 @@ public class CreateServiceImp implements CreateService {
     }
 
     @Override
-    public Experience hireEmployee(Experience experience) {
+    public Experience hireEmployee(Experience experience) throws Exception{
         experience.setJobNumber(generateJobNumber(experience));
-        experience.setStartTime(new Date());
+        experience.setStartTime(DateUtil.format(new Date()));
         experience.setEnd(false);
         experienceRepository.save(experience);
         return experience;

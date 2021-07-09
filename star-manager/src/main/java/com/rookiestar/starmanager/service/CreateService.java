@@ -5,5 +5,5 @@ import com.rookiestar.starmanager.entity.Experience;
 
 public interface CreateService {
     Employee registerEmployee(Employee employee);
-    Experience hireEmployee(Experience experience);
+    Experience hireEmployee(Experience experience) throws Exception;
 }

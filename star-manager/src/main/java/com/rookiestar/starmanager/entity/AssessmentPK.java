@@ -4,19 +4,19 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class ExperiencePK implements Serializable {
+public class AssessmentPK implements Serializable {
     private int accountNumber;
     private int companyId;
     private Date startTime;
 
-    public ExperiencePK() {
+    public AssessmentPK() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ExperiencePK that = (ExperiencePK) o;
+        AssessmentPK that = (AssessmentPK) o;
         return accountNumber == that.accountNumber &&
                 companyId == that.companyId &&
                 Objects.equals(startTime, that.startTime);

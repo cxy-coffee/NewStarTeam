@@ -13,20 +13,35 @@ public class Experience implements Serializable {
     private int accountNumber;
     @Id
     private int companyId;
-    @Id
+    @Column(nullable = false)
     private int departmentId;
-    @Id
+    @Column(nullable = false)
     private int positionId;
     @Column(nullable = false)
     private int jobNumber;
-    @Column(nullable = false)
+    @Id
     private Date startTime;
     @Column
     private Date endTime;
     @Column(nullable = false)
     private boolean isEnd;
 
+    @Transient
+    private Assessment assessment;
+
     public Experience() {
+    }
+
+    public Experience(int accountNumber, int companyId, int departmentId, int positionId, int jobNumber, Date startTime, Date endTime, boolean isEnd, Assessment assessment) {
+        this.accountNumber = accountNumber;
+        this.companyId = companyId;
+        this.departmentId = departmentId;
+        this.positionId = positionId;
+        this.jobNumber = jobNumber;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isEnd = isEnd;
+        this.assessment = assessment;
     }
 
     public Experience(int accountNumber, int companyId, int departmentId, int positionId, int jobNumber, Date startTime, Date endTime, boolean isEnd) {
@@ -104,6 +119,14 @@ public class Experience implements Serializable {
         this.positionId = positionId;
     }
 
+    public Assessment getAssessment() {
+        return assessment;
+    }
+
+    public void setAssessment(Assessment assessment) {
+        this.assessment = assessment;
+    }
+
     @Override
     public String toString() {
         return "Experience{" +
@@ -115,6 +138,7 @@ public class Experience implements Serializable {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", isEnd=" + isEnd +
+                ", assessment=" + assessment +
                 '}';
     }
 
@@ -125,12 +149,11 @@ public class Experience implements Serializable {
         Experience that = (Experience) o;
         return accountNumber == that.accountNumber &&
                 companyId == that.companyId &&
-                departmentId == that.departmentId &&
-                positionId == that.positionId;
+                Objects.equals(startTime, that.startTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountNumber, companyId, departmentId, positionId);
+        return Objects.hash(accountNumber, companyId, startTime);
     }
 }

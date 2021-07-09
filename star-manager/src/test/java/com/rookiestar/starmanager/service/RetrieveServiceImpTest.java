@@ -27,8 +27,6 @@ public class RetrieveServiceImpTest extends BaseTest {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
     private final Map<Integer,Employee> employeeMap;
     private final Map<Integer,Experience> experienceMap;
     private final Map<Integer, Company> companyMap;

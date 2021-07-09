@@ -51,7 +51,7 @@ public class CompanyRestControllerTest extends BaseTest {
                 .session(session)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"name\":\"张三\",\"birthday\":\"2000-01-09T16:00:00.000+00:00\",\"gender\":\"男\",\"email\":\"1025405845@qq.com\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-09T16:00:00.000+00:00\",\"endTime\":null,\"end\":false},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-09T16:00:00.000+00:00\",\"endTime\":null,\"end\":true}]},{\"name\":\"李四\",\"birthday\":\"2001-01-10T16:00:00.000+00:00\",\"gender\":\"女\",\"email\":\"李四邮箱\",\"identifyNumber\":\"6\",\"accountNumber\":6,\"password\":\"456\",\"experiences\":[{\"accountNumber\":6,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1621,\"startTime\":\"2011-01-10T16:00:00.000+00:00\",\"endTime\":null,\"end\":false},{\"accountNumber\":6,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2621,\"startTime\":\"2011-01-10T16:00:00.000+00:00\",\"endTime\":null,\"end\":true}]},{\"name\":\"王五\",\"birthday\":\"2002-01-11T16:00:00.000+00:00\",\"gender\":\"男\",\"email\":\"王五邮箱\",\"identifyNumber\":\"7\",\"accountNumber\":7,\"password\":\"123\",\"experiences\":[{\"accountNumber\":7,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1721,\"startTime\":\"2012-01-11T16:00:00.000+00:00\",\"endTime\":null,\"end\":true},{\"accountNumber\":7,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2721,\"startTime\":\"2012-01-11T16:00:00.000+00:00\",\"endTime\":null,\"end\":false}]},{\"name\":\"赵六\",\"birthday\":\"2003-01-12T16:00:00.000+00:00\",\"gender\":\"女\",\"email\":\"赵六邮箱\",\"identifyNumber\":\"8\",\"accountNumber\":8,\"password\":\"456\",\"experiences\":[{\"accountNumber\":8,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1821,\"startTime\":\"2013-01-12T16:00:00.000+00:00\",\"endTime\":null,\"end\":true},{\"accountNumber\":8,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2821,\"startTime\":\"2013-01-12T16:00:00.000+00:00\",\"endTime\":null,\"end\":false}]}]")))
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"1025405845@qq.com\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":false},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":true}]},{\"name\":\"李四\",\"birthday\":\"2001-01-11T00:00:00.000+08:00\",\"gender\":\"女\",\"email\":\"李四邮箱\",\"identifyNumber\":\"6\",\"accountNumber\":6,\"password\":\"456\",\"experiences\":[{\"accountNumber\":6,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1621,\"startTime\":\"2011-01-11T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":false},{\"accountNumber\":6,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2621,\"startTime\":\"2011-01-11T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":true}]},{\"name\":\"王五\",\"birthday\":\"2002-01-12T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"王五邮箱\",\"identifyNumber\":\"7\",\"accountNumber\":7,\"password\":\"123\",\"experiences\":[{\"accountNumber\":7,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1721,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":true},{\"accountNumber\":7,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2721,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":false}]},{\"name\":\"赵六\",\"birthday\":\"2003-01-13T00:00:00.000+08:00\",\"gender\":\"女\",\"email\":\"赵六邮箱\",\"identifyNumber\":\"8\",\"accountNumber\":8,\"password\":\"456\",\"experiences\":[{\"accountNumber\":8,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1821,\"startTime\":\"2013-01-13T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":true},{\"accountNumber\":8,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2821,\"startTime\":\"2013-01-13T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":false}]}]")))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -67,7 +67,7 @@ public class CompanyRestControllerTest extends BaseTest {
                 .session(session)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"name\":\"张三\",\"birthday\":\"2000-01-09T16:00:00.000+00:00\",\"gender\":\"男\",\"email\":\"1025405845@qq.com\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-09T16:00:00.000+00:00\",\"endTime\":null,\"end\":false},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-09T16:00:00.000+00:00\",\"endTime\":null,\"end\":true}]},{\"name\":\"李四\",\"birthday\":\"2001-01-10T16:00:00.000+00:00\",\"gender\":\"女\",\"email\":\"李四邮箱\",\"identifyNumber\":\"6\",\"accountNumber\":6,\"password\":\"456\",\"experiences\":[{\"accountNumber\":6,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1621,\"startTime\":\"2011-01-10T16:00:00.000+00:00\",\"endTime\":null,\"end\":false},{\"accountNumber\":6,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2621,\"startTime\":\"2011-01-10T16:00:00.000+00:00\",\"endTime\":null,\"end\":true}]}]")))
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"1025405845@qq.com\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":false},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":true}]},{\"name\":\"李四\",\"birthday\":\"2001-01-11T00:00:00.000+08:00\",\"gender\":\"女\",\"email\":\"李四邮箱\",\"identifyNumber\":\"6\",\"accountNumber\":6,\"password\":\"456\",\"experiences\":[{\"accountNumber\":6,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1621,\"startTime\":\"2011-01-11T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":false},{\"accountNumber\":6,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2621,\"startTime\":\"2011-01-11T00:00:00.000+08:00\",\"endTime\":null,\"assessment\":null,\"end\":true}]}]")))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -85,6 +85,7 @@ public class CompanyRestControllerTest extends BaseTest {
     }
 
     @Test
+    @Transactional
     public void hireEmployeeTest() throws Exception{
         mvc.perform(MockMvcRequestBuilders.get("/hireEmployee.do?accountNumber=9&departmentId=1&positionId=1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -99,8 +100,19 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("jobNumber").value(9111))
                 .andExpect(MockMvcResultMatchers.jsonPath("end").value(false))
                 .andDo(MockMvcResultHandlers.print());
-        Experience experience = new Experience(9,1,1,1,9111,null,null,false);
-        experienceRepository.delete(experience);
+    }
+
+    @Test
+    @Transactional
+    public void registerEmployeeTest() throws Exception{
+        mvc.perform(MockMvcRequestBuilders.get("/registerEmployee.do?name=测试名字&birthday=2001-01-20&gender=男&email=199&identifyNumber=991&password=123")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"name\":\"测试名字\",\"birthday\":\"2001-01-20T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"199\",\"identifyNumber\":\"991\",\"accountNumber\":9,\"password\":\"123\",\"experiences\":null}")))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     /*

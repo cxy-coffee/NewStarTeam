@@ -6,11 +6,13 @@ import com.rookiestar.starmanager.entity.Experience;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
 import com.rookiestar.starmanager.util.DataBaseUtil;
+import com.rookiestar.starmanager.util.DateUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CreateServiceImpTest extends BaseTest {
@@ -31,10 +33,19 @@ public class CreateServiceImpTest extends BaseTest {
         experience.setPositionId(1);
 
         Experience expectExperience = createService.hireEmployee(experience);
+        //System.out.println("expectExperience:"+expectExperience);
+        /*
+        expectExperience:Experience{accountNumber=9, companyId=1, departmentId=1, positionId=1, jobNumber=9111, startTime=Fri Jul 09 00:00:00 CST 2021, endTime=null, isEnd=false, assessment=null}
+         */
 
         Experience addedExperience = experienceRepository.findByAccountNumberAndCompanyIdAndDepartmentIdAndPositionId(9,1,1,1);
+        //System.out.println("addedExperience:"+addedExperience);
+        /*
+        addedExperience:Experience{accountNumber=9, companyId=1, departmentId=1, positionId=1, jobNumber=9111, startTime=Fri Jul 09 00:00:00 CST 2021, endTime=null, isEnd=false, assessment=null}
+         */
+        //addedExperience.setStartTime(DateUtil.format(addedExperience.getStartTime()));
 
-        Assert.assertEquals(addedExperience,expectExperience);
+        Assert.assertEquals(expectExperience,addedExperience);
     }
 
     @Test

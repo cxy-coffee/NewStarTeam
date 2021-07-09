@@ -14,6 +14,7 @@ public class EmailServiceImpTest extends BaseTest {
     @Autowired
     private EmailService emailService;
 
+    //发送验证码邮件测试
     @Test
     public void sendSimpleEmailTest() throws Exception{
         String to = "2019302110260@whu.edu.cn";
@@ -22,6 +23,7 @@ public class EmailServiceImpTest extends BaseTest {
         emailService.sendSimpleEmail(to,subject,content);
     }
 
+    //动态生成验证码测试
     @Test
     public void generateVerificationCodeTest(){
         for (int i = 0; i < 10; i++) {
