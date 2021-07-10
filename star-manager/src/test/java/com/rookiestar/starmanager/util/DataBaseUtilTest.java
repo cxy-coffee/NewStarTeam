@@ -5,6 +5,12 @@ import com.rookiestar.starmanager.repository.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Test class that test DataBaseUtil
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
 public class DataBaseUtilTest extends BaseTest {
     @Autowired
     private CompanyRepository companyRepository;

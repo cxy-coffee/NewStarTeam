@@ -4,6 +4,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Entity class that describe an Employee
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
 @Entity
 public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -133,8 +139,12 @@ public class Employee implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Employee employee = (Employee) o;
         return accountNumber == employee.accountNumber &&
                 Objects.equals(identifyNumber, employee.identifyNumber);

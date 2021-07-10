@@ -7,7 +7,13 @@ import javax.persistence.IdClass;
 import java.io.Serializable;
 import java.util.Objects;
 
-@IdClass(PositionPK.class)
+/**
+ * Entity class that describe a position
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
+@IdClass(PositionPrimaryKey.class)
 @Entity
 public class Position implements Serializable {
     private static final long serialVersionUID = 5L;
@@ -74,8 +80,12 @@ public class Position implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Position position = (Position) o;
         return companyId == position.companyId &&
                 departmentId == position.departmentId &&

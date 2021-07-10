@@ -3,18 +3,28 @@ package com.rookiestar.starmanager.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class DepartmentPK implements Serializable {
+/**
+ * Entity class that describe the Primary Key of Department
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
+public class DepartmentPrimaryKey implements Serializable {
     private int companyId;
     private int departmentId;
 
-    public DepartmentPK() {
+    public DepartmentPrimaryKey() {
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DepartmentPK that = (DepartmentPK) o;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DepartmentPrimaryKey that = (DepartmentPrimaryKey) o;
         return companyId == that.companyId &&
                 departmentId == that.departmentId;
     }

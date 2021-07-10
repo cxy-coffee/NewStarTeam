@@ -15,7 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CreateServiceImpTest extends BaseTest {
+/**
+ * Test class that test CreateServiceImpl
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
+public class CreateServiceImplTest extends BaseTest {
     @Autowired
     private CreateService createService;
     @Autowired

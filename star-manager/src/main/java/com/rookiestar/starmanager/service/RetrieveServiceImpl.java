@@ -8,8 +8,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service class that handle retrieve service
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
 @Service
-public class RetrieveServiceImp implements RetrieveService{
+public class RetrieveServiceImpl implements RetrieveService{
     @Autowired
     private ExperienceRepository experienceRepository;
     @Autowired
