@@ -7,6 +7,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Entity class that describe a company
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
 @Entity
 public class Company implements Serializable {
     private static final long serialVersionUID = 3L;
@@ -95,8 +101,12 @@ public class Company implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Company company = (Company) o;
         return companyId == company.companyId;
     }

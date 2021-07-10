@@ -14,6 +14,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Controller class that handle the request of company
+ *
+ * @author 86199
+ * @date 2021/7/9
+ */
 @RestController
 public class CompanyRestController {
 

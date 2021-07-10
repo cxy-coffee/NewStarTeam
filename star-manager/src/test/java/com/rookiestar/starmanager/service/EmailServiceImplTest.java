@@ -9,7 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EmailServiceImpTest extends BaseTest {
+/**
+ * Test class that test EmailServiceImpl
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
+public class EmailServiceImplTest extends BaseTest {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private EmailService emailService;

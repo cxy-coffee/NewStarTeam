@@ -14,6 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Test class that test EmployeeRepository
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
 public class EmployeeRepositoryTest extends BaseTest {
     @Autowired
     private EmployeeRepository employeeRepository;

@@ -5,7 +5,13 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-@IdClass(value = ExperiencePK.class)
+/**
+ * Entity class that describe an experience
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
+@IdClass(value = ExperiencePrimaryKey.class)
 @Entity
 public class Experience implements Serializable {
     private static final long serialVersionUID = 2L;
@@ -95,12 +101,12 @@ public class Experience implements Serializable {
         this.endTime = endTime;
     }
 
-    public boolean isEnd() {
+    public boolean isIsEnd() {
         return isEnd;
     }
 
-    public void setEnd(boolean end) {
-        isEnd = end;
+    public void setIsEnd(boolean end) {
+        this.isEnd = end;
     }
 
     public int getDepartmentId() {
@@ -137,15 +143,19 @@ public class Experience implements Serializable {
                 ", jobNumber=" + jobNumber +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                ", isEnd=" + isEnd +
+                ", end=" + isEnd +
                 ", assessment=" + assessment +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Experience that = (Experience) o;
         return accountNumber == that.accountNumber &&
                 companyId == that.companyId &&

@@ -7,7 +7,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@IdClass(DepartmentPK.class)
+/**
+ * Entity class that describe a department of a company
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
+@IdClass(DepartmentPrimaryKey.class)
 @Entity
 public class Department implements Serializable {
     private static final long serialVersionUID = 4L;
@@ -81,8 +87,12 @@ public class Department implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Department that = (Department) o;
         return companyId == that.companyId &&
                 departmentId == that.departmentId;

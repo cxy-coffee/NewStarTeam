@@ -10,8 +10,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+/**
+ * Service class that handle create service
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
 @Service
-public class CreateServiceImp implements CreateService {
+public class CreateServiceImpl implements CreateService {
 
     @Autowired
     private ExperienceRepository experienceRepository;
@@ -29,7 +35,7 @@ public class CreateServiceImp implements CreateService {
     public Experience hireEmployee(Experience experience) throws Exception{
         experience.setJobNumber(generateJobNumber(experience));
         experience.setStartTime(DateUtil.format(new Date()));
-        experience.setEnd(false);
+        experience.setIsEnd(false);
         experienceRepository.save(experience);
         return experience;
     }

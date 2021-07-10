@@ -7,6 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Util class that init database and get init data
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
 public class DataBaseUtil {
     private static DataBaseUtil instance;
 
@@ -33,7 +39,6 @@ public class DataBaseUtil {
         return instance;
     }
 
-    //初始化数据库
     public void initCompany(CompanyRepository companyRepository) throws Exception{
         companyRepository.deleteAll();
         for(Map.Entry<Integer,Company> node:companyMap.entrySet()){
@@ -71,9 +76,8 @@ public class DataBaseUtil {
         }
     }
 
-    //初始化数据成员map
     private Map<Integer,Employee> initEmployeeMap() throws Exception{
-        Map<Integer,Employee> map = new HashMap<>();
+        Map<Integer,Employee> map = new HashMap<>(10);
         map.put(5,new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null));
         map.put(6,new Employee("李四",DateUtil.parse("2001-01-11"),"女","2019302110261@whu.edu.cn","6",6,"456",null));
         map.put(7,new Employee("王五",DateUtil.parse("2002-01-12"),"男","2019302110262@whu.edu.cn","7",7,"123",null));
@@ -81,7 +85,7 @@ public class DataBaseUtil {
         return map;
     }
     private Map<Integer,Experience> initExperienceMap() throws Exception{
-        Map<Integer,Experience> map = new HashMap<>();
+        Map<Integer,Experience> map = new HashMap<>(20);
         map.put(5121,new Experience(5,1,2,1,1521,DateUtil.parse("2010-01-10"),null,false));
         map.put(5221,new Experience(5,2,2,1,2521,DateUtil.parse("2010-01-10"),null,true));
         map.put(6121,new Experience(6,1,2,1,1621,DateUtil.parse("2011-01-11"),null,false));
@@ -93,13 +97,13 @@ public class DataBaseUtil {
         return map;
     }
     private Map<Integer,Company> initCompanyMap(){
-        Map<Integer,Company> map = new HashMap<>();
+        Map<Integer,Company> map = new HashMap<>(5);
         map.put(1,new Company(1,"我的公司1",null,null));
         map.put(2,new Company(2,"我的公司2",null,null));
         return map;
     }
     private Map<Integer,Department> initDepartmentMap(){
-        Map<Integer,Department> map = new HashMap<>();
+        Map<Integer,Department> map = new HashMap<>(10);
         map.put(11,new Department(1,1,"公司1部门1",null));
         map.put(12,new Department(1,2,"公司1部门2",null));
         map.put(21,new Department(2,1,"公司2部门1",null));
@@ -107,7 +111,7 @@ public class DataBaseUtil {
         return map;
     }
     private Map<Integer,Position> initPositionMap(){
-        Map<Integer,Position> map = new HashMap<>();
+        Map<Integer,Position> map = new HashMap<>(20);
         map.put(111,new Position(1,1,1,"公司1部门1员工"));
         map.put(112,new Position(1,1,2,"公司1部门1经理"));
         map.put(121,new Position(1,2,1,"公司1部门2员工"));
@@ -119,7 +123,7 @@ public class DataBaseUtil {
         return map;
     }
     private Map<Integer,Assessment> initAssessmentMap() throws Exception{
-        Map<Integer,Assessment> map = new HashMap<>();
+        Map<Integer,Assessment> map = new HashMap<>(20);
         map.put(51,new Assessment(5,1,DateUtil.parse("2010-01-10"),"0/10","51的表现"));
         map.put(52,new Assessment(5,2,DateUtil.parse("2010-01-10"),"0/10","52的表现"));
         map.put(61,new Assessment(6,1,DateUtil.parse("2011-01-11"),"0/10","61的表现"));

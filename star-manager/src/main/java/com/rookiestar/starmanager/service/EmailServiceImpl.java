@@ -10,9 +10,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
+/**
+ * Service class that handle email service
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
 @Service
-public class EmailServiceImp implements EmailService{
+public class EmailServiceImpl implements EmailService{
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Value("${emailService.emailCodeLength}")
+    private int emailCodeLength;
     @Autowired
     private JavaMailSender mailSender;
     @Value("${mail.fromMail.addr}")
@@ -43,7 +51,7 @@ public class EmailServiceImp implements EmailService{
     public String generateVerificationCode() {
         Random random = new Random();
         StringBuilder code = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < emailCodeLength; i++) {
             code.append(random.nextInt(10));
         }
         logger.info("验证码是："+code.toString());

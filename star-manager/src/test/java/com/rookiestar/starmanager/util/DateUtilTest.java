@@ -7,6 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
+/**
+ * Test class that test DateUtil
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
 public class DateUtilTest extends BaseTest {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Test

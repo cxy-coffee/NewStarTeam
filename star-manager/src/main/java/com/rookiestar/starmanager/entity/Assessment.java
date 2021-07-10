@@ -8,7 +8,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-@IdClass(AssessmentPK.class)
+
+/**
+ * Entity class that describe the assessment of an employee
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
+@IdClass(AssessmentPrimaryKey.class)
 @Entity
 public class Assessment implements Serializable {
     private static final long serialVersionUID = 6L;
@@ -88,8 +95,12 @@ public class Assessment implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Assessment that = (Assessment) o;
         return accountNumber == that.accountNumber &&
                 companyId == that.companyId &&

@@ -18,7 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class RetrieveServiceImpTest extends BaseTest {
+/**
+ * Test class that test RetrieveServiceImpl
+ *
+ * @author 曹向阳
+ * @date 2021/7/9
+ */
+public class RetrieveServiceImplTest extends BaseTest {
     @Autowired
     private RetrieveService retrieveService;
 
@@ -31,7 +37,7 @@ public class RetrieveServiceImpTest extends BaseTest {
     private final Map<Integer,Experience> experienceMap;
     private final Map<Integer, Company> companyMap;
 
-    public RetrieveServiceImpTest() throws Exception{
+    public RetrieveServiceImplTest() throws Exception{
         employeeMap = DataBaseUtil.getInstance().getEmployeeMap();
         experienceMap = DataBaseUtil.getInstance().getExperienceMap();
         companyMap = DataBaseUtil.getInstance().getCompanyMap();
