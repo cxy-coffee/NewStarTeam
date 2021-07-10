@@ -32,4 +32,35 @@ public class RetrieveServiceImp implements RetrieveService{
         }
         return employees;
     }
+
+
+    /**
+     * Get employees by name
+     * @param name
+     * @return employees whose name containing String name
+     */
+    @Override
+    public List<Employee> retrieveEmployeesByName(String name) {
+        List<Employee> employees=employeeRepository.findEmployeesByNameContaining(name);
+        for(Employee employee:employees){
+            employee.setExperiences(experienceRepository.findAllByAccountNumber(employee.getAccountNumber()));
+        }
+        return employees;
+    }
+
+    @Override
+    public Employee retrieveEmployeeByIdentifyNumber(String identifyNumber) {
+        Employee employee=employeeRepository.findByIdentifyNumber(identifyNumber);
+        employee.setExperiences(experienceRepository.findAllByAccountNumber(employee.getAccountNumber()));
+        return employee;
+    }
+
+    @Override
+    public List<Employee> retrieveEmployeesByGender(String gender) {
+        List<Employee> employees=employeeRepository.findEmployeesByGender(gender);
+        for(Employee employee:employees){
+            employee.setExperiences(experienceRepository.findAllByAccountNumber(employee.getAccountNumber()));
+        }
+        return employees;
+    }
 }

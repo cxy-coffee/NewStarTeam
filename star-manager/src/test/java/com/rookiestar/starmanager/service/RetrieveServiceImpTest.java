@@ -69,4 +69,43 @@ public class RetrieveServiceImpTest extends BaseTest {
 
         Assert.assertEquals(employees,actualEmployees);
     }
+    @Test
+    @Transactional
+    public void retrieveEmployeesByNameTest() throws Exception {
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+
+        List<Employee> employees = retrieveService.retrieveEmployeesByName("张");
+
+        List<Employee> actualEmployees = new ArrayList<>();
+        actualEmployees.add(new Employee(employeeMap.get(5),experienceMap.get(5121),experienceMap.get(5221)));
+
+        Assert.assertEquals(employees,actualEmployees);
+
+    }
+
+    @Test
+    @Transactional
+    public void retrieveEmployeeByIdentifyNumberTest()throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        List<Employee> employees=new ArrayList<>();
+        employees.add(retrieveService.retrieveEmployeeByIdentifyNumber("5"));
+        List<Employee> actualEmployees = new ArrayList<>();
+        actualEmployees.add(new Employee(employeeMap.get(5),experienceMap.get(5121),experienceMap.get(5221)));
+        Assert.assertEquals(employees,actualEmployees);
+    }
+
+    @Test
+    @Transactional
+    public void retrieveEmployeesByGenderTest()throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        List<Employee> employees=new ArrayList<>();
+        employees=retrieveService.retrieveEmployeesByGender("男");
+        List<Employee> actualEmployees = new ArrayList<>();
+        actualEmployees.add(new Employee(employeeMap.get(5),experienceMap.get(5121),experienceMap.get(5221)));
+        actualEmployees.add(new Employee(employeeMap.get(7),experienceMap.get(7121),experienceMap.get(7221)));
+        Assert.assertEquals(employees,actualEmployees);
+    }
 }

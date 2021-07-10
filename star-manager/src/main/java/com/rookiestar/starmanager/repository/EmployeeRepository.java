@@ -17,4 +17,25 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
     int findMaxAccountNumber();
 
     Employee findByAccountNumber(int accountNumber);
+
+    /**
+     * Get employees by name
+     * @param name
+     * @return employees whose name containing String name
+     */
+    List<Employee> findEmployeesByNameContaining(String name);
+
+    /**
+     * Get employee by identify number
+     * @param identifyNumber
+     * @return
+     */
+    Employee findByIdentifyNumber(String identifyNumber);
+
+    /**
+     * Get employees by gender
+     * @param gender
+     * @return
+     */
+    List<Employee> findEmployeesByGender(String gender);
 }

@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -82,4 +81,54 @@ public class EmployeeRepositoryTest extends BaseTest {
         Assert.assertEquals(employee,actualEmployee);
 
     }
+
+
+    @Test
+    @Transactional
+    public void findEmployeesByNameContainingTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+
+
+        List<Employee> employees=employeeRepository.findEmployeesByNameContaining("张");
+        for (Employee employee:employees) {
+            employee.setBirthday(DateUtil.format(employee.getBirthday()));
+        }
+
+        List<Employee> actualEmployees = new ArrayList<>();
+        actualEmployees.add(employeeMap.get(5));
+
+        Assert.assertEquals(employees,actualEmployees);
+    }
+
+    @Test
+    @Transactional
+    public void findEmployeeByIdentifyNumberTest()throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        Employee employee=employeeRepository.findByIdentifyNumber("5");
+
+        employee.setBirthday(DateUtil.format(employee.getBirthday()));
+
+        Employee actualEmployee=employeeMap.get(5);
+
+        Assert.assertEquals(employee,actualEmployee);
+    }
+
+    @Test
+    @Transactional
+    public void findEmployeesByGenderTest()throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        List<Employee> employees=employeeRepository.findEmployeesByGender("男");
+        for (Employee employee:employees) {
+            employee.setBirthday(DateUtil.format(employee.getBirthday()));
+        }
+        List<Employee> actualEmployees=new ArrayList<>();
+        actualEmployees.add(employeeMap.get(5));
+        actualEmployees.add(employeeMap.get(7));
+
+        Assert.assertEquals(employees,actualEmployees);
+    }
+
 }

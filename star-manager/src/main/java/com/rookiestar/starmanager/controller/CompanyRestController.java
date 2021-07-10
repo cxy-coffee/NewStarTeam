@@ -7,6 +7,7 @@ import com.rookiestar.starmanager.service.EmailService;
 import com.rookiestar.starmanager.service.RetrieveService;
 import com.rookiestar.starmanager.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,4 +69,25 @@ public class CompanyRestController {
     public Date testTime(){
         return new Date();
     }
+
+    /**
+     * Get employees by name
+     * @param name
+     * @return employees whose name containing String name
+     */
+    @RequestMapping("/getEmployeesByName.do")
+    public List<Employee> getEmployeesByName(String name){
+        return retrieveService.retrieveEmployeesByName(name);
+    }
+
+    @RequestMapping("/getEmployeeByIdentifyNumber.do")
+    public Employee getEmployeeByIdentifyNumber(String identifyNumber){
+        return retrieveService.retrieveEmployeeByIdentifyNumber(identifyNumber);
+    }
+
+    @RequestMapping("/getEmployeesByGender.do")
+    public List<Employee> getEmployeesByGender(String gender){
+        return retrieveService.retrieveEmployeesByGender(gender);
+    }
+
 }
