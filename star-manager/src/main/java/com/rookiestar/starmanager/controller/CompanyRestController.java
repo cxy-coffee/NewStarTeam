@@ -5,6 +5,7 @@ import com.rookiestar.starmanager.entity.Experience;
 import com.rookiestar.starmanager.service.CreateService;
 import com.rookiestar.starmanager.service.EmailService;
 import com.rookiestar.starmanager.service.RetrieveService;
+import com.rookiestar.starmanager.service.UpdateService;
 import com.rookiestar.starmanager.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,8 @@ import java.util.List;
  */
 @RestController
 public class CompanyRestController {
-
+    @Autowired
+    private UpdateService updateService;
     @Autowired
     private RetrieveService retrieveService;
     @Autowired
@@ -96,4 +98,9 @@ public class CompanyRestController {
         return retrieveService.retrieveEmployeesByGender(gender);
     }
 
+    @RequestMapping(value = "/updateEmployee.do")
+    public boolean updateEmployee(String name, String birthday,String gender,String email,String identifyNumber,String password) throws Exception {
+        Employee employee = new Employee(name, DateUtil.parse(birthday),gender,email,identifyNumber,0,password,null);
+        return updateService.updateEmployee(employee);
+    }
 }

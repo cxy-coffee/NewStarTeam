@@ -67,4 +67,5 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
      * @return
      */
     List<Employee> findEmployeesByGender(String gender);
+
 }
