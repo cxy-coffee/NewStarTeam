@@ -1,11 +1,14 @@
 package com.rookiestar.starmanager.service;
 
+import com.rookiestar.starmanager.entity.Assessment;
 import com.rookiestar.starmanager.entity.Employee;
+import com.rookiestar.starmanager.repository.AssessmentRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,7 +23,8 @@ public class RetrieveServiceImpl implements RetrieveService{
     private ExperienceRepository experienceRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
-
+    @Autowired
+    private AssessmentRepository assessmentRepository;
     @Override
     public List<Employee> retrieveAllEmployeesByCompany(int companyId) {
         List<Employee> employees = employeeRepository.findAllEmployeesByCompany(companyId);
@@ -42,7 +46,7 @@ public class RetrieveServiceImpl implements RetrieveService{
 
     /**
      * Get employees by name
-     * @param name
+     * @param name the name of the employees to find
      * @return employees whose name containing String name
      */
     @Override
@@ -68,5 +72,10 @@ public class RetrieveServiceImpl implements RetrieveService{
             employee.setExperiences(experienceRepository.findAllByAccountNumber(employee.getAccountNumber()));
         }
         return employees;
+    }
+
+    @Override
+    public Assessment retrieveAssessmentByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime) {
+        return assessmentRepository.findByAccountNumberAndCompanyIdAndStartTime(accountNumber,companyId,startTime);
     }
 }

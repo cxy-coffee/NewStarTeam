@@ -1,8 +1,10 @@
 package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.BaseTest;
+import com.rookiestar.starmanager.entity.Assessment;
 import com.rookiestar.starmanager.entity.Employee;
 import com.rookiestar.starmanager.entity.Experience;
+import com.rookiestar.starmanager.repository.AssessmentRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
 import com.rookiestar.starmanager.util.DataBaseUtil;
@@ -30,6 +32,7 @@ import java.util.Date;
  * @author 曹向阳
  * @date 2021/7/9
  */
+@SuppressWarnings("deprecation")
 public class CompanyRestControllerTest extends BaseTest {
     @Autowired
     private WebApplicationContext wac;
@@ -40,7 +43,8 @@ public class CompanyRestControllerTest extends BaseTest {
     private EmployeeRepository employeeRepository;
     @Autowired
     private ExperienceRepository experienceRepository;
-
+    @Autowired
+    private AssessmentRepository assessmentRepository;
     @Before
     public void setUp() throws Exception{
         mvc = MockMvcBuilders.webAppContextSetup(wac).build();
@@ -173,7 +177,7 @@ public class CompanyRestControllerTest extends BaseTest {
     }
     @Test
     @Transactional
-    public void updateEmployeeTest()throws Exception{
+    public void updateEmployeeTest() throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
         Employee employee=new Employee("测试名字", DateUtil.parse("2001-01-20"),"男","199","5",5,"123",null);
@@ -187,7 +191,26 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andDo(MockMvcResultHandlers.print());
         Employee actualEmployee = DataBaseUtil.getInstance().getEmployeeMap().get(5);
         Assert.assertEquals(actualEmployee,employee);
+    }
+    @Test
+    @Transactional
+    public void updateAssessmentTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
 
+        Assessment assessment = new Assessment(5, 1, DateUtil.parse("2010-01-10"), "10/10", "51的表现修改后");
+        Assessment actualAssessment=DataBaseUtil.getInstance().getAssessmentMap().get(51);
+        Assert.assertNotEquals(assessment.getAbsenteeismRate()+assessment.getPerformance(),actualAssessment.getAbsenteeismRate()+actualAssessment.getPerformance());
+        mvc.perform(MockMvcRequestBuilders.get("/updateAssessment.do?accountNumber=5&companyId=1&startTime=2010-01-10&absenteeismRate=10/10&performance=51的表现修改后")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+        actualAssessment=assessmentRepository.findByAccountNumberAndCompanyIdAndStartTime(5,1,DateUtil.parse("2010-01-10"));
+        Assert.assertEquals(assessment.getAbsenteeismRate()+assessment.getPerformance(),actualAssessment.getAbsenteeismRate()+actualAssessment.getPerformance());
     }
     /*
     @Test

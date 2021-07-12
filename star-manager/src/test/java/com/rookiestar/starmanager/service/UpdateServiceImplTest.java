@@ -1,12 +1,15 @@
 package com.rookiestar.starmanager.service;
 
 import com.rookiestar.starmanager.BaseTest;
+import com.rookiestar.starmanager.entity.Assessment;
 import com.rookiestar.starmanager.entity.Company;
 import com.rookiestar.starmanager.entity.Employee;
 import com.rookiestar.starmanager.entity.Experience;
+import com.rookiestar.starmanager.repository.AssessmentRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
 import com.rookiestar.starmanager.util.DataBaseUtil;
+import com.rookiestar.starmanager.util.DateUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +34,8 @@ public class UpdateServiceImplTest extends BaseTest {
     private ExperienceRepository experienceRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
-
+    @Autowired
+    private AssessmentRepository assessmentRepository;
     private final Map<Integer, Employee> employeeMap;
     private final Map<Integer, Experience> experienceMap;
     private final Map<Integer, Company> companyMap;
@@ -52,5 +56,17 @@ public class UpdateServiceImplTest extends BaseTest {
         Employee actualEmployee =retrieveService.retrieveEmployeeByIdentifyNumber("5");
         Assert.assertEquals(employee,actualEmployee);
 
+    }
+
+    @Test
+    @Transactional
+    public void updateAssessmentTest()throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
+        Assessment assessment = new Assessment(5, 1, DateUtil.parse("2010-01-10"), "10/10", "51的表现修改后");
+        updateService.updateAssessment(assessment);
+        Assessment actualAssessment=retrieveService.retrieveAssessmentByAccountNumberAndCompanyIdAndStartTime(5, 1, DateUtil.parse("2010-01-10"));
+        Assert.assertEquals(assessment.getAbsenteeismRate()+assessment.getPerformance(),actualAssessment.getAbsenteeismRate()+actualAssessment.getPerformance());
     }
 }

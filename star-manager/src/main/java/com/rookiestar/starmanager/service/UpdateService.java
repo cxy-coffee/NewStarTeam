@@ -1,5 +1,6 @@
 package com.rookiestar.starmanager.service;
 
+import com.rookiestar.starmanager.entity.Assessment;
 import com.rookiestar.starmanager.entity.Employee;
 
 /**
@@ -10,8 +11,14 @@ import com.rookiestar.starmanager.entity.Employee;
 public interface UpdateService {
     /**
      * 更新员工信息
-     * @param employee
-     * @return
+     * @param employee employee to update
+     * @return update result, true for success and false for non-success
      */
     boolean updateEmployee(Employee employee);
+    /**
+     * 更新评价信息
+     * @param assessment assessment to update
+     * @return update result, true for success and false for non-success
+     */
+    boolean updateAssessment(Assessment assessment);
 }

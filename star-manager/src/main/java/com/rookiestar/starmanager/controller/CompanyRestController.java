@@ -1,5 +1,6 @@
 package com.rookiestar.starmanager.controller;
 
+import com.rookiestar.starmanager.entity.Assessment;
 import com.rookiestar.starmanager.entity.Employee;
 import com.rookiestar.starmanager.entity.Experience;
 import com.rookiestar.starmanager.service.CreateService;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -80,7 +83,7 @@ public class CompanyRestController {
 
     /**
      * Get employees by name
-     * @param name
+     * @param name the name of the employees to find
      * @return employees whose name containing String name
      */
     @RequestMapping("/getEmployeesByName.do")
@@ -102,5 +105,11 @@ public class CompanyRestController {
     public boolean updateEmployee(String name, String birthday,String gender,String email,String identifyNumber,String password) throws Exception {
         Employee employee = new Employee(name, DateUtil.parse(birthday),gender,email,identifyNumber,0,password,null);
         return updateService.updateEmployee(employee);
+    }
+
+    @RequestMapping(value = "/updateAssessment.do")
+    public boolean updateAssessment(int accountNumber,int companyId, String startTime, String absenteeismRate, String performance) throws Exception {
+        Assessment assessment = new Assessment(accountNumber, companyId, DateUtil.parse(startTime), absenteeismRate, performance);
+        return updateService.updateAssessment(assessment);
     }
 }
