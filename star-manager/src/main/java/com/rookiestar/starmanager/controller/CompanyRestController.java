@@ -101,6 +101,11 @@ public class CompanyRestController {
         return retrieveService.retrieveEmployeesByGender(gender);
     }
 
+    @RequestMapping(value = "getEmployeeByEmail.do")
+    public Employee getEmployeeByEmail(String email){
+        return retrieveService.retrieveEmployeeByEmail(email);
+    }
+
     @RequestMapping(value = "/updateEmployee.do")
     public boolean updateEmployee(String name, String birthday,String gender,String email,String identifyNumber,String password) throws Exception {
         Employee employee = new Employee(name, DateUtil.parse(birthday),gender,email,identifyNumber,0,password,null);
@@ -111,5 +116,15 @@ public class CompanyRestController {
     public boolean updateAssessment(int accountNumber,int companyId, String startTime, String absenteeismRate, String performance) throws Exception {
         Assessment assessment = new Assessment(accountNumber, companyId, DateUtil.parse(startTime), absenteeismRate, performance);
         return updateService.updateAssessment(assessment);
+    }
+
+
+    @RequestMapping(value = "/updateExperience.do")
+    public boolean updateExperience(int accountNumber,int companyId,
+                                    int departmentId,int positionId,int jobNumber,
+                                    String startTime,String endTime,boolean isEnd) throws Exception {
+        Experience experience = new Experience(accountNumber, companyId, departmentId, positionId, jobNumber,
+                DateUtil.parse(startTime), DateUtil.parse(endTime), isEnd);
+        return updateService.updateExperience(experience);
     }
 }

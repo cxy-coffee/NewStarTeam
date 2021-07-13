@@ -127,4 +127,23 @@ public class RetrieveServiceImplTest extends BaseTest {
         Assessment actualAssessment=new Assessment(5,1,DateUtil.parse("2010-01-10"),"0/10","51的表现");
         Assert.assertEquals(assessment,actualAssessment);
     }
+
+    @Test
+    @Transactional
+    public void retrieveExperienceByAccountNumberAndCompanyIdAndStartTimeTest()throws Exception{
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        Experience experience=retrieveService.retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(5,1,DateUtil.parse("2010-01-10"));
+        Experience actualExperience=new Experience(5,1,2,1,1521,DateUtil.parse("2010-01-10"),null,false);
+        Assert.assertEquals(experience,actualExperience);
+    }
+
+    @Test
+    @Transactional
+    public void retrieveEmployeeByEmailTest()throws  Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        Employee employee=retrieveService.retrieveEmployeeByEmail("2019302110260@whu.edu.cn");
+        Employee actualEmployee=new Employee(employeeMap.get(5),experienceMap.get(5121),experienceMap.get(5221));
+        Assert.assertEquals(employee,actualEmployee);
+    }
 }

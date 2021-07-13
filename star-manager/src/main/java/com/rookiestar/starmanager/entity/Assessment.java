@@ -93,22 +93,22 @@ public class Assessment implements Serializable {
                 '}';
     }
 
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountNumber, companyId, startTime);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Assessment)) {
             return false;
         }
         Assessment that = (Assessment) o;
-        return accountNumber == that.accountNumber &&
-                companyId == that.companyId &&
-                Objects.equals(startTime, that.startTime);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(accountNumber, companyId, startTime);
+        return accountNumber == that.accountNumber && companyId == that.companyId && startTime.equals(that.startTime) && absenteeismRate.equals(that.absenteeismRate) && performance.equals(that.performance);
     }
 }

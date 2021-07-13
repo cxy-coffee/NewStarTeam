@@ -23,13 +23,11 @@ public class AssessmentPrimaryKey implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof AssessmentPrimaryKey)) {
             return false;
         }
         AssessmentPrimaryKey that = (AssessmentPrimaryKey) o;
-        return accountNumber == that.accountNumber &&
-                companyId == that.companyId &&
-                Objects.equals(startTime, that.startTime);
+        return accountNumber == that.accountNumber && companyId == that.companyId && startTime.equals(that.startTime);
     }
 
     @Override

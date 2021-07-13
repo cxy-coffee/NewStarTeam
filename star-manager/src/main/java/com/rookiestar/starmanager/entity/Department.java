@@ -90,12 +90,11 @@ public class Department implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Department)) {
             return false;
         }
         Department that = (Department) o;
-        return companyId == that.companyId &&
-                departmentId == that.departmentId;
+        return companyId == that.companyId && departmentId == that.departmentId && name.equals(that.name) && Objects.equals(positions, that.positions);
     }
 
     @Override

@@ -83,13 +83,11 @@ public class Position implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Position)) {
             return false;
         }
         Position position = (Position) o;
-        return companyId == position.companyId &&
-                departmentId == position.departmentId &&
-                positionId == position.positionId;
+        return companyId == position.companyId && departmentId == position.departmentId && positionId == position.positionId && name.equals(position.name);
     }
 
     @Override

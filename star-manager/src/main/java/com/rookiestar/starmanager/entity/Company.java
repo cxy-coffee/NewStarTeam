@@ -104,11 +104,11 @@ public class Company implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Company)) {
             return false;
         }
         Company company = (Company) o;
-        return companyId == company.companyId;
+        return companyId == company.companyId && name.equals(company.name) && Objects.equals(experiences, company.experiences) && Objects.equals(departments, company.departments);
     }
 
     @Override

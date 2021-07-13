@@ -142,12 +142,11 @@ public class Employee implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Employee)) {
             return false;
         }
         Employee employee = (Employee) o;
-        return accountNumber == employee.accountNumber &&
-                Objects.equals(identifyNumber, employee.identifyNumber);
+        return accountNumber == employee.accountNumber && name.equals(employee.name) && birthday.equals(employee.birthday) && gender.equals(employee.gender) && email.equals(employee.email) && identifyNumber.equals(employee.identifyNumber) && password.equals(employee.password) && Objects.equals(experiences, employee.experiences);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.rookiestar.starmanager.entity.Experience;
 import com.rookiestar.starmanager.repository.AssessmentRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
+import com.rookiestar.starmanager.service.RetrieveService;
 import com.rookiestar.starmanager.util.DataBaseUtil;
 import com.rookiestar.starmanager.util.DateUtil;
 import org.hamcrest.Matchers;
@@ -45,6 +46,8 @@ public class CompanyRestControllerTest extends BaseTest {
     private ExperienceRepository experienceRepository;
     @Autowired
     private AssessmentRepository assessmentRepository;
+    @Autowired
+    private RetrieveService retrieveService;
     @Before
     public void setUp() throws Exception{
         mvc = MockMvcBuilders.webAppContextSetup(wac).build();
@@ -181,7 +184,9 @@ public class CompanyRestControllerTest extends BaseTest {
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
         Employee employee=new Employee("测试名字", DateUtil.parse("2001-01-20"),"男","199","5",5,"123",null);
-
+        Employee actualEmployee=DataBaseUtil.getInstance().getEmployeeMap().get(5);
+        employee.setExperiences(experienceRepository.findAllByAccountNumber(5));
+        Assert.assertNotEquals(employee,actualEmployee);
         mvc.perform(MockMvcRequestBuilders.get("/updateEmployee.do?name=测试名字&birthday=2001-01-20&gender=男&email=199&identifyNumber=5&accountNumber=5&password=123")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -189,7 +194,7 @@ public class CompanyRestControllerTest extends BaseTest {
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
-        Employee actualEmployee = DataBaseUtil.getInstance().getEmployeeMap().get(5);
+        actualEmployee=retrieveService.retrieveEmployeeByIdentifyNumber("5");
         Assert.assertEquals(actualEmployee,employee);
     }
     @Test
@@ -201,7 +206,7 @@ public class CompanyRestControllerTest extends BaseTest {
 
         Assessment assessment = new Assessment(5, 1, DateUtil.parse("2010-01-10"), "10/10", "51的表现修改后");
         Assessment actualAssessment=DataBaseUtil.getInstance().getAssessmentMap().get(51);
-        Assert.assertNotEquals(assessment.getAbsenteeismRate()+assessment.getPerformance(),actualAssessment.getAbsenteeismRate()+actualAssessment.getPerformance());
+        Assert.assertNotEquals(assessment,actualAssessment);
         mvc.perform(MockMvcRequestBuilders.get("/updateAssessment.do?accountNumber=5&companyId=1&startTime=2010-01-10&absenteeismRate=10/10&performance=51的表现修改后")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -210,7 +215,47 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
         actualAssessment=assessmentRepository.findByAccountNumberAndCompanyIdAndStartTime(5,1,DateUtil.parse("2010-01-10"));
-        Assert.assertEquals(assessment.getAbsenteeismRate()+assessment.getPerformance(),actualAssessment.getAbsenteeismRate()+actualAssessment.getPerformance());
+        Assert.assertEquals(assessment,actualAssessment);
+    }
+
+    @Test
+    @Transactional
+    public void updateExperienceTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
+        Experience experience=new Experience(5,1,4396,7777,1521,DateUtil.parse("2010-01-10"),DateUtil.parse("2021-10-15"),true);
+        Experience actualExperience=retrieveService.retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(5,1,DateUtil.parse("2010-01-10"));
+        Assert.assertNotEquals(experience,actualExperience);
+//        int accountNumber,int companyId,
+//        int departmentId,int positionId,int jobNumber,
+//        String startTime,String endTime,boolean isEnd
+        mvc.perform(MockMvcRequestBuilders.get("/updateExperience.do?accountNumber=5&companyId=1" +
+                "&departmentId=4396&positionId=7777&jobNumber=1521" +
+                "&startTime=2010-01-10&endTime=2021-10-15&isEnd=true")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+        actualExperience=retrieveService.retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(5,1,DateUtil.parse("2010-01-10"));
+        Assert.assertEquals(experience,actualExperience);
+    }
+
+    @Test
+    @Transactional
+    public void getEmployeeByEmailTest()throws Exception{
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        mvc.perform(MockMvcRequestBuilders.get("/getEmployeeByEmail.do?email=2019302110260@whu.edu.cn")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110260@whu.edu.cn\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":null},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":null}]}")))
+                .andDo(MockMvcResultHandlers.print());
     }
     /*
     @Test

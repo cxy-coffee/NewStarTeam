@@ -49,23 +49,24 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
 
     /**
      * Get employees by name
-     * @param name
+     * @param name the name/part of the name of the employees to find
      * @return employees whose name containing String name
      */
     List<Employee> findEmployeesByNameContaining(String name);
 
     /**
      * Get employee by identify number
-     * @param identifyNumber
-     * @return
+     * @param identifyNumber the identify number of the employee to find
+     * @return the employee whose identify number matches the param
      */
     Employee findByIdentifyNumber(String identifyNumber);
 
     /**
      * Get employees by gender
-     * @param gender
-     * @return
+     * @param gender the gender of the employees to find
+     * @return the list of employees whose gender matches the param
      */
     List<Employee> findEmployeesByGender(String gender);
 
+    Employee findByEmail(String email);
 }

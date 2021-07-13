@@ -2,6 +2,7 @@ package com.rookiestar.starmanager.service;
 
 import com.rookiestar.starmanager.entity.Assessment;
 import com.rookiestar.starmanager.entity.Employee;
+import com.rookiestar.starmanager.entity.Experience;
 import com.rookiestar.starmanager.repository.AssessmentRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
@@ -77,5 +78,17 @@ public class RetrieveServiceImpl implements RetrieveService{
     @Override
     public Assessment retrieveAssessmentByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime) {
         return assessmentRepository.findByAccountNumberAndCompanyIdAndStartTime(accountNumber,companyId,startTime);
+    }
+
+    @Override
+    public Experience retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime) {
+        return experienceRepository.findByAccountNumberAndCompanyIdAndStartTime(accountNumber,companyId,startTime);
+    }
+
+    @Override
+    public Employee retrieveEmployeeByEmail(String email) {
+        Employee employee=employeeRepository.findByEmail(email);
+        employee.setExperiences(experienceRepository.findAllByAccountNumber(employee.getAccountNumber()));
+        return employee;
     }
 }

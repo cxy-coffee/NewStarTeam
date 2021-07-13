@@ -153,13 +153,11 @@ public class Experience implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Experience)) {
             return false;
         }
         Experience that = (Experience) o;
-        return accountNumber == that.accountNumber &&
-                companyId == that.companyId &&
-                Objects.equals(startTime, that.startTime);
+        return accountNumber == that.accountNumber && companyId == that.companyId && departmentId == that.departmentId && positionId == that.positionId && jobNumber == that.jobNumber && isEnd == that.isEnd && startTime.equals(that.startTime) && Objects.equals(endTime, that.endTime) && Objects.equals(assessment, that.assessment);
     }
 
     @Override

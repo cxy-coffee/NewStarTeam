@@ -15,6 +15,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -68,5 +70,17 @@ public class UpdateServiceImplTest extends BaseTest {
         updateService.updateAssessment(assessment);
         Assessment actualAssessment=retrieveService.retrieveAssessmentByAccountNumberAndCompanyIdAndStartTime(5, 1, DateUtil.parse("2010-01-10"));
         Assert.assertEquals(assessment.getAbsenteeismRate()+assessment.getPerformance(),actualAssessment.getAbsenteeismRate()+actualAssessment.getPerformance());
+    }
+
+    @Test
+    @Transactional
+    public void updateExperienceTest() throws Exception{
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        Experience experience=new Experience(5,1,4396,7777,1521,DateUtil.parse("2010-01-10"),DateUtil.parse("2021-10-15"),true);
+        Experience actualExperience = retrieveService.retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(5,1,DateUtil.parse("2010-01-10"));
+        Assert.assertNotEquals(experience,actualExperience);
+        updateService.updateExperience(experience);
+        actualExperience = retrieveService.retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(5,1,DateUtil.parse("2010-01-10"));
+        Assert.assertEquals(experience,actualExperience);
     }
 }

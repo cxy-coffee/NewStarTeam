@@ -136,6 +136,13 @@ public class EmployeeRepositoryTest extends BaseTest {
 
         Assert.assertEquals(employees,actualEmployees);
     }
-
+    @Test
+    @Transactional
+    public void findByEmailTest()throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        Employee employee=employeeRepository.findByEmail("2019302110260@whu.edu.cn");
+        Employee actualEmployee=employeeMap.get(5);
+        Assert.assertEquals(employee,actualEmployee);
+    }
 
 }

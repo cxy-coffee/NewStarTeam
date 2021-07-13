@@ -2,6 +2,7 @@ package com.rookiestar.starmanager.service;
 
 import com.rookiestar.starmanager.entity.Assessment;
 import com.rookiestar.starmanager.entity.Employee;
+import com.rookiestar.starmanager.entity.Experience;
 
 import java.util.Date;
 import java.util.List;
@@ -58,4 +59,8 @@ public interface RetrieveService {
      * @return the assessment which matches all the params
      */
     Assessment retrieveAssessmentByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime);
+
+    Experience retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime);
+
+    Employee retrieveEmployeeByEmail(String email);
 }
