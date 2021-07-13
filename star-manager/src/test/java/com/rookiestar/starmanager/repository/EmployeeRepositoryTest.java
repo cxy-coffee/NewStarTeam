@@ -1,7 +1,7 @@
 package com.rookiestar.starmanager.repository;
 
 import com.rookiestar.starmanager.BaseTest;
-import com.rookiestar.starmanager.entity.Employee;
+import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.util.DataBaseUtil;
 import com.rookiestar.starmanager.util.DateUtil;
 import org.junit.Assert;

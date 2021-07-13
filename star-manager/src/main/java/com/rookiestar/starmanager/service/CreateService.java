@@ -1,7 +1,7 @@
 package com.rookiestar.starmanager.service;
 
-import com.rookiestar.starmanager.entity.Employee;
-import com.rookiestar.starmanager.entity.Experience;
+import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.experience.Experience;
 
 /**
  * Service class that handle create service

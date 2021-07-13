@@ -1,6 +1,6 @@
 package com.rookiestar.starmanager.repository;
 
-import com.rookiestar.starmanager.entity.Company;
+import com.rookiestar.starmanager.entity.company.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Repository class that access to the table company

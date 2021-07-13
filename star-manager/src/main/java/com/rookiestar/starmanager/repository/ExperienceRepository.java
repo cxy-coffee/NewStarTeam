@@ -1,6 +1,6 @@
 package com.rookiestar.starmanager.repository;
 
-import com.rookiestar.starmanager.entity.Experience;
+import com.rookiestar.starmanager.entity.experience.Experience;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;

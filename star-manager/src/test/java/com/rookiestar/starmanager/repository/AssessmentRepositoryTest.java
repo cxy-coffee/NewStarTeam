@@ -1,6 +1,7 @@
 package com.rookiestar.starmanager.repository;
 
 import com.rookiestar.starmanager.BaseTest;
+import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.Assessment;
 import com.rookiestar.starmanager.entity.Experience;
 import com.rookiestar.starmanager.util.DataBaseUtil;

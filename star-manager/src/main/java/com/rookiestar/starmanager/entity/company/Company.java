@@ -1,4 +1,7 @@
-package com.rookiestar.starmanager.entity;
+package com.rookiestar.starmanager.entity.company;
+
+import com.rookiestar.starmanager.entity.department.Department;
+import com.rookiestar.starmanager.entity.experience.Experience;
 
 import javax.persistence.*;
 import java.io.Serializable;

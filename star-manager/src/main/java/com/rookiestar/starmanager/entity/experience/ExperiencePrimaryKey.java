@@ -1,4 +1,4 @@
-package com.rookiestar.starmanager.entity;
+package com.rookiestar.starmanager.entity.experience;
 
 import java.io.Serializable;
 import java.util.Date;
