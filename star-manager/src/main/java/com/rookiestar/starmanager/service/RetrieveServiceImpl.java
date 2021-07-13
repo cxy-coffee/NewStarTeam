@@ -1,11 +1,8 @@
 package com.rookiestar.starmanager.service;
 
+import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
-import com.rookiestar.starmanager.repository.AssessmentRepository;
-import com.rookiestar.starmanager.entity.Assessment;
-import com.rookiestar.starmanager.entity.Employee;
-import com.rookiestar.starmanager.entity.Experience;
 import com.rookiestar.starmanager.repository.AssessmentRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
@@ -27,9 +24,6 @@ public class RetrieveServiceImpl implements RetrieveService{
     private ExperienceRepository experienceRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
-    @Autowired
-    private AssessmentRepository assessmentRepository;
-
     @Autowired
     private AssessmentRepository assessmentRepository;
     @Override

@@ -1,9 +1,9 @@
 package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.BaseTest;
-import com.rookiestar.starmanager.entity.Assessment;
-import com.rookiestar.starmanager.entity.Employee;
-import com.rookiestar.starmanager.entity.Experience;
+import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.repository.AssessmentRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
@@ -24,8 +24,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Date;
 
 /**
  * Test class that test CompanyRestController
@@ -85,19 +83,6 @@ public class CompanyRestControllerTest extends BaseTest {
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110260@whu.edu.cn\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":{\"accountNumber\":5,\"companyId\":1,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"51的表现\"}},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":{\"accountNumber\":5,\"companyId\":2,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"52的表现\"}}]},{\"name\":\"李四\",\"birthday\":\"2001-01-11T00:00:00.000+08:00\",\"gender\":\"女\",\"email\":\"2019302110261@whu.edu.cn\",\"identifyNumber\":\"6\",\"accountNumber\":6,\"password\":\"456\",\"experiences\":[{\"accountNumber\":6,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1621,\"startTime\":\"2011-01-11T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":{\"accountNumber\":6,\"companyId\":1,\"startTime\":\"2011-01-11T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"61的表现\"}},{\"accountNumber\":6,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2621,\"startTime\":\"2011-01-11T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":{\"accountNumber\":6,\"companyId\":2,\"startTime\":\"2011-01-11T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"62的表现\"}}]}]")))
-                .andDo(MockMvcResultHandlers.print());
-    }
-
-    @Test
-    @Transactional
-    public void sendEmailCodeTest() throws Exception{
-        mvc.perform(MockMvcRequestBuilders.get("/sendEmailCode.do?to=2019302110260@whu.edu.cn")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("verificationCode").isNumber())
                 .andDo(MockMvcResultHandlers.print());
     }
 

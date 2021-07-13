@@ -1,24 +1,17 @@
 package com.rookiestar.starmanager.controller;
 
+import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
-import com.rookiestar.starmanager.myException.CheckVerificationCodeException;
 import com.rookiestar.starmanager.service.CreateService;
 import com.rookiestar.starmanager.service.EmailService;
 import com.rookiestar.starmanager.service.RetrieveService;
 import com.rookiestar.starmanager.service.UpdateService;
 import com.rookiestar.starmanager.util.DateUtil;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**

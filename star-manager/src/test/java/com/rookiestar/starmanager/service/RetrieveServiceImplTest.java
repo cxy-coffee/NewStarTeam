@@ -5,12 +5,7 @@ import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
-import com.rookiestar.starmanager.entity.Assessment;
-import com.rookiestar.starmanager.entity.Company;
-import com.rookiestar.starmanager.entity.Employee;
-import com.rookiestar.starmanager.entity.Experience;
 import com.rookiestar.starmanager.repository.AssessmentRepository;
-import com.rookiestar.starmanager.repository.CompanyRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
 import com.rookiestar.starmanager.util.DataBaseUtil;
@@ -57,7 +52,7 @@ public class RetrieveServiceImplTest extends BaseTest {
     public void retrieveAllEmployeesByCompanyTest() throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
-
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
         List<Employee> employees = retrieveService.retrieveAllEmployeesByCompany(1);
 
         List<Employee> actualEmployees = new ArrayList<>();
@@ -74,6 +69,7 @@ public class RetrieveServiceImplTest extends BaseTest {
     public void retrievePresentEmployeesByCompanyTest() throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
 
         List<Employee> employees = retrieveService.retrievePresentEmployeesByCompany(1);
 
@@ -88,6 +84,7 @@ public class RetrieveServiceImplTest extends BaseTest {
     public void retrieveEmployeesByNameTest() throws Exception {
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
 
         List<Employee> employees = retrieveService.retrieveEmployeesByName("张");
 
@@ -103,6 +100,7 @@ public class RetrieveServiceImplTest extends BaseTest {
     public void retrieveEmployeeByIdentifyNumberTest()throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
         List<Employee> employees=new ArrayList<>();
         employees.add(retrieveService.retrieveEmployeeByIdentifyNumber("5"));
         List<Employee> actualEmployees = new ArrayList<>();
@@ -115,6 +113,7 @@ public class RetrieveServiceImplTest extends BaseTest {
     public void retrieveEmployeesByGenderTest()throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
         List<Employee> employees=retrieveService.retrieveEmployeesByGender("男");
         List<Employee> actualEmployees = new ArrayList<>();
         actualEmployees.add(new Employee(employeeMap.get(5),new Experience(experienceMap.get(5121),assessmentMap.get(51)),new Experience(experienceMap.get(5221),assessmentMap.get(52))));

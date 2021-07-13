@@ -1,8 +1,10 @@
 package com.rookiestar.starmanager.service;
 
-import com.rookiestar.starmanager.entity.Assessment;
-import com.rookiestar.starmanager.entity.Employee;
-import com.rookiestar.starmanager.entity.Experience;
+
+
+import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.experience.Experience;
 
 import java.util.Date;
 import java.util.List;

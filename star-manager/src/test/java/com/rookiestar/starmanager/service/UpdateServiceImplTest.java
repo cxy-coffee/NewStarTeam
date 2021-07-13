@@ -1,10 +1,10 @@
 package com.rookiestar.starmanager.service;
 
 import com.rookiestar.starmanager.BaseTest;
-import com.rookiestar.starmanager.entity.Assessment;
-import com.rookiestar.starmanager.entity.Company;
-import com.rookiestar.starmanager.entity.Employee;
-import com.rookiestar.starmanager.entity.Experience;
+import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.repository.AssessmentRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
@@ -15,11 +15,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,11 +37,13 @@ public class UpdateServiceImplTest extends BaseTest {
     private final Map<Integer, Employee> employeeMap;
     private final Map<Integer, Experience> experienceMap;
     private final Map<Integer, Company> companyMap;
+    private final Map<Integer,Assessment> assessmentMap;
 
     public UpdateServiceImplTest() throws Exception{
         employeeMap = DataBaseUtil.getInstance().getEmployeeMap();
         experienceMap = DataBaseUtil.getInstance().getExperienceMap();
         companyMap = DataBaseUtil.getInstance().getCompanyMap();
+        assessmentMap = DataBaseUtil.getInstance().getAssessmentMap();
     }
 
     @Test
@@ -54,9 +52,10 @@ public class UpdateServiceImplTest extends BaseTest {
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
         Employee employee=new Employee("testName",new Date(),"男","947998108@qq.com","5",5,"1015",null);
+        Employee expectEmployee = new Employee(employee,new Experience(experienceMap.get(5121),assessmentMap.get(51)),new Experience(experienceMap.get(5221),assessmentMap.get(52)));
         updateService.updateEmployee(employee);
         Employee actualEmployee =retrieveService.retrieveEmployeeByIdentifyNumber("5");
-        Assert.assertEquals(employee,actualEmployee);
+        Assert.assertEquals(expectEmployee,actualEmployee);
 
     }
 
