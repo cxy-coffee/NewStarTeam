@@ -1,6 +1,6 @@
 package com.rookiestar.starmanager.repository;
 
-import com.rookiestar.starmanager.entity.Department;
+import com.rookiestar.starmanager.entity.department.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Repository class that access to the table department

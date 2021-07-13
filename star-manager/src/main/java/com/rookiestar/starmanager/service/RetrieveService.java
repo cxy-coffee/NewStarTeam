@@ -1,6 +1,6 @@
 package com.rookiestar.starmanager.service;
 
-import com.rookiestar.starmanager.entity.Employee;
+import com.rookiestar.starmanager.entity.employee.Employee;
 
 import java.util.List;
 

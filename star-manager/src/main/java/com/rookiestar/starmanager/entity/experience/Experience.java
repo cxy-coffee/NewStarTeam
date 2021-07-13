@@ -1,4 +1,6 @@
-package com.rookiestar.starmanager.entity;
+package com.rookiestar.starmanager.entity.experience;
+
+import com.rookiestar.starmanager.entity.assessment.Assessment;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -59,6 +61,18 @@ public class Experience implements Serializable {
         this.startTime = startTime;
         this.endTime = endTime;
         this.isEnd = isEnd;
+    }
+
+    public Experience(Experience experience,Assessment assessment){
+        this.accountNumber = experience.getAccountNumber();
+        this.companyId = experience.getCompanyId();
+        this.departmentId = experience.getDepartmentId();
+        this.positionId = experience.getPositionId();
+        this.jobNumber = experience.getJobNumber();
+        this.startTime = experience.getStartTime();
+        this.endTime = experience.getEndTime();
+        this.isEnd = experience.isIsEnd();
+        this.assessment = assessment;
     }
 
     public int getAccountNumber() {

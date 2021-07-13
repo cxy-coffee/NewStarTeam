@@ -1,4 +1,6 @@
-package com.rookiestar.starmanager.entity;
+package com.rookiestar.starmanager.entity.department;
+
+import com.rookiestar.starmanager.entity.position.Position;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -1,14 +1,13 @@
 package com.rookiestar.starmanager.repository;
 
 import com.rookiestar.starmanager.BaseTest;
-import com.rookiestar.starmanager.entity.Experience;
+import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.util.DataBaseUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

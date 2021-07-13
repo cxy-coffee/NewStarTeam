@@ -1,6 +1,6 @@
 package com.rookiestar.starmanager.repository;
 
-import com.rookiestar.starmanager.entity.Employee;
+import com.rookiestar.starmanager.entity.employee.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

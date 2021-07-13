@@ -1,7 +1,9 @@
 package com.rookiestar.starmanager.service;
 
-import com.rookiestar.starmanager.entity.Employee;
-import com.rookiestar.starmanager.entity.Experience;
+import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.experience.Experience;
+import com.rookiestar.starmanager.repository.AssessmentRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
 import com.rookiestar.starmanager.util.DateUtil;
@@ -23,6 +25,8 @@ public class CreateServiceImpl implements CreateService {
     private ExperienceRepository experienceRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private AssessmentRepository assessmentRepository;
 
     @Override
     public Employee registerEmployee(Employee employee) {
@@ -33,10 +37,16 @@ public class CreateServiceImpl implements CreateService {
 
     @Override
     public Experience hireEmployee(Experience experience) throws Exception{
+        Date date = DateUtil.format(new Date());
+
         experience.setJobNumber(generateJobNumber(experience));
-        experience.setStartTime(DateUtil.format(new Date()));
+        experience.setStartTime(date);
         experience.setIsEnd(false);
         experienceRepository.save(experience);
+
+        Assessment assessment = new Assessment(experience.getAccountNumber(),experience.getCompanyId(),date,"","");
+        assessmentRepository.save(assessment);
+
         return experience;
     }
 

@@ -1,6 +1,6 @@
 package com.rookiestar.starmanager.repository;
 
-import com.rookiestar.starmanager.entity.Position;
+import com.rookiestar.starmanager.entity.position.Position;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
