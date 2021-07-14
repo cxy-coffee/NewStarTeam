@@ -1,7 +1,7 @@
 package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.constant.UserTypes;
-import com.rookiestar.starmanager.entity.companyManager.CompanyManager;
+import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
 import com.rookiestar.starmanager.service.EmailService;
@@ -85,7 +85,7 @@ public class LoginRestController {
      * 返回值：String 如果成功，返回："登录成功"。否则返回错误信息。
      */
     @RequestMapping("/employeeLogin.do")
-    public String employeeLogin(String username, String password){
+    public String employeeLogin(Integer accountNumber, String password){
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         Session session = subject.getSession(true);

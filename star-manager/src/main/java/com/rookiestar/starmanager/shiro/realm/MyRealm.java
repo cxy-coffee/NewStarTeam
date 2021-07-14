@@ -1,7 +1,6 @@
 package com.rookiestar.starmanager.shiro.realm;
 
 import com.rookiestar.starmanager.constant.UserTypes;
-import com.rookiestar.starmanager.entity.companyManager.CompanyManager;
 import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.constant.PermissionNames;
@@ -43,8 +42,8 @@ public class MyRealm extends AuthorizingRealm {
         String userType = token.getUserType();
 
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
-        Set<String> roles=new HashSet<java.lang.String>();
-        Set<String> permissions=new HashSet<java.lang.String>();
+        Set<String> roles= new HashSet<>();
+        Set<String> permissions= new HashSet<>();
 
         if(UserTypes.EMPLOYEE.equals(userType)){
             roles.add(RoleNames.EMPLOYEE);

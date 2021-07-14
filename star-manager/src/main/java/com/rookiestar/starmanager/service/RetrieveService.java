@@ -89,6 +89,13 @@ public interface RetrieveService {
     Company retrieveCompanyById(int id);
 
     /**
+     * retrieve the employee by its accountNumber
+     * @param accountNumber the accountNumber of the employee to find
+     * @return the employee whose accountNumber matches the param
+     */
+    Employee retrieveEmployeeByAccountNumber(int accountNumber);
+
+    /**
      * retrieve a department by its primary key
      * @param companyId the companyId of the department to find
      * @param departmentId the departmentId of the department to find
