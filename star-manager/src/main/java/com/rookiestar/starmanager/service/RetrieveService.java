@@ -62,7 +62,28 @@ public interface RetrieveService {
      */
     Assessment retrieveAssessmentByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime);
 
+    /**
+     * Get experience by its primary key
+     *
+     * @param accountNumber account number of the assessment to find
+     * @param companyId company id of the assessment to find
+     * @param startTime start time of the assessment to find
+     * @return the assessment which matches all the params
+     */
     Experience retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime);
 
+
+    /**
+     * Get employees by email
+     * @param email email
+     * @return employee whose gender matches the param
+     */
     Employee retrieveEmployeeByEmail(String email);
+
+    /**
+     * Get employees by accountNumber
+     * @param accountNumber accountNumber
+     * @return employee whose accountNumber matches the param
+     */
+    Employee retrieveEmployeeByAccountNumber(int accountNumber);
 }

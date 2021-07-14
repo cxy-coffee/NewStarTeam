@@ -32,5 +32,13 @@ public interface ExperienceRepository extends JpaRepository<Experience,Long> {
      */
     Experience findByAccountNumberAndCompanyIdAndDepartmentIdAndPositionId(int accountNumber,int companyId,int departmentId,int positionId);
 
+    /**
+     * find an experience by accountNumber,companyId,startTime
+     *
+     * @param accountNumber accountNumber
+     * @param companyId companyId
+     * @param startTime startTime
+     * @return Experience
+     */
     Experience findByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime);
 }

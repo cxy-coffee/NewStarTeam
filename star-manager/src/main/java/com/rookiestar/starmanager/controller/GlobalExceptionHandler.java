@@ -1,9 +1,10 @@
 package com.rookiestar.starmanager.controller;
 
-import com.rookiestar.starmanager.myException.CheckVerificationCodeException;
+import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -44,6 +45,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = CheckVerificationCodeException.class)
     @ResponseBody
     public String checkVerificationCodeException(Exception exception){
+        logger.info(exception.getMessage());
+        return  exception.getMessage();
+    }
+
+    @ExceptionHandler(value = UnauthorizedException.class)
+    @ResponseBody
+    public String unauthorizedException(Exception exception){
         logger.info(exception.getMessage());
         return  exception.getMessage();
     }

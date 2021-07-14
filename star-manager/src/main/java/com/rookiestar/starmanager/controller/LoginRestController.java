@@ -1,15 +1,17 @@
 package com.rookiestar.starmanager.controller;
 
+import com.rookiestar.starmanager.constant.UserTypes;
 import com.rookiestar.starmanager.entity.companyManager.CompanyManager;
-import com.rookiestar.starmanager.myException.CheckVerificationCodeException;
+import com.rookiestar.starmanager.constant.AttributeNames;
+import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
 import com.rookiestar.starmanager.service.EmailService;
-import com.rookiestar.starmanager.shiro.token.CompanyToken;
+import com.rookiestar.starmanager.shiro.token.GenericToken;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,12 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class LoginRestController {
-    @Value("${userType.employeePre}")
-    private String employeePre;
-    @Value("${userType.companyPre}")
-    private String companyPre;
-    @Value("${userType.managerPre}")
-    private String managerPre;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private EmailService emailService;
@@ -37,7 +35,7 @@ public class LoginRestController {
     }
 
     /**
-     * 请求描述：向某个邮箱发送${emailService.emailCodeLength}位验证码
+     * 请求描述：向某个邮箱发送6位验证码
      * 请求地址：  /sendEmailCode.do
      * 请求参数：String to 邮箱地址
      * 返回值：void
@@ -52,8 +50,8 @@ public class LoginRestController {
         Subject userSubject = SecurityUtils.getSubject();
         userSubject.logout();
         Session session = userSubject .getSession(true);
-        session.setAttribute("verificationCode",code);
-        session.setAttribute("to",to);
+        session.setAttribute(AttributeNames.VERIFICATION_CODE,code);
+        session.setAttribute(AttributeNames.EMAIL_TO,to);
     }
 
     /**
@@ -69,45 +67,60 @@ public class LoginRestController {
         if(session==null){
             throw new CheckVerificationCodeException("请通过验证码验证");
         }
-        session.setAttribute("verifyResult",false);
+        session.setAttribute(AttributeNames.VERIFY_RESULT,false);
         if(verificationCode==null){
             throw new CheckVerificationCodeException("请输入验证码");
         }
-        if(!verificationCode.equals(session.getAttribute("verificationCode"))){
+        if(!verificationCode.equals(session.getAttribute(AttributeNames.VERIFICATION_CODE))){
             throw new CheckVerificationCodeException("验证码错误");
         }
-        session.setAttribute("verifyResult",true);
+        session.setAttribute(AttributeNames.VERIFY_RESULT,true);
         return "验证通过";
     }
 
+    /**
+     * 请求描述：员工登录
+     * 请求地址：  /employeeLogin.do
+     * 请求参数：Integer accountNumber 员工账号, String password 密码
+     * 返回值：String 如果成功，返回："登录成功"。否则返回错误信息。
+     */
     @RequestMapping("/employeeLogin.do")
-    public String employeeLogin(String username, String password) throws Exception{
+    public String employeeLogin(Integer accountNumber, String password) throws Exception{
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         Session session = subject.getSession(true);
         if (!subject.isAuthenticated()) {
-            UsernamePasswordToken token = new UsernamePasswordToken(employeePre + username, password);
-
+            GenericToken token = new GenericToken(accountNumber.toString(), password);
+            token.setUserType(UserTypes.EMPLOYEE);
             subject.login(token);
-            session.setAttribute("accountNumber",username);
+            session.setAttribute(AttributeNames.ACCOUNT_NUMBER,accountNumber);
         }
-        return "登录成功。欢迎您："+session.getAttribute("accountNumber");
+        logger.info("登录成功。欢迎您："+session.getAttribute(AttributeNames.ACCOUNT_NUMBER));
+        return "登录成功";
     }
 
+    /**
+     * 请求描述：企业管理者登录
+     * 请求地址：  /companyLogin.do
+     * 请求参数：Integer companyId 企业Id,Integer jobNumber 工号,String password 密码
+     * 返回值：String 如果成功，返回："登录成功"。否则返回错误信息。
+     */
     @RequestMapping("/companyLogin.do")
-    public String companyLogin(Integer companyId,Integer jobNumber,String password) throws Exception{
+    public String companyLogin(Integer companyId, Integer jobNumber, String password) throws Exception{
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession(false);
-        if (session == null||session.getAttribute("verifyResult")==null||!(boolean)session.getAttribute("verifyResult")) {
+        if (session == null||session.getAttribute(AttributeNames.VERIFY_RESULT)==null||!(boolean)session.getAttribute(AttributeNames.VERIFY_RESULT)) {
             throw new CheckVerificationCodeException("请通过验证码验证");
         }
         if (!subject.isAuthenticated()) {
-            CompanyToken token = new CompanyToken(companyPre + jobNumber, password);
-            token.setCompanyManager(new CompanyManager(companyId, session.getAttribute("to").toString(), jobNumber, password));
+            GenericToken token = new GenericToken(jobNumber.toString(), password);
+            token.setUserType(UserTypes.COMPANY_MANAGER);
+            token.setCompanyManager(new CompanyManager(companyId, session.getAttribute(AttributeNames.EMAIL_TO).toString(), jobNumber, password));
             subject.login(token);
-            session.setAttribute("companyId",companyId);
-            session.setAttribute("jobNumber",jobNumber);
+            session.setAttribute(AttributeNames.COMPANY_ID,companyId);
+            session.setAttribute(AttributeNames.JOB_NUMBER,jobNumber);
         }
-        return "登录成功。欢迎您："+session.getAttribute("companyId")+"企业的主管"+session.getAttribute("jobNumber");
+        logger.info("登录成功。欢迎您："+session.getAttribute(AttributeNames.COMPANY_ID)+"企业的主管"+session.getAttribute(AttributeNames.JOB_NUMBER));
+        return "登录成功";
     }
 }

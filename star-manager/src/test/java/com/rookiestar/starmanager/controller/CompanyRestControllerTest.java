@@ -1,8 +1,8 @@
 package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.BaseTest;
+import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
-import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.repository.AssessmentRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
@@ -18,12 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.Filter;
 
 /**
  * Test class that test CompanyRestController
@@ -46,12 +51,30 @@ public class CompanyRestControllerTest extends BaseTest {
     private AssessmentRepository assessmentRepository;
     @Autowired
     private RetrieveService retrieveService;
+
     @Before
     public void setUp() throws Exception{
-        mvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(wac);
+        builder.addFilters((Filter)wac.getBean("shiroFilter"));
+        mvc=builder.build();
 
-        session = new MockHttpSession();
-        session.setAttribute("company", DataBaseUtil.getInstance().getCompanyMap().get(1));
+        ResultActions resultActions1 = mvc.perform(MockMvcRequestBuilders.get("/sendEmailCode.do")
+                .param("to","2019302110260@whu.edu.cn"));
+        resultActions1.andExpect(MockMvcResultMatchers.status().isOk());
+        session = (MockHttpSession) resultActions1.andReturn().getRequest().getSession();
+        assert session != null;
+
+        ResultActions resultActions2 = mvc.perform(MockMvcRequestBuilders.get("/checkVerificationCode.do")
+                .param("verificationCode",session.getAttribute(AttributeNames.VERIFICATION_CODE).toString()).session(session));
+        resultActions2.andExpect(MockMvcResultMatchers.status().isOk());
+        session = (MockHttpSession) resultActions2.andReturn().getRequest().getSession();
+        assert session != null;
+
+        ResultActions resultActions3 = mvc.perform(MockMvcRequestBuilders.get("/companyLogin.do")
+                .param("companyId","1").param("jobNumber","1521").param("password","234").session(session));
+        resultActions3.andExpect(MockMvcResultMatchers.status().isOk());
+        session = (MockHttpSession) resultActions3.andReturn().getRequest().getSession();
+        assert session != null;
     }
 
     @Test
@@ -163,25 +186,7 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110260@whu.edu.cn\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":{\"accountNumber\":5,\"companyId\":1,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"51的表现\"}},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":{\"accountNumber\":5,\"companyId\":2,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"52的表现\"}}]},{\"name\":\"王五\",\"birthday\":\"2002-01-12T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110262@whu.edu.cn\",\"identifyNumber\":\"7\",\"accountNumber\":7,\"password\":\"123\",\"experiences\":[{\"accountNumber\":7,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1721,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":{\"accountNumber\":7,\"companyId\":1,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"71的表现\"}},{\"accountNumber\":7,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2721,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":{\"accountNumber\":7,\"companyId\":2,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"72的表现\"}}]}]")))
                 .andDo(MockMvcResultHandlers.print());
     }
-    @Test
-    @Transactional
-    public void updateEmployeeTest() throws Exception{
-        DataBaseUtil.getInstance().initEmployee(employeeRepository);
-        DataBaseUtil.getInstance().initExperience(experienceRepository);
-        Employee employee=new Employee("测试名字", DateUtil.parse("2001-01-20"),"男","199","5",5,"123",null);
-        Employee actualEmployee=DataBaseUtil.getInstance().getEmployeeMap().get(5);
-        employee.setExperiences(experienceRepository.findAllByAccountNumber(5));
-        Assert.assertNotEquals(employee,actualEmployee);
-        mvc.perform(MockMvcRequestBuilders.get("/updateEmployee.do?name=测试名字&birthday=2001-01-20&gender=男&email=199&identifyNumber=5&accountNumber=5&password=123")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-        actualEmployee=retrieveService.retrieveEmployeeByIdentifyNumber("5");
-        Assert.assertEquals(actualEmployee,employee);
-    }
+
     @Test
     @Transactional
     public void updateAssessmentTest() throws Exception{

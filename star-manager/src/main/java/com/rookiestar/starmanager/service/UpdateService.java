@@ -23,6 +23,10 @@ public interface UpdateService {
      * @return update result, true for success and false for non-success
      */
     boolean updateAssessment(Assessment assessment);
-
+    /**
+     * 更新经历信息
+     * @param experience experience to update
+     * @return update result, true for success and false for non-success
+     */
     boolean updateExperience(Experience experience);
 }

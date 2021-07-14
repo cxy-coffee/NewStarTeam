@@ -14,7 +14,7 @@ public interface EmailService {
      * @param subject the subject of email
      * @param content the content of email
      */
-    void sendSimpleEmail(String to,String subject,String content);
+    void sendSimpleEmail(String to, String subject, String content);
 
     /**
      * compare the content that is sent to the content that someone receives
@@ -23,7 +23,7 @@ public interface EmailService {
      * @param receive the content that someone receives
      * @return boolean
      */
-    boolean verifyEmail(String send,String receive);
+    boolean verifyEmail(String send, String receive);
 
     /**
      * generate verification code

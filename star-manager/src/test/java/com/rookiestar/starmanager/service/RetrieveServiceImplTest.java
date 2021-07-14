@@ -149,4 +149,15 @@ public class RetrieveServiceImplTest extends BaseTest {
         Employee actualEmployee=new Employee(employeeMap.get(5),experienceMap.get(5121),experienceMap.get(5221));
         Assert.assertEquals(employee,actualEmployee);
     }
+
+    @Test
+    @Transactional
+    public void retrieveEmployeeByAccountNumberTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
+        Employee employee = retrieveService.retrieveEmployeeByAccountNumber(5);
+        Employee expectEmployee = new Employee(employeeMap.get(5),new Experience(experienceMap.get(5121),assessmentMap.get(51)),new Experience(experienceMap.get(5221),assessmentMap.get(52)));
+        Assert.assertEquals(expectEmployee,employee);
+    }
 }

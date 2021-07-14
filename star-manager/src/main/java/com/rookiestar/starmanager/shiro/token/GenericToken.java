@@ -4,46 +4,47 @@ import com.rookiestar.starmanager.entity.companyManager.CompanyManager;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
 /**
- * CompanyToken
+ * GenericToken
  *
  * @author 曹向阳
  * @date 2021/7/13
  */
-public class CompanyToken extends UsernamePasswordToken {
+public class GenericToken extends UsernamePasswordToken {
     private CompanyManager companyManager;
+    private String userType;
 
-    public CompanyToken() {
+    public GenericToken() {
     }
 
-    public CompanyToken(String username, char[] password) {
+    public GenericToken(String username, char[] password) {
         super(username, password);
     }
 
-    public CompanyToken(String username, String password) {
+    public GenericToken(String username, String password) {
         super(username, password);
     }
 
-    public CompanyToken(String username, char[] password, String host) {
+    public GenericToken(String username, char[] password, String host) {
         super(username, password, host);
     }
 
-    public CompanyToken(String username, String password, String host) {
+    public GenericToken(String username, String password, String host) {
         super(username, password, host);
     }
 
-    public CompanyToken(String username, char[] password, boolean rememberMe) {
+    public GenericToken(String username, char[] password, boolean rememberMe) {
         super(username, password, rememberMe);
     }
 
-    public CompanyToken(String username, String password, boolean rememberMe) {
+    public GenericToken(String username, String password, boolean rememberMe) {
         super(username, password, rememberMe);
     }
 
-    public CompanyToken(String username, char[] password, boolean rememberMe, String host) {
+    public GenericToken(String username, char[] password, boolean rememberMe, String host) {
         super(username, password, rememberMe, host);
     }
 
-    public CompanyToken(String username, String password, boolean rememberMe, String host) {
+    public GenericToken(String username, String password, boolean rememberMe, String host) {
         super(username, password, rememberMe, host);
     }
 
@@ -55,14 +56,23 @@ public class CompanyToken extends UsernamePasswordToken {
         this.companyManager = companyManager;
     }
 
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
     @Override
     public void clear() {
         super.clear();
         this.companyManager=null;
+        this.userType=null;
     }
 
     @Override
     public String toString() {
-        return super.toString()+companyManager.toString();
+        return super.toString();
     }
 }

@@ -1,4 +1,4 @@
-package com.rookiestar.starmanager.myException;
+package com.rookiestar.starmanager.exception;
 
 /**
  * Description

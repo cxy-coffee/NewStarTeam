@@ -104,4 +104,11 @@ public class RetrieveServiceImpl implements RetrieveService{
         employee.setExperiences(experienceRepository.findAllByAccountNumber(employee.getAccountNumber()));
         return employee;
     }
+
+    @Override
+    public Employee retrieveEmployeeByAccountNumber(int accountNumber) {
+        Employee employee = employeeRepository.findByAccountNumber(accountNumber);
+        perfectEmployee(employee);
+        return employee;
+    }
 }
