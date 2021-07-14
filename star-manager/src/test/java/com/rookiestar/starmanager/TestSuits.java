@@ -32,6 +32,8 @@ import org.junit.runners.Suite;
         , CompanyToReviewRepositoryTest.class
         , DeleteServiceImplTest.class
         , EmployeeRestControllerTest.class
+        , DepartmentRepositoryTest.class
+        , PositionRepositoryTest.class
 })
 public class TestSuits {
 }

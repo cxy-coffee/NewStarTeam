@@ -16,4 +16,11 @@ public interface DepartmentRepository extends JpaRepository<Department,Long> {
      * @return the department which matches all the params
      */
     Department findByCompanyIdAndDepartmentId(int companyId,int departmentId);
+
+    /**
+     * delete a department by its primary key
+     * @param companyId the companyId of the department to delete
+     * @param departmentId the departmentId of the department to delete
+     */
+    void deleteDepartmentByCompanyIdAndDepartmentId(int companyId,int departmentId);
 }

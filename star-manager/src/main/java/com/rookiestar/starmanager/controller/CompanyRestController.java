@@ -229,5 +229,15 @@ public class CompanyRestController {
         return newCompany;
     }
 
+    @RequestMapping(value = "deletePosition.do")
+    public boolean deletePosition(int companyId,int departmentId,int positionId){
+        return deleteService.deletePositionByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
+    }
+
+    @RequestMapping(value = "deleteDepartment.do")
+    public boolean deleteDepartment(int companyId,int departmentId){
+        return deleteService.deleteDepartmentByCompanyIdAndDepartmentId(companyId,departmentId);
+    }
+
 
 }

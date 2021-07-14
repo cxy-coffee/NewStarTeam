@@ -196,26 +196,7 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110260@whu.edu.cn\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":{\"accountNumber\":5,\"companyId\":1,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"51的表现\"}},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":{\"accountNumber\":5,\"companyId\":2,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"52的表现\"}}]},{\"name\":\"王五\",\"birthday\":\"2002-01-12T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110262@whu.edu.cn\",\"identifyNumber\":\"7\",\"accountNumber\":7,\"password\":\"123\",\"experiences\":[{\"accountNumber\":7,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1721,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":{\"accountNumber\":7,\"companyId\":1,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"71的表现\"}},{\"accountNumber\":7,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2721,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":{\"accountNumber\":7,\"companyId\":2,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"72的表现\"}}]}]")))
                 .andDo(MockMvcResultHandlers.print());
     }
-    @Test
-    @Transactional
-    public void updateEmployeeTest() throws Exception{
-        DataBaseUtil.getInstance().initEmployee(employeeRepository);
-        DataBaseUtil.getInstance().initExperience(experienceRepository);
-        Employee employee=new Employee("测试名字", DateUtil.parse("2001-01-20"),"男","199","5",5,"123",null);
-        Employee actualEmployee=DataBaseUtil.getInstance().getEmployeeMap().get(5);
-        employee.setExperiences(experienceRepository.findAllByAccountNumber(5));
-        Assert.assertNotEquals(employee,actualEmployee);
-        mvc.perform(MockMvcRequestBuilders.get("/updateEmployee.do?name=测试名字&birthday=2001-01-20&gender=男&email=199&identifyNumber=5&accountNumber=5&password=123")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("Subject does not have role [employee]")))
-                .andDo(MockMvcResultHandlers.print());
-//        actualEmployee=retrieveService.retrieveEmployeeByIdentifyNumber("5");
-//        Assert.assertEquals(actualEmployee,employee);
-    }
+
 
     @Test
     @Transactional
@@ -346,6 +327,41 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andDo(MockMvcResultHandlers.print());
         actualPosition=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
         Assert.assertEquals(position,actualPosition);
+    }
+    @Test
+    @Transactional
+    public void deletePositionTest()throws Exception{
+        DataBaseUtil.getInstance().initPosition(positionRepository);
+        Position position = retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1, 1, 1);
+        Assert.assertNotEquals(position,null);
+        mvc.perform(MockMvcRequestBuilders.get("/deletePosition.do?companyId=1&departmentId=1&positionId=1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("true")))
+                .andDo(MockMvcResultHandlers.print());
+        position = retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1, 1, 1);
+        Assert.assertNull(position);
+    }
+
+    @Test
+    @Transactional
+    public void deleteDepartmentTest()throws Exception{
+        DataBaseUtil.getInstance().initDepartment(departmentRepository);
+        Department department=retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1,1);
+        Assert.assertNotEquals(department,null);
+        mvc.perform(MockMvcRequestBuilders.get("/deleteDepartment.do?companyId=1&departmentId=1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("true")))
+                .andDo(MockMvcResultHandlers.print());
+        department=retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1,1);
+        Assert.assertNull(department);
     }
 
     /*
