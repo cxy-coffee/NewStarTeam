@@ -5,8 +5,10 @@ import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.constant.PermissionNames;
 import com.rookiestar.starmanager.constant.RoleNames;
+import com.rookiestar.starmanager.entity.manager.Manager;
 import com.rookiestar.starmanager.repository.CompanyManagerRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
+import com.rookiestar.starmanager.repository.ManagerRepository;
 import com.rookiestar.starmanager.shiro.token.GenericToken;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -34,6 +36,8 @@ public class MyRealm extends AuthorizingRealm {
     private EmployeeRepository employeeRepository;
     @Autowired
     private CompanyManagerRepository companyManagerRepository;
+    @Autowired
+    private ManagerRepository managerRepository;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
@@ -84,7 +88,11 @@ public class MyRealm extends AuthorizingRealm {
             }
             dbPassword=dbCompanyManager.getPassword();
         }else if(UserTypes.MANAGER.equals(userType)){
-
+            Manager manager = managerRepository.findByAccountNumber(Integer.parseInt(username));
+            if(manager==null){
+                throw new UnknownAccountException("用户名不存在");
+            }
+            dbPassword = manager.getPassword();
         }
         return new SimpleAuthenticationInfo(token, dbPassword, getName());
     }

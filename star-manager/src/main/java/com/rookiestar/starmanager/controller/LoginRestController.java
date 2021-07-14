@@ -123,4 +123,19 @@ public class LoginRestController {
         logger.info("登录成功。欢迎您："+session.getAttribute(AttributeNames.COMPANY_ID)+"企业的主管"+session.getAttribute(AttributeNames.JOB_NUMBER));
         return "登录成功";
     }
+
+    @RequestMapping("/managerLogin.do")
+    public String managerLogin(Integer accountNumber, String password) throws Exception{
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        Session session = subject.getSession(true);
+        if (!subject.isAuthenticated()) {
+            GenericToken token = new GenericToken(accountNumber.toString(), password);
+            token.setUserType(UserTypes.MANAGER);
+            subject.login(token);
+            session.setAttribute(AttributeNames.MANAGER_ACCOUNT_NUMBER,accountNumber);
+        }
+        logger.info("登录成功。欢迎您："+session.getAttribute(AttributeNames.MANAGER_ACCOUNT_NUMBER));
+        return "登录成功";
+    }
 }
