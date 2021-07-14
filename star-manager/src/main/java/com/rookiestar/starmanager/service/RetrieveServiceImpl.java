@@ -126,4 +126,11 @@ public class RetrieveServiceImpl implements RetrieveService{
     public Position retrievePositionByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId) {
         return positionRepository.findByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
     }
+
+    @Override
+    public Employee retrieveEmployeeByAccountNumber(int accountNumber) {
+        Employee employee = employeeRepository.findByAccountNumber(accountNumber);
+        perfectEmployee(employee);
+        return employee;
+    }
 }

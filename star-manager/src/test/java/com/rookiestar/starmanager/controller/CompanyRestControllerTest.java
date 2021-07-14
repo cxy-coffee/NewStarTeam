@@ -1,6 +1,7 @@
 package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.BaseTest;
+import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
@@ -20,12 +21,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.Filter;
 
 /**
  * Test class that test CompanyRestController
@@ -55,12 +61,30 @@ public class CompanyRestControllerTest extends BaseTest {
     private RetrieveService retrieveService;
     @Autowired
     private CompanyToReviewRepository companyToReviewRepository;
+
     @Before
     public void setUp() throws Exception{
-        mvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(wac);
+        builder.addFilters((Filter)wac.getBean("shiroFilter"));
+        mvc=builder.build();
 
-        session = new MockHttpSession();
-        session.setAttribute("company", DataBaseUtil.getInstance().getCompanyMap().get(1));
+        ResultActions resultActions1 = mvc.perform(MockMvcRequestBuilders.get("/sendEmailCode.do")
+                .param("to","2019302110260@whu.edu.cn"));
+        resultActions1.andExpect(MockMvcResultMatchers.status().isOk());
+        session = (MockHttpSession) resultActions1.andReturn().getRequest().getSession();
+        assert session != null;
+
+        ResultActions resultActions2 = mvc.perform(MockMvcRequestBuilders.get("/checkVerificationCode.do")
+                .param("verificationCode",session.getAttribute(AttributeNames.VERIFICATION_CODE).toString()).session(session));
+        resultActions2.andExpect(MockMvcResultMatchers.status().isOk());
+        session = (MockHttpSession) resultActions2.andReturn().getRequest().getSession();
+        assert session != null;
+
+        ResultActions resultActions3 = mvc.perform(MockMvcRequestBuilders.get("/companyLogin.do")
+                .param("companyId","1").param("jobNumber","1521").param("password","234").session(session));
+        resultActions3.andExpect(MockMvcResultMatchers.status().isOk());
+        session = (MockHttpSession) resultActions3.andReturn().getRequest().getSession();
+        assert session != null;
     }
 
     @Test
@@ -192,6 +216,7 @@ public class CompanyRestControllerTest extends BaseTest {
         actualEmployee=retrieveService.retrieveEmployeeByIdentifyNumber("5");
         Assert.assertEquals(actualEmployee,employee);
     }
+
     @Test
     @Transactional
     public void updateAssessmentTest() throws Exception{
