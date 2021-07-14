@@ -26,6 +26,8 @@ public class DataBaseUtilTest extends BaseTest {
     private AssessmentRepository assessmentRepository;
     @Autowired
     private CompanyManagerRepository companyManagerRepository;
+    @Autowired
+    private ManagerRepository managerRepository;
     @Test
     public void testInit() throws Exception{
         DataBaseUtil.getInstance().initCompany(companyRepository);
@@ -35,6 +37,7 @@ public class DataBaseUtilTest extends BaseTest {
         DataBaseUtil.getInstance().initExperience(experienceRepository);
         DataBaseUtil.getInstance().initAssessment(assessmentRepository);
         DataBaseUtil.getInstance().initCompanyManager(companyManagerRepository);
+        DataBaseUtil.getInstance().initManager(managerRepository);
     }
 
 }

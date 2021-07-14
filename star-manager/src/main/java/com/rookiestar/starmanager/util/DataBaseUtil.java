@@ -6,6 +6,7 @@ import com.rookiestar.starmanager.entity.companyManager.CompanyManager;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
+import com.rookiestar.starmanager.entity.manager.Manager;
 import com.rookiestar.starmanager.entity.position.Position;
 import com.rookiestar.starmanager.repository.*;
 
@@ -28,6 +29,7 @@ public class DataBaseUtil {
     private final Map<Integer, Position> positionMap;
     private final Map<Integer, Assessment> assessmentMap;
     private final Map<Integer, CompanyManager> companyManagerMap;
+    private final Map<Integer, Manager> managerMap;
 
     private DataBaseUtil() throws Exception{
         employeeMap = initEmployeeMap();
@@ -37,6 +39,7 @@ public class DataBaseUtil {
         positionMap = initPositionMap();
         assessmentMap = initAssessmentMap();
         companyManagerMap = initCompanyManagerMap();
+        managerMap = initManagerMap();
     }
 
     public static DataBaseUtil getInstance() throws Exception{
@@ -86,6 +89,13 @@ public class DataBaseUtil {
         companyManagerRepository.deleteAll();
         for(Map.Entry<Integer,CompanyManager> node:companyManagerMap.entrySet()){
             companyManagerRepository.save(node.getValue());
+        }
+    }
+
+    public void initManager(ManagerRepository managerRepository) throws Exception{
+        managerRepository.deleteAll();
+        for(Map.Entry<Integer,Manager> node:managerMap.entrySet()){
+            managerRepository.save(node.getValue());
         }
     }
 
@@ -155,6 +165,12 @@ public class DataBaseUtil {
         return map;
     }
 
+    private Map<Integer,Manager> initManagerMap() throws Exception{
+        Map<Integer,Manager> map = new HashMap<>(10);
+        map.put(666,new Manager("超管一号","86199",DateUtil.parse("2077-01-01"),"2019302110260@whu.edu.cn","男",666,"888"));
+        return map;
+    }
+
     public Map<Integer, Employee> getEmployeeMap() {
         return employeeMap;
     }
@@ -175,5 +191,8 @@ public class DataBaseUtil {
     }
     public Map<Integer, CompanyManager> getCompanyManagerMap() {
         return companyManagerMap;
+    }
+    public Map<Integer, Manager> getManagerMap() {
+        return managerMap;
     }
 }
