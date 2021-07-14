@@ -3,11 +3,11 @@ package com.rookiestar.starmanager.service;
 import com.rookiestar.starmanager.BaseTest;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
-import com.rookiestar.starmanager.repository.AssessmentRepository;
-import com.rookiestar.starmanager.repository.EmployeeRepository;
-import com.rookiestar.starmanager.repository.ExperienceRepository;
+import com.rookiestar.starmanager.entity.position.Position;
+import com.rookiestar.starmanager.repository.*;
 import com.rookiestar.starmanager.util.DataBaseUtil;
 import com.rookiestar.starmanager.util.DateUtil;
 import org.junit.Assert;
@@ -32,6 +32,10 @@ public class UpdateServiceImplTest extends BaseTest {
     private ExperienceRepository experienceRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
+    @Autowired
+    private PositionRepository positionRepository;
     @Autowired
     private AssessmentRepository assessmentRepository;
     private final Map<Integer, Employee> employeeMap;
@@ -81,5 +85,29 @@ public class UpdateServiceImplTest extends BaseTest {
         updateService.updateExperience(experience);
         actualExperience = retrieveService.retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(5,1,DateUtil.parse("2010-01-10"));
         Assert.assertEquals(experience,actualExperience);
+    }
+
+    @Test
+    @Transactional
+    public void updateDepartmentTest()throws Exception{
+        DataBaseUtil.getInstance().initDepartment(departmentRepository);
+        Department department=new Department(1,1,"公司1部门1234",null);
+        Department actualDepartment=retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1,1);
+        Assert.assertNotEquals(department,actualDepartment);
+        updateService.updateDepartment(department);
+        actualDepartment=retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1,1);
+        Assert.assertEquals(department,actualDepartment);
+    }
+
+    @Test
+    @Transactional
+    public void updatePositionTest()throws Exception{
+        DataBaseUtil.getInstance().initPosition(positionRepository);
+        Position position=new Position(1,1,1,"公司1部门1员工1234");
+        Position actualPosition=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
+        Assert.assertNotEquals(position,actualPosition);
+        updateService.updatePosition(position);
+        actualPosition=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
+        Assert.assertEquals(position,actualPosition);
     }
 }

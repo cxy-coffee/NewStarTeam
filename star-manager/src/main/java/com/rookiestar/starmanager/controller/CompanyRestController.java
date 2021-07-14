@@ -1,12 +1,13 @@
 package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.company.CompanyToReview;
+import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
-import com.rookiestar.starmanager.service.CreateService;
-import com.rookiestar.starmanager.service.EmailService;
-import com.rookiestar.starmanager.service.RetrieveService;
-import com.rookiestar.starmanager.service.UpdateService;
+import com.rookiestar.starmanager.entity.position.Position;
+import com.rookiestar.starmanager.service.*;
 import com.rookiestar.starmanager.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,8 @@ public class CompanyRestController {
     private EmailService emailService;
     @Autowired
     private CreateService createService;
+    @Autowired
+    private DeleteService deleteService;
 
     /**
      * 请求描述：通过企业id获取该企业所有员工（包括已离职员工）
@@ -145,4 +148,43 @@ public class CompanyRestController {
                 DateUtil.parse(startTime), DateUtil.parse(endTime), isEnd);
         return updateService.updateExperience(experience);
     }
+
+    @RequestMapping(value = "updateDepartment.do")
+    public boolean updateDepartment(int companyId,int departmentId,String name){
+        Department department = new Department(companyId, departmentId, name, null);
+        return updateService.updateDepartment(department);
+    }
+
+    @RequestMapping(value = "updatePosition.do")
+    public boolean updatePosition(int companyId,int departmentId,int positionId,String name){
+        Position position = new Position(companyId, departmentId, positionId, name);
+        return updateService.updatePosition(position);
+    }
+
+    @RequestMapping(value = "registerCompany.do")
+    public CompanyToReview registerCompany(String name, String legalRepresentativeName, String email, String address, String phone){
+        CompanyToReview companyToReview=new CompanyToReview(name,legalRepresentativeName,email,address,phone);
+        CompanyToReview newCompanyToReview=createService.addCompanyToReview(companyToReview);
+        String content = "您的公司注册申请已提交，正在等待管理员审核\n"+
+                "您的公司信息为：\n公司名称："+companyToReview.getName()+"\n"
+                +"公司法人代表："+companyToReview.getLegalRepresentativeName()+"\n"
+                +"公司邮箱："+companyToReview.getEmail()+"\n"
+                +"公司地址："+companyToReview.getAddress()+"\n"
+                +"公司电话："+companyToReview.getPhone()+"\n"
+                +"请您确认。";
+        emailService.sendSimpleEmail("2019302110260@whu.edu.cn","注册通知",content);
+        return newCompanyToReview;
+    }
+
+    @RequestMapping(value = "confirmCompanyRegisterApply.do")
+    public Company confirmCompanyRegisterApply(int companyId,String name, String legalRepresentativeName, String email, String address, String phone){
+        deleteService.deleteCompanyToReviewByCompanyId(companyId);
+        Company company=new Company(name,legalRepresentativeName,email,address,phone);
+        Company newCompany=createService.registerCompany(company);
+        String content = "您的公司注册申请已被管理员通过，您的公司ID为："+company.getCompanyId();
+        emailService.sendSimpleEmail("2019302110260@whu.edu.cn","注册成功通知",content);
+        return newCompany;
+    }
+
+
 }

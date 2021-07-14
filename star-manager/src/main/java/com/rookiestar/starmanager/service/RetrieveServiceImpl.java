@@ -1,11 +1,12 @@
 package com.rookiestar.starmanager.service;
 
 import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
-import com.rookiestar.starmanager.repository.AssessmentRepository;
-import com.rookiestar.starmanager.repository.EmployeeRepository;
-import com.rookiestar.starmanager.repository.ExperienceRepository;
+import com.rookiestar.starmanager.entity.position.Position;
+import com.rookiestar.starmanager.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,17 @@ import java.util.List;
 @Service
 public class RetrieveServiceImpl implements RetrieveService{
     @Autowired
+    private CompanyRepository companyRepository;
+    @Autowired
     private ExperienceRepository experienceRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
     private AssessmentRepository assessmentRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
+    @Autowired
+    private PositionRepository positionRepository;
     @Override
     public List<Employee> retrieveAllEmployeesByCompany(int companyId) {
         List<Employee> employees = employeeRepository.findAllEmployeesByCompany(companyId);
@@ -103,5 +110,20 @@ public class RetrieveServiceImpl implements RetrieveService{
         Employee employee=employeeRepository.findByEmail(email);
         employee.setExperiences(experienceRepository.findAllByAccountNumber(employee.getAccountNumber()));
         return employee;
+    }
+
+    @Override
+    public Company retrieveCompanyById(int id) {
+        return companyRepository.findByCompanyId(id);
+    }
+
+    @Override
+    public Department retrieveDepartmentByCompanyIdAndDepartmentId(int companyId, int departmentId) {
+        return departmentRepository.findByCompanyIdAndDepartmentId(companyId,departmentId);
+    }
+
+    @Override
+    public Position retrievePositionByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId) {
+        return positionRepository.findByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
     }
 }

@@ -1,5 +1,7 @@
 package com.rookiestar.starmanager.service;
 
+import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
 
@@ -28,4 +30,19 @@ public interface CreateService {
      * @throws Exception any Exception
      */
     Experience hireEmployee(Experience experience) throws Exception;
+
+    /**
+     * register a company in the system.
+     * @param company the company to register
+     * @return the company to register
+     */
+    Company registerCompany(Company company);
+
+    /**
+     * add a CompanyToReview object into the database,
+     * and wait for the manager to approve the register request
+     * @param companyToReview the CompanyToReview object to add to database
+     * @return the CompanyToReview object to add to database
+     */
+    CompanyToReview addCompanyToReview(CompanyToReview companyToReview);
 }

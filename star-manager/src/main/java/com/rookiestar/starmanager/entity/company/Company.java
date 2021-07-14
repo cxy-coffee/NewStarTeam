@@ -23,6 +23,15 @@ public class Company implements Serializable {
     private int companyId;
     @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
+    private String legalRepresentativeName;
+    @Column(nullable = false)
+    private String email;
+    @Column(nullable = false)
+    private String address;
+    @Column(nullable = false)
+    private String phone;
+
     @Transient
     private List<Experience> experiences;
     @Transient
@@ -31,12 +40,7 @@ public class Company implements Serializable {
     public Company() {
     }
 
-    public Company(int companyId, String name, List<Experience> experiences, List<Department> departments) {
-        this.companyId = companyId;
-        this.name = name;
-        this.experiences = experiences;
-        this.departments = departments;
-    }
+
 
     public Company(Company company,Department...departments){
         this.companyId = company.getCompanyId();
@@ -58,6 +62,62 @@ public class Company implements Serializable {
         }
         this.experiences = new ArrayList<>();
         Collections.addAll(this.experiences,experiences);
+    }
+
+    public Company(String name, String legalRepresentativeName, String email, String address, String phone) {
+        this.name = name;
+        this.legalRepresentativeName = legalRepresentativeName;
+        this.email = email;
+        this.address = address;
+        this.phone = phone;
+    }
+
+    public Company(int companyId, String name, String legalRepresentativeName, String email, String address, String phone, List<Experience> experiences, List<Department> departments) {
+        this.companyId = companyId;
+        this.name = name;
+        this.legalRepresentativeName = legalRepresentativeName;
+        this.email = email;
+        this.address = address;
+        this.phone = phone;
+        this.experiences = experiences;
+        this.departments = departments;
+    }
+
+
+    public static long getSerialVersionUid() {
+        return serialVersionUID;
+    }
+
+    public String getLegalRepresentativeName() {
+        return legalRepresentativeName;
+    }
+
+    public void setLegalRepresentativeName(String legalRepresentativeName) {
+        this.legalRepresentativeName = legalRepresentativeName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public int getCompanyId() {
@@ -92,15 +152,6 @@ public class Company implements Serializable {
         this.departments = departments;
     }
 
-    @Override
-    public String toString() {
-        return "Company{" +
-                "companyId=" + companyId +
-                ", name='" + name + '\'' +
-                ", experiences=" + experiences +
-                ", departments=" + departments +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -111,11 +162,15 @@ public class Company implements Serializable {
             return false;
         }
         Company company = (Company) o;
-        return companyId == company.companyId && name.equals(company.name) && Objects.equals(experiences, company.experiences) && Objects.equals(departments, company.departments);
+        return companyId == company.companyId && name.equals(company.name) &&
+                legalRepresentativeName.equals(company.legalRepresentativeName) &&
+                email.equals(company.email) && address.equals(company.address) &&
+                phone.equals(company.phone) && Objects.equals(experiences, company.experiences) &&
+                Objects.equals(departments, company.departments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(companyId);
+        return Objects.hash(companyId, name, legalRepresentativeName, email, address, phone, experiences, departments);
     }
 }

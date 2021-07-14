@@ -1,6 +1,6 @@
 package com.rookiestar.starmanager.repository;
 
-import com.rookiestar.starmanager.entity.companyManager.CompanyManager;
+import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

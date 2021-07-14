@@ -3,8 +3,11 @@ package com.rookiestar.starmanager.service;
 
 
 import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
+import com.rookiestar.starmanager.entity.position.Position;
 
 import java.util.Date;
 import java.util.List;
@@ -62,7 +65,43 @@ public interface RetrieveService {
      */
     Assessment retrieveAssessmentByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime);
 
+    /**
+     * retrieve an experience by its primary key
+     * @param accountNumber  the accountNumber of the experience to find
+     * @param companyId the companyId of the experience to find
+     * @param startTime the startTime of the experience to find
+     * @return the experience which matches all the params
+     */
     Experience retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime);
 
+    /**
+     * retrieve an employee by his/her email address
+     * @param email the email address of the employee to find
+     * @return the employee whose email matches the param
+     */
     Employee retrieveEmployeeByEmail(String email);
+
+    /**
+     * retrieve the company by its companyId
+     * @param id the companyId of the company to find
+     * @return the company which matches the param
+     */
+    Company retrieveCompanyById(int id);
+
+    /**
+     * retrieve a department by its primary key
+     * @param companyId the companyId of the department to find
+     * @param departmentId the departmentId of the department to find
+     * @return the department which matches all the params
+     */
+    Department retrieveDepartmentByCompanyIdAndDepartmentId(int companyId,int departmentId);
+
+    /**
+     * retrieve a position by its primary key
+     * @param companyId the companyId of the position to retrieve
+     * @param departmentId the departmentId of the position to retrieve
+     * @param positionId the positionId of the position to retrieve
+     * @return the position which matches all the params
+     */
+    Position retrievePositionByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId);
 }

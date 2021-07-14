@@ -68,5 +68,10 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
      */
     List<Employee> findEmployeesByGender(String gender);
 
+    /**
+     * get employee by email
+     * @param email the email address of the employee to find
+     * @return the employee whose email matches the param
+     */
     Employee findByEmail(String email);
 }

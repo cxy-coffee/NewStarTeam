@@ -3,11 +3,11 @@ package com.rookiestar.starmanager.service;
 import com.rookiestar.starmanager.BaseTest;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
-import com.rookiestar.starmanager.repository.AssessmentRepository;
-import com.rookiestar.starmanager.repository.EmployeeRepository;
-import com.rookiestar.starmanager.repository.ExperienceRepository;
+import com.rookiestar.starmanager.entity.position.Position;
+import com.rookiestar.starmanager.repository.*;
 import com.rookiestar.starmanager.util.DataBaseUtil;
 import com.rookiestar.starmanager.util.DateUtil;
 import org.junit.Assert;
@@ -28,7 +28,10 @@ import java.util.Map;
 public class RetrieveServiceImplTest extends BaseTest {
     @Autowired
     private RetrieveService retrieveService;
-
+    @Autowired
+    private DepartmentRepository departmentRepository;
+    @Autowired
+    private PositionRepository positionRepository;
     @Autowired
     private ExperienceRepository experienceRepository;
     @Autowired
@@ -148,5 +151,23 @@ public class RetrieveServiceImplTest extends BaseTest {
         Employee employee=retrieveService.retrieveEmployeeByEmail("2019302110260@whu.edu.cn");
         Employee actualEmployee=new Employee(employeeMap.get(5),experienceMap.get(5121),experienceMap.get(5221));
         Assert.assertEquals(employee,actualEmployee);
+    }
+
+    @Test
+    @Transactional
+    public void retrieveDepartmentByCompanyIdAndDepartmentIdTest()throws Exception{
+        DataBaseUtil.getInstance().initDepartment(departmentRepository);
+        Department department=retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1,1);
+        Department actualDepartment=new Department(1,1,"公司1部门1",null);
+        Assert.assertEquals(department,actualDepartment);
+    }
+
+    @Test
+    @Transactional
+    public void retrievePositionByCompanyIdAndDepartmentIdAndPositionIdTest()throws Exception{
+        DataBaseUtil.getInstance().initPosition(positionRepository);
+        Position position=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
+        Position actualPosition=new Position(1,1,1,"公司1部门1员工");
+        Assert.assertEquals(position,actualPosition);
     }
 }

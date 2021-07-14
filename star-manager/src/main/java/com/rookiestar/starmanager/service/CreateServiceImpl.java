@@ -1,11 +1,11 @@
 package com.rookiestar.starmanager.service;
 
 import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
-import com.rookiestar.starmanager.repository.AssessmentRepository;
-import com.rookiestar.starmanager.repository.EmployeeRepository;
-import com.rookiestar.starmanager.repository.ExperienceRepository;
+import com.rookiestar.starmanager.repository.*;
 import com.rookiestar.starmanager.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,10 @@ public class CreateServiceImpl implements CreateService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private AssessmentRepository assessmentRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
+    @Autowired
+    private CompanyToReviewRepository companyToReviewRepository;
 
     @Override
     public Employee registerEmployee(Employee employee) {
@@ -50,6 +54,20 @@ public class CreateServiceImpl implements CreateService {
         return experience;
     }
 
+    @Override
+    public Company registerCompany(Company company) {
+        company.setCompanyId(generateCompanyId(company));
+        companyRepository.save(company);
+        return company;
+    }
+
+    @Override
+    public CompanyToReview addCompanyToReview(CompanyToReview companyToReview) {
+        companyToReview.setCompanyId(generateCompanyToReviewId(companyToReview));
+        companyToReviewRepository.save(companyToReview);
+        return companyToReview;
+    }
+
     private int generateJobNumber(Experience experience){
         String jonNumber = String.valueOf(experience.getAccountNumber()) +
                 experience.getCompanyId() +
@@ -60,5 +78,13 @@ public class CreateServiceImpl implements CreateService {
 
     private int generateAccountNumber(Employee employee){
         return employeeRepository.findMaxAccountNumber()+1;
+    }
+
+    private int generateCompanyId(Company company){
+        return companyRepository.findMaxCompanyId()+1;
+    }
+
+    private int generateCompanyToReviewId(CompanyToReview companyToReview){
+        return companyToReviewRepository.findMaxCompanyToReviewId()+1;
     }
 }

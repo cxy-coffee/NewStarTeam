@@ -1,6 +1,6 @@
 package com.rookiestar.starmanager.shiro.realm;
 
-import com.rookiestar.starmanager.entity.companyManager.CompanyManager;
+import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.repository.CompanyManagerRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;

@@ -1,4 +1,4 @@
-package com.rookiestar.starmanager.entity.companyManager;
+package com.rookiestar.starmanager.entity.companymanager;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

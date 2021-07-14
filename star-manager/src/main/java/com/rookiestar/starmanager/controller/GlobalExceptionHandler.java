@@ -1,6 +1,6 @@
 package com.rookiestar.starmanager.controller;
 
-import com.rookiestar.starmanager.myException.CheckVerificationCodeException;
+import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;

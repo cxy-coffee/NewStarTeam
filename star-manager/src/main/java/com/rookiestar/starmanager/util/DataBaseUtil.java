@@ -2,7 +2,8 @@ package com.rookiestar.starmanager.util;
 
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
-import com.rookiestar.starmanager.entity.companyManager.CompanyManager;
+import com.rookiestar.starmanager.entity.company.CompanyToReview;
+import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
@@ -28,6 +29,7 @@ public class DataBaseUtil {
     private final Map<Integer, Position> positionMap;
     private final Map<Integer, Assessment> assessmentMap;
     private final Map<Integer, CompanyManager> companyManagerMap;
+    private final Map<Integer, CompanyToReview> companyToReviewMap;
 
     private DataBaseUtil() throws Exception{
         employeeMap = initEmployeeMap();
@@ -37,7 +39,10 @@ public class DataBaseUtil {
         positionMap = initPositionMap();
         assessmentMap = initAssessmentMap();
         companyManagerMap = initCompanyManagerMap();
+        companyToReviewMap=initCompanyToReviewMap();
     }
+
+
 
     public static DataBaseUtil getInstance() throws Exception{
         if(instance==null){
@@ -46,43 +51,49 @@ public class DataBaseUtil {
         return instance;
     }
 
-    public void initCompany(CompanyRepository companyRepository) throws Exception{
+    public void initCompany(CompanyRepository companyRepository){
         companyRepository.deleteAll();
         for(Map.Entry<Integer,Company> node:companyMap.entrySet()){
             companyRepository.save(node.getValue());
         }
     }
-    public void initDepartment(DepartmentRepository departmentRepository) throws Exception{
+    public void initDepartment(DepartmentRepository departmentRepository){
         departmentRepository.deleteAll();
         for(Map.Entry<Integer,Department> node:departmentMap.entrySet()){
             departmentRepository.save(node.getValue());
         }
     }
-    public void initPosition(PositionRepository positionRepository) throws Exception{
+    public void initPosition(PositionRepository positionRepository){
         positionRepository.deleteAll();
         for(Map.Entry<Integer,Position> node:positionMap.entrySet()){
             positionRepository.save(node.getValue());
         }
     }
-    public void initEmployee(EmployeeRepository employeeRepository) throws Exception{
+    public void initEmployee(EmployeeRepository employeeRepository){
         employeeRepository.deleteAll();
         for(Map.Entry<Integer,Employee> node:employeeMap.entrySet()){
             employeeRepository.save(node.getValue());
         }
     }
-    public void initExperience(ExperienceRepository experienceRepository) throws Exception{
+    public void initExperience(ExperienceRepository experienceRepository){
         experienceRepository.deleteAll();
         for(Map.Entry<Integer,Experience> node:experienceMap.entrySet()){
             experienceRepository.save(node.getValue());
         }
     }
-    public void initAssessment(AssessmentRepository assessmentRepository) throws Exception{
+    public void initAssessment(AssessmentRepository assessmentRepository){
         assessmentRepository.deleteAll();
         for(Map.Entry<Integer,Assessment> node:assessmentMap.entrySet()){
             assessmentRepository.save(node.getValue());
         }
     }
-    public void initCompanyManager(CompanyManagerRepository companyManagerRepository) throws Exception{
+    public void initCompanyToReview(CompanyToReviewRepository companyToReviewRepository){
+        companyToReviewRepository.deleteAll();
+        for(Map.Entry<Integer,CompanyToReview> node:companyToReviewMap.entrySet()){
+            companyToReviewRepository.save(node.getValue());
+        }
+    }
+    public void initCompanyManager(CompanyManagerRepository companyManagerRepository){
         companyManagerRepository.deleteAll();
         for(Map.Entry<Integer,CompanyManager> node:companyManagerMap.entrySet()){
             companyManagerRepository.save(node.getValue());
@@ -111,10 +122,18 @@ public class DataBaseUtil {
     }
     private Map<Integer,Company> initCompanyMap(){
         Map<Integer,Company> map = new HashMap<>(5);
-        map.put(1,new Company(1,"我的公司1",null,null));
-        map.put(2,new Company(2,"我的公司2",null,null));
+        map.put(1,new Company(1,"我的公司1","Alan","lihaoc@whu.edu.cn","湖北省武汉市洪山区","88555273",null,null));
+        map.put(2,new Company(2,"我的公司2","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573",null,null));
         return map;
     }
+
+    private Map<Integer, CompanyToReview> initCompanyToReviewMap(){
+        Map<Integer,CompanyToReview> map = new HashMap<>(5);
+        map.put(1,new CompanyToReview(1,"我的公司1","Alan","lihaoc@whu.edu.cn","湖北省武汉市洪山区","88555273"));
+        map.put(2,new CompanyToReview(2,"我的公司2","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573"));
+        return map;
+    }
+
     private Map<Integer,Department> initDepartmentMap(){
         Map<Integer,Department> map = new HashMap<>(10);
         map.put(11,new Department(1,1,"公司1部门1",null));
@@ -148,7 +167,7 @@ public class DataBaseUtil {
         return map;
     }
 
-    private Map<Integer,CompanyManager> initCompanyManagerMap() throws Exception{
+    private Map<Integer,CompanyManager> initCompanyManagerMap(){
         Map<Integer,CompanyManager> map = new HashMap<>(10);
         map.put(1521,new CompanyManager(1,"2019302110260@whu.edu.cn",1521,"234"));
         map.put(2721,new CompanyManager(2,"2019302110260@whu.edu.cn",2721,"345"));
@@ -175,5 +194,8 @@ public class DataBaseUtil {
     }
     public Map<Integer, CompanyManager> getCompanyManagerMap() {
         return companyManagerMap;
+    }
+    public Map<Integer, CompanyToReview> getCompanyToReviewMap() {
+        return companyToReviewMap;
     }
 }

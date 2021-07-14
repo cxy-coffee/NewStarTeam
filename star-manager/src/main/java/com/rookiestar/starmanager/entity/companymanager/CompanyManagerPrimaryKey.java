@@ -1,4 +1,4 @@
-package com.rookiestar.starmanager.entity.companyManager;
+package com.rookiestar.starmanager.entity.companymanager;
 
 import java.io.Serializable;
 import java.util.Objects;

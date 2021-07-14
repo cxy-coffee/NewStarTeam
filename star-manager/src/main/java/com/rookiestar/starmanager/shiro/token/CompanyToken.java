@@ -1,6 +1,6 @@
 package com.rookiestar.starmanager.shiro.token;
 
-import com.rookiestar.starmanager.entity.companyManager.CompanyManager;
+import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
 /**

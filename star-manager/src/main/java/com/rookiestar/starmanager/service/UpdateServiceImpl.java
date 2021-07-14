@@ -1,11 +1,11 @@
 package com.rookiestar.starmanager.service;
 
 import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
-import com.rookiestar.starmanager.repository.AssessmentRepository;
-import com.rookiestar.starmanager.repository.EmployeeRepository;
-import com.rookiestar.starmanager.repository.ExperienceRepository;
+import com.rookiestar.starmanager.entity.position.Position;
+import com.rookiestar.starmanager.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UpdateServiceImpl implements UpdateService{
     @Autowired
+    DepartmentRepository departmentRepository;
+    @Autowired
     RetrieveService retrieveService;
     @Autowired
     EmployeeRepository employeeRepository;
@@ -24,6 +26,8 @@ public class UpdateServiceImpl implements UpdateService{
     AssessmentRepository assessmentRepository;
     @Autowired
     ExperienceRepository experienceRepository;
+    @Autowired
+    PositionRepository positionRepository;
     @Override
     public boolean updateEmployee(Employee employee) {
         Employee employeeToUpdate=retrieveService.retrieveEmployeeByIdentifyNumber(employee.getIdentifyNumber());
@@ -45,6 +49,18 @@ public class UpdateServiceImpl implements UpdateService{
     @Override
     public boolean updateExperience(Experience experience) {
         experienceRepository.save(experience);
+        return true;
+    }
+
+    @Override
+    public boolean updateDepartment(Department department) {
+        departmentRepository.save(department);
+        return true;
+    }
+
+    @Override
+    public boolean updatePosition(Position position) {
+        positionRepository.save(position);
         return true;
     }
 

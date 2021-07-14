@@ -1,7 +1,7 @@
 package com.rookiestar.starmanager.controller;
 
-import com.rookiestar.starmanager.entity.companyManager.CompanyManager;
-import com.rookiestar.starmanager.myException.CheckVerificationCodeException;
+import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
+import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
 import com.rookiestar.starmanager.service.EmailService;
 import com.rookiestar.starmanager.shiro.token.CompanyToken;
 import org.apache.shiro.SecurityUtils;
@@ -81,7 +81,7 @@ public class LoginRestController {
     }
 
     @RequestMapping("/employeeLogin.do")
-    public String employeeLogin(String username, String password) throws Exception{
+    public String employeeLogin(String username, String password){
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         Session session = subject.getSession(true);
@@ -95,7 +95,7 @@ public class LoginRestController {
     }
 
     @RequestMapping("/companyLogin.do")
-    public String companyLogin(Integer companyId,Integer jobNumber,String password) throws Exception{
+    public String companyLogin(Integer companyId,Integer jobNumber,String password){
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession(false);
         if (session == null||session.getAttribute("verifyResult")==null||!(boolean)session.getAttribute("verifyResult")) {

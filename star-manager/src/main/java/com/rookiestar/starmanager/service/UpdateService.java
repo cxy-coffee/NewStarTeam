@@ -2,8 +2,10 @@ package com.rookiestar.starmanager.service;
 
 
 import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
+import com.rookiestar.starmanager.entity.position.Position;
 
 /**
  * @author chris
@@ -24,5 +26,24 @@ public interface UpdateService {
      */
     boolean updateAssessment(Assessment assessment);
 
+    /**
+     * update the experience
+     * @param experience experience to update
+     * @return update result, true for success and false for non-success
+     */
     boolean updateExperience(Experience experience);
+
+    /**
+     * update the department
+     * @param department department to update
+     * @return update result, true for success and false for non-success
+     */
+    boolean updateDepartment(Department department);
+
+    /**
+     * update the position
+     * @param position position to update
+     * @return update result, true for success and false for non-success
+     */
+    boolean updatePosition(Position position);
 }
