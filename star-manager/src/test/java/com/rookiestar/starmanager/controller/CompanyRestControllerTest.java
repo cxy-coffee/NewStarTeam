@@ -277,76 +277,7 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110260@whu.edu.cn\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":null},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":null}]}")))
                 .andDo(MockMvcResultHandlers.print());
     }
-    @Test
-    @Transactional
-    public void registerCompanyTest()throws Exception{
-        DataBaseUtil.getInstance().initCompanyToReview(companyToReviewRepository);
-//        String name, String legalRepresentativeName, String email, String address, String phone
-        mvc.perform(MockMvcRequestBuilders.get("/registerCompany.do?name=腾讯&legalRepresentativeName=马化腾&email=abcdef@qq.com&address=广东省深圳市南山区&phone=1342525262")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"companyId\":3,\"name\":\"腾讯\",\"legalRepresentativeName\":\"马化腾\",\"email\":\"abcdef@qq.com\",\"address\":\"广东省深圳市南山区\",\"phone\":\"1342525262\"}")))
-                .andDo(MockMvcResultHandlers.print());
-    }
 
-    @Test
-    @Transactional
-    public void confirmCompanyRegisterApplyTest()throws  Exception{
-        DataBaseUtil.getInstance().initCompany(companyRepository);
-        mvc.perform(MockMvcRequestBuilders.get("/confirmCompanyRegisterApply.do?companyId=2&name=我的公司2&legalRepresentativeName=Bob&email=2019302110243@whu.edu.cn&address=四川省成都市锦江区&phone=88555573")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"companyId\":3,\"name\":\"我的公司2\",\"legalRepresentativeName\":\"Bob\",\"email\":\"2019302110243@whu.edu.cn\",\"address\":\"四川省成都市锦江区\",\"phone\":\"88555573\",\"experiences\":null,\"departments\":null}")))
-                .andDo(MockMvcResultHandlers.print());
-        Company actualCompany=retrieveService.retrieveCompanyById(3);
-        Company company=new Company(3,"我的公司2","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573",null,null);
-        Assert.assertEquals(company,actualCompany);
-    }
-
-
-    @Test
-    @Transactional
-    public void updateDepartmentTest() throws Exception{
-        DataBaseUtil.getInstance().initDepartment(departmentRepository);
-        Department department=new Department(1,1,"公司1部门12314",null);
-        Department actualDepartment = retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1, 1);
-        Assert.assertNotEquals(department,actualDepartment);
-        mvc.perform(MockMvcRequestBuilders.get("/updateDepartment.do?companyId=1&departmentId=1&name=公司1部门12314")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("true")))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-        actualDepartment=retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1,1);
-        Assert.assertEquals(department,actualDepartment);
-    }
-
-    @Test
-    @Transactional
-    public void updatePositionTest() throws Exception{
-        DataBaseUtil.getInstance().initPosition(positionRepository);
-        Position position=new Position(1,1,1,"hello test3");
-        Position actualPosition=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
-        Assert.assertNotEquals(position,actualPosition);
-        mvc.perform(MockMvcRequestBuilders.get("/updatePosition.do?companyId=1&departmentId=1&positionId=1&name=hello test3")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("true")))
-                .andDo(MockMvcResultHandlers.print());
-        actualPosition=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
-        Assert.assertEquals(position,actualPosition);
-    }
 
     /*
     @Test
