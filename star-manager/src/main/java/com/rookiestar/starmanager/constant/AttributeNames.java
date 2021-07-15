@@ -6,7 +6,7 @@ package com.rookiestar.starmanager.constant;
  * @author 曹向阳
  * @date 2021/7/13
  */
-public class AttributeNames {
+public interface AttributeNames {
     /**
      * VERIFICATION_CODE 验证码
      * EMAIL_TO  邮件的目的地址
@@ -16,12 +16,12 @@ public class AttributeNames {
      * JOB_NUMBER  工号
      * MANAGER_ACCOUNT_NUMBER 管理员账号
      */
-    public static final String VERIFICATION_CODE = "verificationCode";
-    public static final String EMAIL_TO = "emailTo";
-    public static final String VERIFY_RESULT = "verifyResult";
-    public static final String ACCOUNT_NUMBER = "accountNumber";
-    public static final String COMPANY_ID = "companyId";
-    public static final String JOB_NUMBER = "jobNumber";
-    public static final String MANAGER_ACCOUNT_NUMBER = "managerAccountNumber";
+    String VERIFICATION_CODE = "verificationCode";
+    String EMAIL_TO = "emailTo";
+    String VERIFY_RESULT = "verifyResult";
+    String ACCOUNT_NUMBER = "accountNumber";
+    String COMPANY_ID = "companyId";
+    String JOB_NUMBER = "jobNumber";
+    String MANAGER_ACCOUNT_NUMBER = "managerAccountNumber";
 
 }

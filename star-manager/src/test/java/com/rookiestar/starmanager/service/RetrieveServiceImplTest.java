@@ -82,6 +82,7 @@ public class RetrieveServiceImplTest extends BaseTest {
 
         Assert.assertEquals(employees,actualEmployees);
     }
+
     @Test
     @Transactional
     public void retrieveEmployeesByNameTest() throws Exception {
@@ -123,6 +124,7 @@ public class RetrieveServiceImplTest extends BaseTest {
         actualEmployees.add(new Employee(employeeMap.get(7),new Experience(experienceMap.get(7121),assessmentMap.get(71)),new Experience(experienceMap.get(7221),assessmentMap.get(72))));
         Assert.assertEquals(employees,actualEmployees);
     }
+
     @Test
     @Transactional
     public void retrieveAssessmentByAccountNumberAndCompanyIdAndStartTimeTest()throws Exception{
