@@ -1,12 +1,18 @@
 package com.rookiestar.starmanager.controller;
 
+import com.rookiestar.starmanager.constant.PermissionNames;
+import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.constant.UserTypes;
+import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
+import com.rookiestar.starmanager.service.CreateService;
 import com.rookiestar.starmanager.service.EmailService;
 import com.rookiestar.starmanager.shiro.token.GenericToken;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -28,6 +34,8 @@ public class LoginRestController {
 
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private CreateService createService;
 
     @RequestMapping("/")
     public String defaultPage() {
@@ -137,5 +145,26 @@ public class LoginRestController {
         }
         logger.info("登录成功。欢迎您："+session.getAttribute(AttributeNames.MANAGER_ACCOUNT_NUMBER));
         return "登录成功";
+    }
+
+    /**
+     * 请求描述：注册企业
+     * 请求地址：  /registerCompany.do
+     * 请求参数：String name 企业名, String legalRepresentativeName 法人代表名, String email 企业邮箱, String address 企业地址, String phone 企业电话
+     * 返回值：CompanyToReview 待确认企业
+     */
+    @RequestMapping(value = "registerCompany.do")
+    public CompanyToReview registerCompany(String name, String legalRepresentativeName, String email, String address, String phone){
+        CompanyToReview companyToReview=new CompanyToReview(name,legalRepresentativeName,email,address,phone);
+        CompanyToReview newCompanyToReview=createService.addCompanyToReview(companyToReview);
+        String content = "您的公司注册申请已提交，正在等待管理员审核\n"+
+                "您的公司信息为：\n公司名称："+companyToReview.getName()+"\n"
+                +"公司法人代表："+companyToReview.getLegalRepresentativeName()+"\n"
+                +"公司邮箱："+companyToReview.getEmail()+"\n"
+                +"公司地址："+companyToReview.getAddress()+"\n"
+                +"公司电话："+companyToReview.getPhone()+"\n"
+                +"请您确认。";
+        emailService.sendSimpleEmail("2019302110260@whu.edu.cn","注册通知",content);
+        return newCompanyToReview;
     }
 }

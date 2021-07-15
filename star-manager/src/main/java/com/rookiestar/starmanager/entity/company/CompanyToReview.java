@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 @Entity
 public class CompanyToReview implements Serializable {
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 9L;
     @Id
     private int companyId;
     @Column(nullable = false)

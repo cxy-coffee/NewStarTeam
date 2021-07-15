@@ -2,6 +2,8 @@ package com.rookiestar.starmanager;
 
 import com.rookiestar.starmanager.controller.CompanyRestControllerTest;
 import com.rookiestar.starmanager.controller.EmployeeRestControllerTest;
+import com.rookiestar.starmanager.controller.LoginRestControllerTest;
+import com.rookiestar.starmanager.controller.ManagerRestControllerTest;
 import com.rookiestar.starmanager.repository.AssessmentRepositoryTest;
 import com.rookiestar.starmanager.repository.CompanyManagerRepositoryTest;
 import com.rookiestar.starmanager.repository.EmployeeRepositoryTest;
@@ -21,17 +23,23 @@ import org.junit.runners.Suite;
  * @date 2021/7/9
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({EmployeeRepositoryTest.class
+@Suite.SuiteClasses({
+        EmployeeRepositoryTest.class
         , ExperienceRepositoryTest.class
         , AssessmentRepositoryTest.class
         , CompanyManagerRepositoryTest.class
+        , CompanyToReviewRepositoryTest.class
+        , ManagerRepositoryTest.class
+
         , RetrieveServiceImplTest.class
         , CreateServiceImplTest.class
         , UpdateServiceImplTest.class
-        , CompanyRestControllerTest.class
-        , CompanyToReviewRepositoryTest.class
         , DeleteServiceImplTest.class
+
+        , CompanyRestControllerTest.class
         , EmployeeRestControllerTest.class
+        , ManagerRestControllerTest.class
+        , LoginRestControllerTest.class
         , DepartmentRepositoryTest.class
         , PositionRepositoryTest.class
 })
