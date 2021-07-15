@@ -23,4 +23,12 @@ public interface CompanyToReviewRepository extends JpaRepository<CompanyToReview
      */
     @Query("select max(companyToReview.companyId) from CompanyToReview companyToReview")
     int findMaxCompanyToReviewId();
+
+    /**
+     * find a CompanyToReview object by companyId
+     *
+     * @param companyId the companyId of the CompanyToReview object
+     * @return CompanyToReview
+     */
+    CompanyToReview findByCompanyId(int companyId);
 }

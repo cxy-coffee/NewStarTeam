@@ -82,13 +82,6 @@ public interface RetrieveService {
     Employee retrieveEmployeeByEmail(String email);
 
     /**
-     * retrieve the company by its companyId
-     * @param id the companyId of the company to find
-     * @return the company which matches the param
-     */
-    Company retrieveCompanyById(int id);
-
-    /**
      * retrieve the employee by its accountNumber
      * @param accountNumber the accountNumber of the employee to find
      * @return the employee whose accountNumber matches the param

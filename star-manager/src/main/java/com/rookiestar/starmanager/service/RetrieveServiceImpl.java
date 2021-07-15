@@ -22,8 +22,6 @@ import java.util.List;
 @Service
 public class RetrieveServiceImpl implements RetrieveService{
     @Autowired
-    private CompanyRepository companyRepository;
-    @Autowired
     private ExperienceRepository experienceRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -33,6 +31,7 @@ public class RetrieveServiceImpl implements RetrieveService{
     private DepartmentRepository departmentRepository;
     @Autowired
     private PositionRepository positionRepository;
+
     @Override
     public List<Employee> retrieveAllEmployeesByCompany(int companyId) {
         List<Employee> employees = employeeRepository.findAllEmployeesByCompany(companyId);
@@ -46,7 +45,6 @@ public class RetrieveServiceImpl implements RetrieveService{
         perfectEmployees(employees);
         return employees;
     }
-
 
     /**
      * Get employees by name
@@ -110,11 +108,6 @@ public class RetrieveServiceImpl implements RetrieveService{
         Employee employee=employeeRepository.findByEmail(email);
         employee.setExperiences(experienceRepository.findAllByAccountNumber(employee.getAccountNumber()));
         return employee;
-    }
-
-    @Override
-    public Company retrieveCompanyById(int id) {
-        return companyRepository.findByCompanyId(id);
     }
 
     @Override

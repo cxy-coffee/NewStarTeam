@@ -2,11 +2,11 @@ package com.rookiestar.starmanager.service;
 
 import com.rookiestar.starmanager.BaseTest;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
-import com.rookiestar.starmanager.repository.AssessmentRepository;
-import com.rookiestar.starmanager.repository.EmployeeRepository;
-import com.rookiestar.starmanager.repository.ExperienceRepository;
+import com.rookiestar.starmanager.repository.*;
 import com.rookiestar.starmanager.util.DataBaseUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,6 +30,10 @@ public class CreateServiceImplTest extends BaseTest {
     private EmployeeRepository employeeRepository;
     @Autowired
     private AssessmentRepository assessmentRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
+    @Autowired
+    private CompanyToReviewRepository companyToReviewRepository;
 
     @Test
     @Transactional
@@ -70,7 +74,29 @@ public class CreateServiceImplTest extends BaseTest {
     @Test
     @Transactional
     public void registerCompanyTest() throws Exception{
+        DataBaseUtil.getInstance().initCompany(companyRepository);
 
+        Company company=new Company("我的公司2","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573");
+        createService.registerCompany(company);
+        Company actualCompany = companyRepository.findByCompanyId(3);
+
+        Company expectCompany = new Company(3,"我的公司2","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573",null,null);
+
+        Assert.assertEquals(expectCompany,actualCompany);
+    }
+
+    @Test
+    @Transactional
+    public void addCompanyToReviewTest() throws Exception{
+        DataBaseUtil.getInstance().initCompanyToReview(companyToReviewRepository);
+
+        CompanyToReview companyToReview = new CompanyToReview("腾讯","马化腾","abcdef@qq.com","广东省深圳市南山区","1342525262");
+        createService.addCompanyToReview(companyToReview);
+        CompanyToReview actualCompanyToReview = companyToReviewRepository.findByCompanyId(3);
+
+        CompanyToReview expectCompanyToReview = new CompanyToReview(3,"腾讯","马化腾","abcdef@qq.com","广东省深圳市南山区","1342525262");
+
+        Assert.assertEquals(expectCompanyToReview,actualCompanyToReview);
     }
 
 }

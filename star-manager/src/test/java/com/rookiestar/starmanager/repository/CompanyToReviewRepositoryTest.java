@@ -5,6 +5,7 @@ import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.util.DataBaseUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.notification.RunListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,15 @@ public class CompanyToReviewRepositoryTest extends BaseTest {
         List<CompanyToReview> actualCompanyToReviewList=new ArrayList<>();
         actualCompanyToReviewList.add(companyToReviewMap.get(2));
         Assert.assertEquals(companyToReviewList,actualCompanyToReviewList);
+    }
+
+    @Test
+    @Transactional
+    public void findByCompanyId() throws Exception{
+        DataBaseUtil.getInstance().initCompanyToReview(companyToReviewRepository);
+        CompanyToReview actualCompanyToReview = companyToReviewRepository.findByCompanyId(1);
+        CompanyToReview expectCompanyToReview = companyToReviewMap.get(1);
+        Assert.assertEquals(expectCompanyToReview,actualCompanyToReview);
     }
 
 }
