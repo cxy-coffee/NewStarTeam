@@ -251,7 +251,7 @@ public class CompanyRestController {
      * 返回值：List<Department> 部门列表
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
-    @RequiresPermissions(value = {PermissionNames.WRITE})
+    @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping(value = "getDepartmentByCompanyId.do")
     public List<Department> getDepartmentByCompanyId(int companyId){
         return retrieveService.retrieveDepartmentByCompanyId(companyId);
@@ -264,11 +264,12 @@ public class CompanyRestController {
      * 返回值：List<Position> 职位列表
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
-    @RequiresPermissions(value = {PermissionNames.WRITE})
+    @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping(value = "getPositionByCompanyIdAndDepartmentId.do")
     public List<Position> getPositionByCompanyIdAndDepartmentId(int companyId,int departmentId){
         return retrieveService.retrievePositionByCompanyIdAndDepartmentId(companyId,departmentId);
     }
+
 
     /**
      * 请求描述：通过公司Id和部门Id查询某部门所有员工信息
@@ -277,7 +278,7 @@ public class CompanyRestController {
      * 返回值：List<Employee> 员工列表
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
-    @RequiresPermissions(value = {PermissionNames.WRITE})
+    @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping(value = "getEmployeeByCompanyIdAndDepartmentId.do")
     public List<Employee> getEmployeeByCompanyIdAndDepartmentId(int companyId,int departmentId){
         return retrieveService.retrieveEmployeesByCompanyIdAndDepartmentId(companyId,departmentId);
@@ -290,7 +291,7 @@ public class CompanyRestController {
      * 返回值：List<Employee>员工列表
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
-    @RequiresPermissions(value = {PermissionNames.WRITE})
+    @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping(value = "getEmployeeByCompanyIdAndDepartmentIdAndPositionId.do")
     public List<Employee> getEmployeeByCompanyIdAndDepartmentIdAndPositionId(int companyId,int departmentId,int positionId){
         return retrieveService.retrieveEmployeesByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
