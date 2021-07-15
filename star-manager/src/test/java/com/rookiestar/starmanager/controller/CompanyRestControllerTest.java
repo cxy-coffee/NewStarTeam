@@ -3,10 +3,7 @@ package com.rookiestar.starmanager.controller;
 import com.rookiestar.starmanager.BaseTest;
 import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
-import com.rookiestar.starmanager.entity.company.Company;
-import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.department.Department;
-import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.entity.position.Position;
 import com.rookiestar.starmanager.repository.*;
@@ -21,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -152,7 +148,6 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
-
     @Test
     @Transactional
     public void getEmployeesByNameTest() throws Exception{
@@ -182,6 +177,7 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110260@whu.edu.cn\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":{\"accountNumber\":5,\"companyId\":1,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"51的表现\"}},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":{\"accountNumber\":5,\"companyId\":2,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"52的表现\"}}]}")))
                 .andDo(MockMvcResultHandlers.print());
     }
+
     @Test
     @Transactional
     public void getEmployeesByGenderTest()throws Exception{
@@ -196,25 +192,20 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110260@whu.edu.cn\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":{\"accountNumber\":5,\"companyId\":1,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"51的表现\"}},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":{\"accountNumber\":5,\"companyId\":2,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"52的表现\"}}]},{\"name\":\"王五\",\"birthday\":\"2002-01-12T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110262@whu.edu.cn\",\"identifyNumber\":\"7\",\"accountNumber\":7,\"password\":\"123\",\"experiences\":[{\"accountNumber\":7,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1721,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":{\"accountNumber\":7,\"companyId\":1,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"71的表现\"}},{\"accountNumber\":7,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2721,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":{\"accountNumber\":7,\"companyId\":2,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"72的表现\"}}]}]")))
                 .andDo(MockMvcResultHandlers.print());
     }
+
     @Test
     @Transactional
-    public void updateEmployeeTest() throws Exception{
-        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+    public void getEmployeeByEmailTest()throws Exception{
         DataBaseUtil.getInstance().initExperience(experienceRepository);
-        Employee employee=new Employee("测试名字", DateUtil.parse("2001-01-20"),"男","199","5",5,"123",null);
-        Employee actualEmployee=DataBaseUtil.getInstance().getEmployeeMap().get(5);
-        employee.setExperiences(experienceRepository.findAllByAccountNumber(5));
-        Assert.assertNotEquals(employee,actualEmployee);
-        mvc.perform(MockMvcRequestBuilders.get("/updateEmployee.do?name=测试名字&birthday=2001-01-20&gender=男&email=199&identifyNumber=5&accountNumber=5&password=123")
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        mvc.perform(MockMvcRequestBuilders.get("/getEmployeeByEmail.do?email=2019302110260@whu.edu.cn")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .session(session)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("Subject does not have role [employee]")))
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110260@whu.edu.cn\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":null},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":null}]}")))
                 .andDo(MockMvcResultHandlers.print());
-//        actualEmployee=retrieveService.retrieveEmployeeByIdentifyNumber("5");
-//        Assert.assertEquals(actualEmployee,employee);
     }
 
     @Test
@@ -261,35 +252,6 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andDo(MockMvcResultHandlers.print());
         actualExperience=retrieveService.retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(5,1,DateUtil.parse("2010-01-10"));
         Assert.assertEquals(experience,actualExperience);
-    }
-
-    @Test
-    @Transactional
-    public void getEmployeeByEmailTest()throws Exception{
-        DataBaseUtil.getInstance().initExperience(experienceRepository);
-        DataBaseUtil.getInstance().initEmployee(employeeRepository);
-        mvc.perform(MockMvcRequestBuilders.get("/getEmployeeByEmail.do?email=2019302110260@whu.edu.cn")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110260@whu.edu.cn\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":null},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":null}]}")))
-                .andDo(MockMvcResultHandlers.print());
-    }
-    @Test
-    @Transactional
-    public void registerCompanyTest()throws Exception{
-        DataBaseUtil.getInstance().initCompanyToReview(companyToReviewRepository);
-//        String name, String legalRepresentativeName, String email, String address, String phone
-        mvc.perform(MockMvcRequestBuilders.get("/registerCompany.do?name=腾讯&legalRepresentativeName=马化腾&email=abcdef@qq.com&address=广东省深圳市南山区&phone=1342525262")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"companyId\":3,\"name\":\"腾讯\",\"legalRepresentativeName\":\"马化腾\",\"email\":\"abcdef@qq.com\",\"address\":\"广东省深圳市南山区\",\"phone\":\"1342525262\"}")))
-                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test

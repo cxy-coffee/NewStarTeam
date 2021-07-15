@@ -67,4 +67,10 @@ public class CreateServiceImplTest extends BaseTest {
         Assert.assertEquals(expectEmployee,addedEmployee);
     }
 
+    @Test
+    @Transactional
+    public void registerCompanyTest() throws Exception{
+
+    }
+
 }
