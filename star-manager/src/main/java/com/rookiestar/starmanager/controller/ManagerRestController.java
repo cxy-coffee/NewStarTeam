@@ -23,41 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ManagerRestController {
     @Autowired
-    private UpdateService updateService;
-    @Autowired
     private CreateService createService;
     @Autowired
     private DeleteService deleteService;
     @Autowired
     private EmailService emailService;
 
-    /**
-     * 请求描述：更新企业部门
-     * 请求地址：  /updateDepartment.do
-     * 请求参数：int companyId 企业Id,int departmentId 部门编号,String name 部门名
-     * 返回值：boolean 是否更新成功
-     */
-    @RequiresRoles(value = {RoleNames.MANAGER})
-    @RequiresPermissions(value = {PermissionNames.WRITE})
-    @RequestMapping(value = "updateDepartment.do")
-    public boolean updateDepartment(int companyId,int departmentId,String name){
-        Department department = new Department(companyId, departmentId, name, null);
-        return updateService.updateDepartment(department);
-    }
 
-    /**
-     * 请求描述：更新部门的职位
-     * 请求地址：  /updatePosition.do
-     * 请求参数：int companyId 企业Id,int departmentId 部门编号,int positionId 职位编号,String name 职位名
-     * 返回值：boolean 是否更新成功
-     */
-    @RequiresRoles(value = {RoleNames.MANAGER})
-    @RequiresPermissions(value = {PermissionNames.WRITE})
-    @RequestMapping(value = "updatePosition.do")
-    public boolean updatePosition(int companyId,int departmentId,int positionId,String name){
-        Position position = new Position(companyId, departmentId, positionId, name);
-        return updateService.updatePosition(position);
-    }
 
     /**
      * 请求描述：管理员审核企业注册的请求

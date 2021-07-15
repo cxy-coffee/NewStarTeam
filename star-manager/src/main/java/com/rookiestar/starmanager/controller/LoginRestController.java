@@ -132,6 +132,12 @@ public class LoginRestController {
         return "登录成功";
     }
 
+    /**
+     * 请求描述：超管登录
+     * 请求地址：  /managerLogin.do
+     * 请求参数：Integer accountNumber 超管账号, String password 超管密码
+     * 返回值：String 如果成功，返回："登录成功"。否则返回错误信息。
+     */
     @RequestMapping("/managerLogin.do")
     public String managerLogin(Integer accountNumber, String password) throws Exception{
         Subject subject = SecurityUtils.getSubject();

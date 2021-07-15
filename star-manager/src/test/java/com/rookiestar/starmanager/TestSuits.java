@@ -30,6 +30,8 @@ import org.junit.runners.Suite;
         , CompanyManagerRepositoryTest.class
         , CompanyToReviewRepositoryTest.class
         , ManagerRepositoryTest.class
+        , DepartmentRepositoryTest.class
+        , PositionRepositoryTest.class
 
         , RetrieveServiceImplTest.class
         , CreateServiceImplTest.class
@@ -40,8 +42,6 @@ import org.junit.runners.Suite;
         , EmployeeRestControllerTest.class
         , ManagerRestControllerTest.class
         , LoginRestControllerTest.class
-        , DepartmentRepositoryTest.class
-        , PositionRepositoryTest.class
 })
 public class TestSuits {
 }
