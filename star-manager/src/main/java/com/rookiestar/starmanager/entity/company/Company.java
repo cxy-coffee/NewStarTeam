@@ -153,6 +153,13 @@ public class Company implements Serializable {
     }
 
 
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(companyId, name, legalRepresentativeName, email, address, phone, experiences, departments);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -162,15 +169,6 @@ public class Company implements Serializable {
             return false;
         }
         Company company = (Company) o;
-        return companyId == company.companyId && name.equals(company.name) &&
-                legalRepresentativeName.equals(company.legalRepresentativeName) &&
-                email.equals(company.email) && address.equals(company.address) &&
-                phone.equals(company.phone) && Objects.equals(experiences, company.experiences) &&
-                Objects.equals(departments, company.departments);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(companyId, name, legalRepresentativeName, email, address, phone, experiences, departments);
+        return companyId == company.companyId && name.equals(company.name) && legalRepresentativeName.equals(company.legalRepresentativeName) && email.equals(company.email) && address.equals(company.address) && phone.equals(company.phone) && Objects.equals(experiences, company.experiences) && Objects.equals(departments, company.departments);
     }
 }

@@ -76,9 +76,22 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
     Employee findByEmail(String email);
 
 
+    /**
+     * get all employees in a department
+     * @param companyId the companyId of the employees to find
+     * @param departmentId the departmentId of the employees to find
+     * @return the employees which match all the params
+     */
     @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and exp.departmentId=?2")
     List<Employee> findByCompanyIdAndDepartmentId(int companyId,int departmentId);
 
+    /**
+     * get all employees at a position
+     * @param companyId the companyId of the employees to find
+     * @param departmentId the departmentId of the employees to find
+     * @param positionId the positionId of the employees to find
+     * @return the employees which match all the params
+     */
     @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and exp.departmentId=?2 and exp.positionId=?3")
     List<Employee> findByCompanyIdAndDepartmentIdAndPositionId(int companyId,int departmentId,int positionId);
 }

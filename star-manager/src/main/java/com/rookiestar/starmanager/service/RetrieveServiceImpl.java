@@ -151,12 +151,7 @@ public class RetrieveServiceImpl implements RetrieveService{
         return employee;
     }
 
-    @Override
-    public Company retrieveCompanyById(int id) {
-        Company company=companyRepository.findByCompanyId(id);
-        perfectCompany(company);
-        return company;
-    }
+
 
     @Override
     public Department retrieveDepartmentByCompanyIdAndDepartmentId(int companyId, int departmentId) {

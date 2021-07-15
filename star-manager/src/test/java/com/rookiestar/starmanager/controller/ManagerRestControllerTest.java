@@ -2,6 +2,8 @@ package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.BaseTest;
 import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.department.Department;
+import com.rookiestar.starmanager.entity.position.Position;
 import com.rookiestar.starmanager.repository.*;
 import com.rookiestar.starmanager.service.RetrieveService;
 import com.rookiestar.starmanager.util.DataBaseUtil;
@@ -82,6 +84,8 @@ public class ManagerRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"companyId\":3,\"name\":\"我的公司2\",\"legalRepresentativeName\":\"Bob\",\"email\":\"2019302110243@whu.edu.cn\",\"address\":\"四川省成都市锦江区\",\"phone\":\"88555573\",\"experiences\":null,\"departments\":null}")))
                 .andDo(MockMvcResultHandlers.print());
         Company actualCompany=companyRepository.findByCompanyId(3);
+        actualCompany.setDepartments(departmentRepository.findByCompanyId(actualCompany.getCompanyId()));
+        actualCompany.setExperiences(experienceRepository.findByCompanyId(actualCompany.getCompanyId()));
         Company company=new Company(3,"我的公司2","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573",null,null);
         company.setExperiences(experienceRepository.findByCompanyId(company.getCompanyId()));
         company.setDepartments(departmentRepository.findByCompanyId(company.getCompanyId()));

@@ -27,5 +27,10 @@ public interface DepartmentRepository extends JpaRepository<Department,Long> {
      */
     void deleteDepartmentByCompanyIdAndDepartmentId(int companyId,int departmentId);
 
+    /**
+     * find all the departments in a company
+     * @param companyId the companyId of the departments to find
+     * @return all the departments that match the param
+     */
     List<Department> findByCompanyId(int companyId);
 }

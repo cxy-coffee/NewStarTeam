@@ -193,20 +193,7 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
-    @Test
-    @Transactional
-    public void getEmployeeByEmailTest()throws Exception{
-        DataBaseUtil.getInstance().initExperience(experienceRepository);
-        DataBaseUtil.getInstance().initEmployee(employeeRepository);
-        mvc.perform(MockMvcRequestBuilders.get("/getEmployeeByEmail.do?email=2019302110260@whu.edu.cn")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110260@whu.edu.cn\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":null},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":null}]}")))
-                .andDo(MockMvcResultHandlers.print());
-    }
+
 
     @Test
     @Transactional

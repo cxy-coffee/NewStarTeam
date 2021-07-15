@@ -29,5 +29,11 @@ public interface PositionRepository  extends JpaRepository<Position,Long> {
      */
     void deletePositionByCompanyIdAndDepartmentIdAndPositionId(int companyId,int departmentId,int positionId);
 
+    /**
+     * find all the positions in a department
+     * @param companyId the companyId of the positions to find
+     * @param departmentId the departmentId of the positions to find
+     * @return all the positions which match all the params
+     */
     List<Position> findByCompanyIdAndDepartmentId(int companyId,int departmentId);
 }

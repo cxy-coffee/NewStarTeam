@@ -105,11 +105,35 @@ public interface RetrieveService {
      */
     Position retrievePositionByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId);
 
+    /**
+     * retrieve all the departments in a company
+     * @param companyId the companyId of the departments to retrieve
+     * @return all the departments which match all the params
+     */
     List<Department> retrieveDepartmentByCompanyId(int companyId);
 
+    /**
+     * retrieve all the positions in a department
+     * @param companyId the companyId of the positions to find
+     * @param departmentId the departmentId of the positions to find
+     * @return all the positions which match all the params
+     */
     List<Position> retrievePositionByCompanyIdAndDepartmentId(int companyId, int departmentId);
 
+    /**
+     * retrieve all the employees in a department
+     * @param companyId the companyId of the employees to find
+     * @param departmentId the departmentId of the employees to find
+     * @return the employees who match all the params
+     */
     List<Employee> retrieveEmployeesByCompanyIdAndDepartmentId(int companyId, int departmentId);
 
+    /**
+     * retrieve all the employees at a position
+     * @param companyId the companyId of the employees to find
+     * @param departmentId the departmentId of the employees to find
+     * @param positionId the positionId of the employees to find
+     * @return all the employees who match all the params
+     */
     List<Employee> retrieveEmployeesByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId);
 }
