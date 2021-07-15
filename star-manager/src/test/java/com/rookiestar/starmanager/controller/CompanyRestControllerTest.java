@@ -294,24 +294,6 @@ public class CompanyRestControllerTest extends BaseTest {
 
     @Test
     @Transactional
-    public void confirmCompanyRegisterApplyTest()throws  Exception{
-        DataBaseUtil.getInstance().initCompany(companyRepository);
-        mvc.perform(MockMvcRequestBuilders.get("/confirmCompanyRegisterApply.do?companyId=2&name=我的公司2&legalRepresentativeName=Bob&email=2019302110243@whu.edu.cn&address=四川省成都市锦江区&phone=88555573")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"companyId\":3,\"name\":\"我的公司2\",\"legalRepresentativeName\":\"Bob\",\"email\":\"2019302110243@whu.edu.cn\",\"address\":\"四川省成都市锦江区\",\"phone\":\"88555573\",\"experiences\":null,\"departments\":null}")))
-                .andDo(MockMvcResultHandlers.print());
-        Company actualCompany=retrieveService.retrieveCompanyById(3);
-        Company company=new Company(3,"我的公司2","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573",null,null);
-        Assert.assertEquals(company,actualCompany);
-    }
-
-
-    @Test
-    @Transactional
     public void updateDepartmentTest() throws Exception{
         DataBaseUtil.getInstance().initDepartment(departmentRepository);
         Department department=new Department(1,1,"公司1部门12314",null);

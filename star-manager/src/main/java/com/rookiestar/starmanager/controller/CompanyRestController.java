@@ -1,8 +1,6 @@
 package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.entity.assessment.Assessment;
-import com.rookiestar.starmanager.entity.company.Company;
-import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
