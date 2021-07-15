@@ -80,6 +80,7 @@ public class UpdateServiceImplTest extends BaseTest {
     public void updateExperienceTest() throws Exception{
         DataBaseUtil.getInstance().initExperience(experienceRepository);
         Experience experience=new Experience(5,1,4396,7777,1521,DateUtil.parse("2010-01-10"),DateUtil.parse("2021-10-15"),true);
+        experience.setAssessment(assessmentRepository.findByAccountNumberAndCompanyIdAndStartTime(experience.getAccountNumber(),experience.getCompanyId(),experience.getStartTime()));
         Experience actualExperience = retrieveService.retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(5,1,DateUtil.parse("2010-01-10"));
         Assert.assertNotEquals(experience,actualExperience);
         updateService.updateExperience(experience);
@@ -91,7 +92,7 @@ public class UpdateServiceImplTest extends BaseTest {
     @Transactional
     public void updateDepartmentTest()throws Exception{
         DataBaseUtil.getInstance().initDepartment(departmentRepository);
-        Department department=new Department(1,1,"公司1部门1234",null);
+        Department department=new Department(1,1,"公司1部门1234",positionRepository.findByCompanyIdAndDepartmentId(1,1));
         Department actualDepartment=retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1,1);
         Assert.assertNotEquals(department,actualDepartment);
         updateService.updateDepartment(department);

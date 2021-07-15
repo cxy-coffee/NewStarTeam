@@ -246,5 +246,33 @@ public class CompanyRestController {
         return deleteService.deleteDepartmentByCompanyIdAndDepartmentId(companyId,departmentId);
     }
 
+    @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.WRITE})
+    @RequestMapping(value = "getDepartmentByCompanyId.do")
+    public List<Department> getDepartmentByCompanyId(int companyId){
+        return retrieveService.retrieveDepartmentByCompanyId(companyId);
+    }
+
+    @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.WRITE})
+    @RequestMapping(value = "getPositionByCompanyIdAndDepartmentId.do")
+    public List<Position> getPositionByCompanyIdAndDepartmentId(int companyId,int departmentId){
+        return retrieveService.retrievePositionByCompanyIdAndDepartmentId(companyId,departmentId);
+    }
+
+    @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.WRITE})
+    @RequestMapping(value = "getEmployeeByCompanyIdAndDepartmentId.do")
+    public List<Employee> getEmployeeByCompanyIdAndDepartmentId(int companyId,int departmentId){
+        return retrieveService.retrieveEmployeesByCompanyIdAndDepartmentId(companyId,departmentId);
+    }
+
+    @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.WRITE})
+    @RequestMapping(value = "getEmployeeByCompanyIdAndDepartmentIdAndPositionId.do")
+    public List<Employee> getEmployeeByCompanyIdAndDepartmentIdAndPositionId(int companyId,int departmentId,int positionId){
+        return retrieveService.retrieveEmployeesByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
+    }
+
 
 }

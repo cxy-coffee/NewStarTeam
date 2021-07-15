@@ -140,6 +140,7 @@ public class RetrieveServiceImplTest extends BaseTest {
         DataBaseUtil.getInstance().initExperience(experienceRepository);
         Experience experience=retrieveService.retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(5,1,DateUtil.parse("2010-01-10"));
         Experience actualExperience=new Experience(5,1,2,1,1521,DateUtil.parse("2010-01-10"),null,false);
+        actualExperience.setAssessment(assessmentRepository.findByAccountNumberAndCompanyIdAndStartTime(actualExperience.getAccountNumber(), actualExperience.getCompanyId(), actualExperience.getStartTime()));
         Assert.assertEquals(experience,actualExperience);
     }
 
@@ -150,6 +151,7 @@ public class RetrieveServiceImplTest extends BaseTest {
         DataBaseUtil.getInstance().initExperience(experienceRepository);
         Employee employee=retrieveService.retrieveEmployeeByEmail("2019302110260@whu.edu.cn");
         Employee actualEmployee=new Employee(employeeMap.get(5),experienceMap.get(5121),experienceMap.get(5221));
+        actualEmployee.setExperiences(experienceRepository.findAllByAccountNumber(actualEmployee.getAccountNumber()));
         Assert.assertEquals(employee,actualEmployee);
     }
 
@@ -159,6 +161,7 @@ public class RetrieveServiceImplTest extends BaseTest {
         DataBaseUtil.getInstance().initDepartment(departmentRepository);
         Department department=retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1,1);
         Department actualDepartment=new Department(1,1,"公司1部门1",null);
+        actualDepartment.setPositions(positionRepository.findByCompanyIdAndDepartmentId(actualDepartment.getCompanyId(), actualDepartment.getDepartmentId()));
         Assert.assertEquals(department,actualDepartment);
     }
 

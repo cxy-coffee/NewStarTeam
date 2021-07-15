@@ -3,6 +3,8 @@ package com.rookiestar.starmanager.repository;
 import com.rookiestar.starmanager.entity.position.Position;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * Repository class that access to the table position
  *
@@ -26,4 +28,6 @@ public interface PositionRepository  extends JpaRepository<Position,Long> {
      * @param positionId the positionId of the position to delete
      */
     void deletePositionByCompanyIdAndDepartmentIdAndPositionId(int companyId,int departmentId,int positionId);
+
+    List<Position> findByCompanyIdAndDepartmentId(int companyId,int departmentId);
 }

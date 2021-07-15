@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author 曹向阳
  * @date 2021/7/14
  */
+@SuppressWarnings("ALL")
 public class ManagerRestControllerTest extends BaseTest {
     @Autowired
     private WebApplicationContext wac;
@@ -50,6 +51,9 @@ public class ManagerRestControllerTest extends BaseTest {
     private PositionRepository positionRepository;
     @Autowired
     private RetrieveService retrieveService;
+    @Autowired
+    private ExperienceRepository experienceRepository;
+
 
 
     @Before
@@ -82,6 +86,8 @@ public class ManagerRestControllerTest extends BaseTest {
                 .andDo(MockMvcResultHandlers.print());
         Company actualCompany=retrieveService.retrieveCompanyById(3);
         Company company=new Company(3,"我的公司2","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573",null,null);
+        company.setExperiences(experienceRepository.findByCompanyId(company.getCompanyId()));
+        company.setDepartments(departmentRepository.findByCompanyId(company.getCompanyId()));
         Assert.assertEquals(company,actualCompany);
     }
 
@@ -90,7 +96,7 @@ public class ManagerRestControllerTest extends BaseTest {
     @Transactional
     public void updateDepartmentTest() throws Exception{
         DataBaseUtil.getInstance().initDepartment(departmentRepository);
-        Department department=new Department(1,1,"公司1部门12314",null);
+        Department department=new Department(1,1,"公司1部门12314",positionRepository.findByCompanyIdAndDepartmentId(1,1));
         Department actualDepartment = retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1, 1);
         Assert.assertNotEquals(department,actualDepartment);
         mvc.perform(MockMvcRequestBuilders.get("/updateDepartment.do?companyId=1&departmentId=1&name=公司1部门12314")

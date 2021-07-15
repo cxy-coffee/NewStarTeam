@@ -2,6 +2,9 @@ package com.rookiestar.starmanager.repository;
 
 import com.rookiestar.starmanager.entity.department.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
 /**
  * Repository class that access to the table department
  *
@@ -23,4 +26,6 @@ public interface DepartmentRepository extends JpaRepository<Department,Long> {
      * @param departmentId the departmentId of the department to delete
      */
     void deleteDepartmentByCompanyIdAndDepartmentId(int companyId,int departmentId);
+
+    List<Department> findByCompanyId(int companyId);
 }

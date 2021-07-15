@@ -40,4 +40,6 @@ public interface ExperienceRepository extends JpaRepository<Experience,Long> {
      * @return the experience which matches all the params
      */
     Experience findByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime);
+
+    List<Experience> findByCompanyId(int companyId);
 }

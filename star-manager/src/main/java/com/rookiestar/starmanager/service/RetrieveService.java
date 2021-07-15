@@ -111,4 +111,12 @@ public interface RetrieveService {
      * @return the position which matches all the params
      */
     Position retrievePositionByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId);
+
+    List<Department> retrieveDepartmentByCompanyId(int companyId);
+
+    List<Position> retrievePositionByCompanyIdAndDepartmentId(int companyId, int departmentId);
+
+    List<Employee> retrieveEmployeesByCompanyIdAndDepartmentId(int companyId, int departmentId);
+
+    List<Employee> retrieveEmployeesByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId);
 }
