@@ -122,16 +122,6 @@ public class RetrieveServiceImpl implements RetrieveService{
         }
     }
 
-    private void perfectCompany(Company company){
-        if(company==null){
-            return;
-        }
-        company.setDepartments(departmentRepository.findByCompanyId(company.getCompanyId()));
-        perfectDepartments(company.getDepartments());
-        company.setExperiences(experienceRepository.findByCompanyId(company.getCompanyId()));
-        perfectExperiences(company.getExperiences());
-    }
-
     @Override
     public Assessment retrieveAssessmentByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime) {
         return assessmentRepository.findByAccountNumberAndCompanyIdAndStartTime(accountNumber,companyId,startTime);

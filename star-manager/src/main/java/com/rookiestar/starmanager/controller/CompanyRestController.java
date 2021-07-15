@@ -244,6 +244,12 @@ public class CompanyRestController {
         return deleteService.deleteDepartmentByCompanyIdAndDepartmentId(companyId,departmentId);
     }
 
+    /**
+     * 请求描述：通过公司ID获得部门信息
+     * 请求地址：    /getDepartmentByCompanyId.do
+     * 请求参数：int companyId 公司Id
+     * 返回值：List<Department> 部门列表
+     */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping(value = "getDepartmentByCompanyId.do")
@@ -251,6 +257,12 @@ public class CompanyRestController {
         return retrieveService.retrieveDepartmentByCompanyId(companyId);
     }
 
+    /**
+     * 请求描述 ：通过公司Id和部门Id获得职位信息
+     * 请求地址：    /getPositionByCompanyIdAndDepartmentId.do
+     * 请求参数：int companyId 公司Id， int departmentId 部门Id
+     * 返回值：List<Position> 职位列表
+     */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping(value = "getPositionByCompanyIdAndDepartmentId.do")
@@ -258,6 +270,12 @@ public class CompanyRestController {
         return retrieveService.retrievePositionByCompanyIdAndDepartmentId(companyId,departmentId);
     }
 
+    /**
+     * 请求描述：通过公司Id和部门Id查询某部门所有员工信息
+     * 请求地址：    /getEmployeeByCompanyIdAndDepartmentId.do
+     * 请求参数：int companyId 公司Id， int departmentId 部门Id
+     * 返回值：List<Employee> 员工列表
+     */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping(value = "getEmployeeByCompanyIdAndDepartmentId.do")
@@ -265,6 +283,12 @@ public class CompanyRestController {
         return retrieveService.retrieveEmployeesByCompanyIdAndDepartmentId(companyId,departmentId);
     }
 
+    /**
+     * 请求描述：通过公司Id，部门Id和职位Id查询本职位所有员工信息
+     * 请求地址：    /getEmployeeByCompanyIdAndDepartmentIdAndPositionId.do
+     * 请求参数：int companyId 公司Id， int departmentId 部门Id， int positionId 职位Id
+     * 返回值：List<Employee>员工列表
+     */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping(value = "getEmployeeByCompanyIdAndDepartmentIdAndPositionId.do")
