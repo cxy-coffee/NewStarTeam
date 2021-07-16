@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Description
+ * Handle exception
  *
  * @author 曹向阳
  * @date 2021/7/12
