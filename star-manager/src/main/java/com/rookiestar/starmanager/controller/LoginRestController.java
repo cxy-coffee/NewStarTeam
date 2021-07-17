@@ -1,18 +1,15 @@
 package com.rookiestar.starmanager.controller;
 
-import com.rookiestar.starmanager.constant.PermissionNames;
-import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.constant.UserTypes;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
+import com.rookiestar.starmanager.rabbit.MessageProducer;
 import com.rookiestar.starmanager.service.CreateService;
 import com.rookiestar.starmanager.service.EmailService;
 import com.rookiestar.starmanager.shiro.token.GenericToken;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -20,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Controller class that handle the request of login
@@ -34,6 +34,8 @@ public class LoginRestController {
 
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private MessageProducer messageProducer;
     @Autowired
     private CreateService createService;
 
@@ -53,7 +55,13 @@ public class LoginRestController {
         String subject = "邮箱验证码";
         String code = emailService.generateVerificationCode();
         String content = "邮箱验证码为："+code;
-        emailService.sendSimpleEmail(to,subject,content);
+
+        Map<String,String> contentMap = new HashMap<>();
+        contentMap.put("to",to);
+        contentMap.put("subject",subject);
+        contentMap.put("content",content);
+
+        messageProducer.sendEmailCode(contentMap);
 
         Subject userSubject = SecurityUtils.getSubject();
         userSubject.logout();
@@ -159,7 +167,7 @@ public class LoginRestController {
      * 请求参数：String name 企业名, String legalRepresentativeName 法人代表名, String email 企业邮箱, String address 企业地址, String phone 企业电话
      * 返回值：CompanyToReview 待确认企业
      */
-    @RequestMapping(value = "registerCompany.do")
+    @RequestMapping(value = "/registerCompany.do")
     public CompanyToReview registerCompany(String name, String legalRepresentativeName, String email, String address, String phone){
         CompanyToReview companyToReview=new CompanyToReview(name,legalRepresentativeName,email,address,phone);
         CompanyToReview newCompanyToReview=createService.addCompanyToReview(companyToReview);
