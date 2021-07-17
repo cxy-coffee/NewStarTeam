@@ -1,6 +1,8 @@
 package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
+import com.rookiestar.starmanager.exception.HireException;
+import com.rookiestar.starmanager.exception.RequestParameterException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -65,4 +67,20 @@ public class GlobalExceptionHandler {
     /**
      * 请求参数异常
      */
+    @ExceptionHandler(value = RequestParameterException.class)
+    @ResponseBody
+    public String requestParameterException(Exception exception){
+        logger.info(exception.getMessage());
+        return  exception.getMessage();
+    }
+
+    /**
+     * 雇用异常
+     */
+    @ExceptionHandler(value = HireException.class)
+    @ResponseBody
+    public String hireException(Exception exception){
+        logger.info(exception.getMessage());
+        return  exception.getMessage();
+    }
 }

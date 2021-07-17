@@ -3,6 +3,7 @@ package com.rookiestar.starmanager.controller;
 import com.rookiestar.starmanager.constant.PermissionNames;
 import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.exception.RequestParameterException;
 import com.rookiestar.starmanager.rabbit.MessageProducer;
 import com.rookiestar.starmanager.service.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -40,7 +41,10 @@ public class ManagerRestController {
     @RequiresRoles(value = {RoleNames.MANAGER})
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping(value = "/confirmCompanyRegisterApply.do")
-    public Company confirmCompanyRegisterApply(int companyId, String name, String legalRepresentativeName, String email, String address, String phone){
+    public Company confirmCompanyRegisterApply(Integer companyId, String name, String legalRepresentativeName, String email, String address, String phone){
+        if(companyId==null||name==null||legalRepresentativeName==null||email==null||address==null||phone==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         deleteService.deleteCompanyToReviewByCompanyId(companyId);
         Company company=new Company(name,legalRepresentativeName,email,address,phone);
         Company newCompany=createService.registerCompany(company);

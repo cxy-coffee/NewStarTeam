@@ -4,6 +4,7 @@ import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.constant.PermissionNames;
 import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.exception.RequestParameterException;
 import com.rookiestar.starmanager.service.RetrieveService;
 import com.rookiestar.starmanager.service.UpdateService;
 import com.rookiestar.starmanager.util.DateUtil;
@@ -40,6 +41,9 @@ public class EmployeeRestController {
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping(value = "/updateEmployee.do")
     public boolean updateEmployee(String name, String birthday, String gender, String email, String identifyNumber, String password) throws Exception {
+        if(name==null||birthday==null||gender==null||email==null||identifyNumber==null||password==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Employee employee = new Employee(name, DateUtil.parse(birthday),gender,email,identifyNumber,0,password,null);
         return updateService.updateEmployee(employee);
     }

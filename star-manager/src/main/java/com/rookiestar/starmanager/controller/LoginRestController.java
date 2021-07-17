@@ -5,6 +5,7 @@ import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
+import com.rookiestar.starmanager.exception.RequestParameterException;
 import com.rookiestar.starmanager.rabbit.MessageProducer;
 import com.rookiestar.starmanager.service.CreateService;
 import com.rookiestar.starmanager.service.EmailService;
@@ -52,6 +53,9 @@ public class LoginRestController {
      */
     @RequestMapping("/sendEmailCode.do")
     public void sendEmailCode(String to){
+        if(to==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         String subject = "邮箱验证码";
         String code = emailService.generateVerificationCode();
         String content = "邮箱验证码为："+code;
@@ -78,15 +82,15 @@ public class LoginRestController {
      */
     @RequestMapping("/checkVerificationCode.do")
     public String checkVerificationCode(String verificationCode){
+        if(verificationCode==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Subject userSubject = SecurityUtils.getSubject();
         Session session = userSubject .getSession(false);
         if(session==null){
             throw new CheckVerificationCodeException("请通过验证码验证");
         }
         session.setAttribute(AttributeNames.VERIFY_RESULT,false);
-        if(verificationCode==null){
-            throw new CheckVerificationCodeException("请输入验证码");
-        }
         if(!verificationCode.equals(session.getAttribute(AttributeNames.VERIFICATION_CODE))){
             throw new CheckVerificationCodeException("验证码错误");
         }
@@ -102,6 +106,9 @@ public class LoginRestController {
      */
     @RequestMapping("/employeeLogin.do")
     public String employeeLogin(Integer accountNumber, String password){
+        if(accountNumber==null||password==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         Session session = subject.getSession(true);
@@ -123,6 +130,9 @@ public class LoginRestController {
      */
     @RequestMapping("/companyLogin.do")
     public String companyLogin(Integer companyId,Integer jobNumber,String password){
+        if(companyId==null||jobNumber==null||password==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession(false);
         if (session == null||session.getAttribute(AttributeNames.VERIFY_RESULT)==null||!(boolean)session.getAttribute(AttributeNames.VERIFY_RESULT)) {
@@ -148,6 +158,9 @@ public class LoginRestController {
      */
     @RequestMapping("/managerLogin.do")
     public String managerLogin(Integer accountNumber, String password) throws Exception{
+        if(accountNumber==null||password==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         Session session = subject.getSession(true);
@@ -169,6 +182,9 @@ public class LoginRestController {
      */
     @RequestMapping(value = "/registerCompany.do")
     public CompanyToReview registerCompany(String name, String legalRepresentativeName, String email, String address, String phone){
+        if(name==null||legalRepresentativeName==null||email==null||address==null||phone==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         CompanyToReview companyToReview=new CompanyToReview(name,legalRepresentativeName,email,address,phone);
         CompanyToReview newCompanyToReview=createService.addCompanyToReview(companyToReview);
         String content = "您的公司注册申请已提交，正在等待管理员审核\n"+
