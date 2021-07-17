@@ -8,6 +8,7 @@ import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.constant.PermissionNames;
 import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.entity.position.Position;
+import com.rookiestar.starmanager.exception.HireException;
 import com.rookiestar.starmanager.rabbit.MessageProducer;
 import com.rookiestar.starmanager.service.*;
 import com.rookiestar.starmanager.util.DateUtil;
@@ -83,6 +84,11 @@ public class CompanyRestController {
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping("/hireEmployee.do")
     public Experience hireEmployee(int accountNumber,int departmentId,int positionId) throws Exception{
+        Employee employee = retrieveService.retrieveEmployeeByAccountNumber(accountNumber);
+        if(employee==null){
+            throw new HireException("员工尚未注册");
+        }
+
         Session session = SecurityUtils.getSubject().getSession(false);
         int companyId = (int)session.getAttribute(AttributeNames.COMPANY_ID);
 
@@ -94,7 +100,6 @@ public class CompanyRestController {
 
         Experience newExperience = createService.hireEmployee(experience);
 
-        Employee employee = retrieveService.retrieveEmployeeByAccountNumber(accountNumber);
         String content = "您好，"+employee.getName()+"，您已被录用，您的工号为："+newExperience.getJobNumber();
         Map<String,String> contentMap = new HashMap<>(10);
         contentMap.put("to",employee.getEmail());
