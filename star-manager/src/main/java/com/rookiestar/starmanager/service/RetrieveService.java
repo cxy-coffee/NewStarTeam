@@ -4,6 +4,7 @@ package com.rookiestar.starmanager.service;
 
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
@@ -136,4 +137,10 @@ public interface RetrieveService {
      * @return all the employees who match all the params
      */
     List<Employee> retrieveEmployeesByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId);
+
+    /**
+     * retrieve all CompanyToReview objects in database
+     * @return all CompanyToReview objects.
+     */
+    List<CompanyToReview> retrieveAllCompanyToReview();
 }

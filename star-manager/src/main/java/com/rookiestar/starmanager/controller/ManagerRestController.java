@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Controller class that handle the request of manager
  *
@@ -26,6 +28,8 @@ public class ManagerRestController {
     private CreateService createService;
     @Autowired
     private DeleteService deleteService;
+    @Autowired
+    private RetrieveService retrieveService;
     @Autowired
     private EmailService emailService;
 
@@ -47,5 +51,18 @@ public class ManagerRestController {
         String content = "您的公司注册申请已被管理员通过，您的公司ID为："+company.getCompanyId();
         emailService.sendSimpleEmail("2019302110260@whu.edu.cn","注册成功通知",content);
         return newCompany;
+    }
+
+    /**
+     * 请求描述： 获得所有待审核公司
+     * 请求地址： /getCompanyToReview.do
+     * 请求参数： 无
+     * 返回值：   List<CompanyToReview> 所有待审核公司的列表
+     */
+    @RequiresRoles(value = {RoleNames.MANAGER})
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping(value = "getCompanyToReview.do")
+    public List<CompanyToReview> getCompanyToReview(){
+        return retrieveService.retrieveAllCompanyToReview();
     }
 }

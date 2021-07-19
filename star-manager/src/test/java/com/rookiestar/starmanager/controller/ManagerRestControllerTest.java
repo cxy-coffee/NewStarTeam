@@ -2,6 +2,7 @@ package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.BaseTest;
 import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.position.Position;
 import com.rookiestar.starmanager.repository.*;
@@ -26,6 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,6 +56,8 @@ public class ManagerRestControllerTest extends BaseTest {
     private RetrieveService retrieveService;
     @Autowired
     private ExperienceRepository experienceRepository;
+    @Autowired
+    private CompanyToReviewRepository companyToReviewRepository;
 
 
 
@@ -129,5 +135,20 @@ public class ManagerRestControllerTest extends BaseTest {
                 .andDo(MockMvcResultHandlers.print());
         actualPosition=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
         Assert.assertEquals(position,actualPosition);
+    }
+
+    @Test
+    @Transactional
+    public void getCompanyToReviewTest() throws Exception{
+        DataBaseUtil.getInstance().initCompanyToReview(companyToReviewRepository);
+        mvc.perform(MockMvcRequestBuilders.get("/getCompanyToReview.do")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"companyId\":1,\"name\":\"我的公司1\",\"legalRepresentativeName\":\"Alan\",\"email\":\"lihaoc@whu.edu.cn\",\"address\":\"湖北省武汉市洪山区\",\"phone\":\"88555273\"},{\"companyId\":2,\"name\":\"我的公司2\",\"legalRepresentativeName\":\"Bob\",\"email\":\"2019302110243@whu.edu.cn\",\"address\":\"四川省成都市锦江区\",\"phone\":\"88555573\"}]")))
+                .andDo(MockMvcResultHandlers.print());
+
     }
 }

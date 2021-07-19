@@ -2,6 +2,7 @@ package com.rookiestar.starmanager.service;
 
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
@@ -31,6 +32,9 @@ public class RetrieveServiceImpl implements RetrieveService{
     private DepartmentRepository departmentRepository;
     @Autowired
     private PositionRepository positionRepository;
+
+    @Autowired
+    private CompanyToReviewRepository companyToReviewRepository;
 
     @Override
     public List<Employee> retrieveAllEmployeesByCompany(int companyId) {
@@ -183,10 +187,16 @@ public class RetrieveServiceImpl implements RetrieveService{
         return employee;
     }
 
+
     @Override
     public List<Employee> retrieveEmployeesByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId) {
         List<Employee> employees=employeeRepository.findByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
         perfectEmployees(employees);
         return employees;
+    }
+
+    @Override
+    public List<CompanyToReview> retrieveAllCompanyToReview() {
+        return companyToReviewRepository.findAll();
     }
 }

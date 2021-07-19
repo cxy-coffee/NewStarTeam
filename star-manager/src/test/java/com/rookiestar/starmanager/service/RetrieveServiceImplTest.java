@@ -3,6 +3,7 @@ package com.rookiestar.starmanager.service;
 import com.rookiestar.starmanager.BaseTest;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
@@ -36,6 +37,8 @@ public class RetrieveServiceImplTest extends BaseTest {
     private ExperienceRepository experienceRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private CompanyToReviewRepository companyToReviewRepository;
     @Autowired
     private AssessmentRepository assessmentRepository;
     private final Map<Integer,Employee> employeeMap;
@@ -186,4 +189,15 @@ public class RetrieveServiceImplTest extends BaseTest {
         Employee expectEmployee = new Employee(employeeMap.get(5),new Experience(experienceMap.get(5121),assessmentMap.get(51)),new Experience(experienceMap.get(5221),assessmentMap.get(52)));
         Assert.assertEquals(expectEmployee,employee);
     }
+    @Test
+    @Transactional
+    public void retrieveAllCompanyToReviewTest()throws Exception{
+        DataBaseUtil.getInstance().initCompanyToReview(companyToReviewRepository);
+        List<CompanyToReview> companyToReviewList=new ArrayList<>();
+        companyToReviewList.add(new CompanyToReview(1,"我的公司1","Alan","lihaoc@whu.edu.cn","湖北省武汉市洪山区","88555273"));
+        companyToReviewList.add(new CompanyToReview(2,"我的公司2","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573"));
+        List<CompanyToReview> companyToReviewList1 = retrieveService.retrieveAllCompanyToReview();
+        Assert.assertEquals(companyToReviewList,companyToReviewList1);
+    }
+
 }
