@@ -10,6 +10,7 @@ import com.rookiestar.starmanager.rabbit.MessageProducer;
 import com.rookiestar.starmanager.service.CreateService;
 import com.rookiestar.starmanager.service.EmailService;
 import com.rookiestar.starmanager.shiro.token.GenericToken;
+import org.apache.catalina.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -69,7 +70,6 @@ public class LoginRestController {
         messageProducer.sendEmailCode(contentMap);
 
         Subject userSubject = SecurityUtils.getSubject();
-        userSubject.logout();
         Session session = userSubject .getSession(true);
         session.setAttribute(AttributeNames.VERIFICATION_CODE,code);
         session.setAttribute(AttributeNames.EMAIL_TO,to);
@@ -111,7 +111,6 @@ public class LoginRestController {
             throw new RequestParameterException("请求参数不正确");
         }
         Subject subject = SecurityUtils.getSubject();
-        subject.logout();
         Session session = subject.getSession(true);
         if (!subject.isAuthenticated()) {
             GenericToken token = new GenericToken(accountNumber.toString(), password);
@@ -163,7 +162,6 @@ public class LoginRestController {
             throw new RequestParameterException("请求参数不正确");
         }
         Subject subject = SecurityUtils.getSubject();
-        subject.logout();
         Session session = subject.getSession(true);
         if (!subject.isAuthenticated()) {
             GenericToken token = new GenericToken(accountNumber.toString(), password);
@@ -173,6 +171,42 @@ public class LoginRestController {
         }
         logger.info("登录成功。欢迎您："+session.getAttribute(AttributeNames.MANAGER_ACCOUNT_NUMBER));
         return "登录成功";
+    }
+
+    /**
+     * 请求描述：检查登录状态
+     * 请求地址：  /checkLoginState.do
+     * 请求参数：String userType 用户类型，固定值：employee，companyManager，manager
+     * 返回值：boolean 若已登录，则返回true，否则返回false
+     */
+    @RequestMapping("/checkLoginState.do")
+    public boolean checkLoginState(String userType){
+        if(userType==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        Subject subject = SecurityUtils.getSubject();
+        Object principal = subject.getPrincipal();
+        if(principal==null){
+            return false;
+        }
+        GenericToken token = (GenericToken)principal;
+        return token.getUserType().equals(userType);
+    }
+    /**
+     * 请求描述：登出
+     * 请求地址：  /logout.do
+     * 请求参数：
+     * 返回值：String 若已登录，则返回"登出成功"，否则返回"未登录"
+     */
+    @RequestMapping("/logout.do")
+    public String logout(){
+        Subject subject = SecurityUtils.getSubject();
+        if(!subject.isAuthenticated()){
+            return "未登录";
+        }else {
+            subject.logout();
+            return "登出成功";
+        }
     }
 
     /**

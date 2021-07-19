@@ -38,6 +38,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
 
+
         shiroFilter.setLoginUrl("/");
 
         Map<String, String> map = new LinkedHashMap<>();
