@@ -58,6 +58,8 @@ public class ManagerRestControllerTest extends BaseTest {
     private ExperienceRepository experienceRepository;
     @Autowired
     private CompanyToReviewRepository companyToReviewRepository;
+    @Autowired
+    private CompanyManagerRepository companyManagerRepository;
 
 
 
@@ -151,4 +153,6 @@ public class ManagerRestControllerTest extends BaseTest {
                 .andDo(MockMvcResultHandlers.print());
 
     }
+
+
 }

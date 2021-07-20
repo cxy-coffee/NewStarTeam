@@ -6,6 +6,7 @@ import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
+import com.rookiestar.starmanager.entity.manager.Manager;
 import com.rookiestar.starmanager.entity.position.Position;
 import com.rookiestar.starmanager.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class RetrieveServiceImpl implements RetrieveService{
     private DepartmentRepository departmentRepository;
     @Autowired
     private PositionRepository positionRepository;
+    @Autowired
+    private ManagerRepository managerRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Autowired
     private CompanyToReviewRepository companyToReviewRepository;
@@ -116,6 +121,13 @@ public class RetrieveServiceImpl implements RetrieveService{
         department.setPositions(positionRepository.findByCompanyIdAndDepartmentId(department.getCompanyId(),department.getDepartmentId()));
 
     }
+    private void perfectCompany(Company company) {
+        if(company==null){
+            return;
+        }
+        company.setDepartments(departmentRepository.findByCompanyId(company.getCompanyId()));
+        company.setExperiences(experienceRepository.findByCompanyId(company.getCompanyId()));
+    }
 
     private void perfectDepartments(List<Department> departments){
         if(departments==null){
@@ -199,4 +211,15 @@ public class RetrieveServiceImpl implements RetrieveService{
     public List<CompanyToReview> retrieveAllCompanyToReview() {
         return companyToReviewRepository.findAll();
     }
+
+
+
+    @Override
+    public Company retrieveCompanyByCompanyId(int companyId) {
+        Company company=companyRepository.findByCompanyId(companyId);
+        perfectCompany(company);
+        return company;
+    }
+
+
 }

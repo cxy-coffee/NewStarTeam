@@ -33,21 +33,23 @@ public class EmployeeRestController {
     /**
      * 请求描述：更新员工基本信息
      * 请求地址：  /updateEmployee.do
-     * 请求参数：String name 姓名, String birthday 出生年月日（yyyy-MM-dd）,String gender 性别,String email 邮箱,String identifyNumber 身份证号,String password 密码
+     * 请求参数：String birthday 出生年月日（yyyy-MM-dd）,String email 邮箱,String identifyNumber 身份证号
      * 返回值：boolean 更新是否成功
      */
     @RequiresRoles(value = {RoleNames.EMPLOYEE,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping(value = "/updateEmployee.do")
-    public boolean updateEmployee(String name, String birthday, String gender, String email, String identifyNumber, String password) throws Exception {
-        Employee employee = new Employee(name, DateUtil.parse(birthday),gender,email,identifyNumber,0,password,null);
+    public boolean updateEmployee(String birthday,String email, String identifyNumber) throws Exception {
+        Employee employee=retrieveService.retrieveEmployeeByIdentifyNumber(identifyNumber);
+        employee.setBirthday(DateUtil.parse(birthday));
+        employee.setEmail(email);
         return updateService.updateEmployee(employee);
     }
 
     /**
      * 请求描述：员工自己查询员工基本信息
      * 请求地址：  /selfRetrieveEmployee.do
-     * 请求参数：
+     * 请求参数：int accountNumber 员工账号
      * 返回值：Employee
      */
     @RequiresRoles(value = {RoleNames.EMPLOYEE,RoleNames.MANAGER},logical = Logical.OR)

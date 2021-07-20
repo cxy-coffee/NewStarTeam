@@ -82,11 +82,13 @@ public class EmployeeRestControllerTest extends BaseTest {
     public void updateEmployeeTest() throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
-        Employee employee=new Employee("测试名字", DateUtil.parse("2001-01-20"),"男","199","5",5,"123",null);
+
+        Employee employee=new Employee("张三", DateUtil.parse("2001-01-20"),"男","199","5",5,"123",null);
         Employee actualEmployee=DataBaseUtil.getInstance().getEmployeeMap().get(5);
+        System.out.println(actualEmployee.getPassword());
         employee.setExperiences(experienceRepository.findAllByAccountNumber(5));
         Assert.assertNotEquals(employee,actualEmployee);
-        mvc.perform(MockMvcRequestBuilders.get("/updateEmployee.do?name=测试名字&birthday=2001-01-20&gender=男&email=199&identifyNumber=5&accountNumber=5&password=123")
+        mvc.perform(MockMvcRequestBuilders.get("/updateEmployee.do?birthday=2001-01-20&email=199&identifyNumber=5")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .session(session)

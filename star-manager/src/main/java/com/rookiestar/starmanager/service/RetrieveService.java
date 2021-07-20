@@ -8,6 +8,7 @@ import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
+import com.rookiestar.starmanager.entity.manager.Manager;
 import com.rookiestar.starmanager.entity.position.Position;
 
 import java.util.Date;
@@ -143,4 +144,11 @@ public interface RetrieveService {
      * @return all CompanyToReview objects.
      */
     List<CompanyToReview> retrieveAllCompanyToReview();
+
+    /**
+     * retrieve a company by its companyId
+     * @param companyId the company id to retrieve
+     * @return company which matches the param
+     */
+    Company retrieveCompanyByCompanyId(int companyId);
 }

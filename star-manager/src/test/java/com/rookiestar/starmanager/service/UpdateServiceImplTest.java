@@ -55,7 +55,7 @@ public class UpdateServiceImplTest extends BaseTest {
     public void updateEmployeeTest() throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
-        Employee employee=new Employee("testName",new Date(),"男","947998108@qq.com","5",5,"1015",null);
+        Employee employee=new Employee("张三",new Date(),"男","947998108@qq.com","5",5,"123",null);
         Employee expectEmployee = new Employee(employee,new Experience(experienceMap.get(5121),assessmentMap.get(51)),new Experience(experienceMap.get(5221),assessmentMap.get(52)));
         updateService.updateEmployee(employee);
         Employee actualEmployee =retrieveService.retrieveEmployeeByIdentifyNumber("5");

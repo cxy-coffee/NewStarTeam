@@ -1,6 +1,7 @@
 package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.entity.assessment.Assessment;
+import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
@@ -295,6 +296,18 @@ public class CompanyRestController {
     @RequestMapping(value = "getEmployeeByCompanyIdAndDepartmentIdAndPositionId.do")
     public List<Employee> getEmployeeByCompanyIdAndDepartmentIdAndPositionId(int companyId,int departmentId,int positionId){
         return retrieveService.retrieveEmployeesByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
+    }
+    /**
+     * 请求描述：通过公司Id，查询本公司信息
+     * 请求地址：    /getCompanyByCompanyId.do
+     * 请求参数：int companyId 公司Id
+     * 返回值：Company 公司
+     */
+    @RequiresRoles(value = {RoleNames.MANAGER,RoleNames.COMPANY_MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping(value="getCompanyByCompanyId.do")
+    public Company getCompanyByCompanyId(int companyId){
+        return retrieveService.retrieveCompanyByCompanyId(companyId);
     }
 
 

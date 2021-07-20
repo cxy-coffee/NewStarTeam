@@ -30,10 +30,9 @@ public class UpdateServiceImpl implements UpdateService{
     PositionRepository positionRepository;
     @Override
     public boolean updateEmployee(Employee employee) {
+        System.out.println(employee.getPassword()+"in update service");
         Employee employeeToUpdate=retrieveService.retrieveEmployeeByIdentifyNumber(employee.getIdentifyNumber());
-        employeeToUpdate.setGender(employee.getGender());
         employeeToUpdate.setBirthday(employee.getBirthday());
-        employeeToUpdate.setName(employee.getName());
         employeeToUpdate.setEmail(employee.getEmail());
         employeeToUpdate.setPassword(employee.getPassword());
         employeeRepository.save(employeeToUpdate);
