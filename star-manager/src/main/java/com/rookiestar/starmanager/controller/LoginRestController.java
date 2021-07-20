@@ -1,25 +1,28 @@
 package com.rookiestar.starmanager.controller;
 
-import com.rookiestar.starmanager.constant.PermissionNames;
-import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.constant.UserTypes;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
+import com.rookiestar.starmanager.exception.RequestParameterException;
+import com.rookiestar.starmanager.rabbit.MessageProducer;
 import com.rookiestar.starmanager.service.CreateService;
 import com.rookiestar.starmanager.service.EmailService;
 import com.rookiestar.starmanager.shiro.token.GenericToken;
+import org.apache.catalina.User;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Controller class that handle the request of login
@@ -34,6 +37,8 @@ public class LoginRestController {
 
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private MessageProducer messageProducer;
     @Autowired
     private CreateService createService;
 
@@ -50,13 +55,21 @@ public class LoginRestController {
      */
     @RequestMapping("/sendEmailCode.do")
     public void sendEmailCode(String to){
+        if(to==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         String subject = "邮箱验证码";
         String code = emailService.generateVerificationCode();
         String content = "邮箱验证码为："+code;
-        emailService.sendSimpleEmail(to,subject,content);
+
+        Map<String,String> contentMap = new HashMap<>();
+        contentMap.put("to",to);
+        contentMap.put("subject",subject);
+        contentMap.put("content",content);
+
+        messageProducer.sendEmailCode(contentMap);
 
         Subject userSubject = SecurityUtils.getSubject();
-        userSubject.logout();
         Session session = userSubject .getSession(true);
         session.setAttribute(AttributeNames.VERIFICATION_CODE,code);
         session.setAttribute(AttributeNames.EMAIL_TO,to);
@@ -70,15 +83,15 @@ public class LoginRestController {
      */
     @RequestMapping("/checkVerificationCode.do")
     public String checkVerificationCode(String verificationCode){
+        if(verificationCode==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Subject userSubject = SecurityUtils.getSubject();
         Session session = userSubject .getSession(false);
         if(session==null){
             throw new CheckVerificationCodeException("请通过验证码验证");
         }
         session.setAttribute(AttributeNames.VERIFY_RESULT,false);
-        if(verificationCode==null){
-            throw new CheckVerificationCodeException("请输入验证码");
-        }
         if(!verificationCode.equals(session.getAttribute(AttributeNames.VERIFICATION_CODE))){
             throw new CheckVerificationCodeException("验证码错误");
         }
@@ -94,8 +107,10 @@ public class LoginRestController {
      */
     @RequestMapping("/employeeLogin.do")
     public String employeeLogin(Integer accountNumber, String password){
+        if(accountNumber==null||password==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Subject subject = SecurityUtils.getSubject();
-        subject.logout();
         Session session = subject.getSession(true);
         if (!subject.isAuthenticated()) {
             GenericToken token = new GenericToken(accountNumber.toString(), password);
@@ -115,6 +130,9 @@ public class LoginRestController {
      */
     @RequestMapping("/companyLogin.do")
     public String companyLogin(Integer companyId,Integer jobNumber,String password){
+        if(companyId==null||jobNumber==null||password==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession(false);
         if (session == null||session.getAttribute(AttributeNames.VERIFY_RESULT)==null||!(boolean)session.getAttribute(AttributeNames.VERIFY_RESULT)) {
@@ -140,8 +158,10 @@ public class LoginRestController {
      */
     @RequestMapping("/managerLogin.do")
     public String managerLogin(Integer accountNumber, String password) throws Exception{
+        if(accountNumber==null||password==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Subject subject = SecurityUtils.getSubject();
-        subject.logout();
         Session session = subject.getSession(true);
         if (!subject.isAuthenticated()) {
             GenericToken token = new GenericToken(accountNumber.toString(), password);
@@ -154,13 +174,52 @@ public class LoginRestController {
     }
 
     /**
+     * 请求描述：检查登录状态
+     * 请求地址：  /checkLoginState.do
+     * 请求参数：String userType 用户类型，固定值：employee，companyManager，manager
+     * 返回值：boolean 若已登录，则返回true，否则返回false
+     */
+    @RequestMapping("/checkLoginState.do")
+    public boolean checkLoginState(String userType){
+        if(userType==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        Subject subject = SecurityUtils.getSubject();
+        Object principal = subject.getPrincipal();
+        if(principal==null){
+            return false;
+        }
+        GenericToken token = (GenericToken)principal;
+        return token.getUserType().equals(userType);
+    }
+    /**
+     * 请求描述：登出
+     * 请求地址：  /logout.do
+     * 请求参数：
+     * 返回值：String 若已登录，则返回"登出成功"，否则返回"未登录"
+     */
+    @RequestMapping("/logout.do")
+    public String logout(){
+        Subject subject = SecurityUtils.getSubject();
+        if(!subject.isAuthenticated()){
+            return "未登录";
+        }else {
+            subject.logout();
+            return "登出成功";
+        }
+    }
+
+    /**
      * 请求描述：注册企业
      * 请求地址：  /registerCompany.do
      * 请求参数：String name 企业名, String legalRepresentativeName 法人代表名, String email 企业邮箱, String address 企业地址, String phone 企业电话
      * 返回值：CompanyToReview 待确认企业
      */
-    @RequestMapping(value = "registerCompany.do")
+    @RequestMapping(value = "/registerCompany.do")
     public CompanyToReview registerCompany(String name, String legalRepresentativeName, String email, String address, String phone){
+        if(name==null||legalRepresentativeName==null||email==null||address==null||phone==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         CompanyToReview companyToReview=new CompanyToReview(name,legalRepresentativeName,email,address,phone);
         CompanyToReview newCompanyToReview=createService.addCompanyToReview(companyToReview);
         String content = "您的公司注册申请已提交，正在等待管理员审核\n"+

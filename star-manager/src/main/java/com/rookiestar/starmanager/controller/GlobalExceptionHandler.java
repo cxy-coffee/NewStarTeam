@@ -1,6 +1,8 @@
 package com.rookiestar.starmanager.controller;
 
 import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
+import com.rookiestar.starmanager.exception.HireException;
+import com.rookiestar.starmanager.exception.RequestParameterException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Description
+ * Handle exception
  *
  * @author 曹向阳
  * @date 2021/7/12
@@ -21,6 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class GlobalExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * shiro异常
+     */
     @ExceptionHandler(value = UnknownAccountException.class)
     @ResponseBody
     public String unknownAccountException(Exception exception){
@@ -42,6 +47,16 @@ public class GlobalExceptionHandler {
         return "用户名或密码错误";
     }
 
+    @ExceptionHandler(value = UnauthorizedException.class)
+    @ResponseBody
+    public String unauthorizedException(Exception exception){
+        logger.info(exception.getMessage());
+        return  exception.getMessage();
+    }
+
+    /**
+     * 验证码异常
+     */
     @ExceptionHandler(value = CheckVerificationCodeException.class)
     @ResponseBody
     public String checkVerificationCodeException(Exception exception){
@@ -49,9 +64,22 @@ public class GlobalExceptionHandler {
         return  exception.getMessage();
     }
 
-    @ExceptionHandler(value = UnauthorizedException.class)
+    /**
+     * 请求参数异常
+     */
+    @ExceptionHandler(value = RequestParameterException.class)
     @ResponseBody
-    public String unauthorizedException(Exception exception){
+    public String requestParameterException(Exception exception){
+        logger.info(exception.getMessage());
+        return  exception.getMessage();
+    }
+
+    /**
+     * 雇用异常
+     */
+    @ExceptionHandler(value = HireException.class)
+    @ResponseBody
+    public String hireException(Exception exception){
         logger.info(exception.getMessage());
         return  exception.getMessage();
     }

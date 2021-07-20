@@ -4,6 +4,7 @@ import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.constant.PermissionNames;
 import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.exception.RequestParameterException;
 import com.rookiestar.starmanager.service.RetrieveService;
 import com.rookiestar.starmanager.service.UpdateService;
 import com.rookiestar.starmanager.util.DateUtil;
@@ -13,6 +14,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,6 +42,9 @@ public class EmployeeRestController {
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping(value = "/updateEmployee.do")
     public boolean updateEmployee(String birthday,String email, String identifyNumber) throws Exception {
+        if(birthday==null||email==null||identifyNumber==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Employee employee=retrieveService.retrieveEmployeeByIdentifyNumber(identifyNumber);
         employee.setBirthday(DateUtil.parse(birthday));
         employee.setEmail(email);
@@ -49,7 +54,7 @@ public class EmployeeRestController {
     /**
      * 请求描述：员工自己查询员工基本信息
      * 请求地址：  /selfRetrieveEmployee.do
-     * 请求参数：int accountNumber 员工账号
+     * 请求参数：
      * 返回值：Employee
      */
     @RequiresRoles(value = {RoleNames.EMPLOYEE,RoleNames.MANAGER},logical = Logical.OR)

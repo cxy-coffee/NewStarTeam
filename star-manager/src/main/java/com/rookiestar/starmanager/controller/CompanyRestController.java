@@ -9,6 +9,9 @@ import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.constant.PermissionNames;
 import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.entity.position.Position;
+import com.rookiestar.starmanager.exception.HireException;
+import com.rookiestar.starmanager.exception.RequestParameterException;
+import com.rookiestar.starmanager.rabbit.MessageProducer;
 import com.rookiestar.starmanager.service.*;
 import com.rookiestar.starmanager.util.DateUtil;
 import org.apache.shiro.SecurityUtils;
@@ -17,10 +20,13 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller class that handle the request of company
@@ -35,11 +41,11 @@ public class CompanyRestController {
     @Autowired
     private RetrieveService retrieveService;
     @Autowired
-    private EmailService emailService;
-    @Autowired
     private CreateService createService;
     @Autowired
     private DeleteService deleteService;
+    @Autowired
+    private MessageProducer messageProducer;
 
     /**
      * 请求描述：通过企业id获取该企业所有员工（包括已离职员工）
@@ -80,13 +86,34 @@ public class CompanyRestController {
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping("/hireEmployee.do")
-    public Experience hireEmployee(Experience experience) throws Exception{
+    public Experience hireEmployee(Integer accountNumber,Integer departmentId,Integer positionId) throws Exception{
+        if(accountNumber==null||departmentId==null||positionId==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+
+        Employee employee = retrieveService.retrieveEmployeeByAccountNumber(accountNumber);
+        if(employee==null){
+            throw new HireException("员工尚未注册");
+        }
+
         Session session = SecurityUtils.getSubject().getSession(false);
         int companyId = (int)session.getAttribute(AttributeNames.COMPANY_ID);
+
+        Experience experience = new Experience();
+        experience.setAccountNumber(accountNumber);
+        experience.setDepartmentId(departmentId);
+        experience.setPositionId(positionId);
         experience.setCompanyId(companyId);
+
         Experience newExperience = createService.hireEmployee(experience);
-        String content = "您已被录用，您的工号为："+newExperience.getJobNumber();
-        emailService.sendSimpleEmail("2019302110260@whu.edu.cn","录用通知",content);
+
+        String content = "您好，"+employee.getName()+"，您已被录用，您的工号为："+newExperience.getJobNumber();
+        Map<String,String> contentMap = new HashMap<>(10);
+        contentMap.put("to",employee.getEmail());
+        contentMap.put("subject","录用通知");
+        contentMap.put("content",content);
+        messageProducer.sendNotice(contentMap);
+
         return newExperience;
     }
 
@@ -100,10 +127,20 @@ public class CompanyRestController {
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping("/registerEmployee.do")
     public Employee registerEmployee(String name, String birthday, String gender, String email, String identifyNumber, String password) throws Exception{
+        if(name==null||birthday==null||gender==null||email==null||identifyNumber==null||password==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+
         Employee employee = new Employee(name, DateUtil.parse(birthday),gender,email,identifyNumber,0,password,null);
         Employee newEmployee = createService.registerEmployee(employee);
-        String content = "您已成功注册，您的账号为："+newEmployee.getAccountNumber();
-        emailService.sendSimpleEmail("2019302110260@whu.edu.cn","注册通知",content);
+
+        String content = "您好，"+newEmployee.getName()+"，您已成功注册，您的账号为："+newEmployee.getAccountNumber();
+        Map<String,String> contentMap = new HashMap<>(10);
+        contentMap.put("to",employee.getEmail());
+        contentMap.put("subject","注册通知");
+        contentMap.put("content",content);
+        messageProducer.sendNotice(contentMap);
+
         return newEmployee;
     }
 
@@ -117,6 +154,9 @@ public class CompanyRestController {
     @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping("/getEmployeesByName.do")
     public List<Employee> getEmployeesByName(String name){
+        if(name==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         return retrieveService.retrieveEmployeesByName(name);
     }
 
@@ -130,6 +170,9 @@ public class CompanyRestController {
     @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping("/getEmployeeByIdentifyNumber.do")
     public Employee getEmployeeByIdentifyNumber(String identifyNumber){
+        if(identifyNumber==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         return retrieveService.retrieveEmployeeByIdentifyNumber(identifyNumber);
     }
 
@@ -143,6 +186,9 @@ public class CompanyRestController {
     @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping("/getEmployeesByGender.do")
     public List<Employee> getEmployeesByGender(String gender){
+        if(gender==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         return retrieveService.retrieveEmployeesByGender(gender);
     }
 
@@ -154,8 +200,11 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
-    @RequestMapping(value = "getEmployeeByEmail.do")
+    @RequestMapping(value = "/getEmployeeByEmail.do")
     public Employee getEmployeeByEmail(String email){
+        if(email==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         return retrieveService.retrieveEmployeeByEmail(email);
     }
 
@@ -169,7 +218,10 @@ public class CompanyRestController {
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping(value = "/updateAssessment.do")
-    public boolean updateAssessment(int accountNumber, int companyId, String startTime, String absenteeismRate, String performance) throws Exception {
+    public boolean updateAssessment(Integer accountNumber, Integer companyId, String startTime, String absenteeismRate, String performance) throws Exception {
+        if(accountNumber==null||companyId==null||startTime==null||absenteeismRate==null||performance==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Assessment assessment = new Assessment(accountNumber, companyId, DateUtil.parse(startTime), absenteeismRate, performance);
         return updateService.updateAssessment(assessment);
     }
@@ -183,9 +235,12 @@ public class CompanyRestController {
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping(value = "/updateExperience.do")
-    public boolean updateExperience(int accountNumber, int companyId,
-                                    int departmentId, int positionId, int jobNumber,
-                                    String startTime, String endTime, boolean isEnd) throws Exception {
+    public boolean updateExperience(Integer accountNumber, Integer companyId,
+                                    Integer departmentId, Integer positionId, Integer jobNumber,
+                                    String startTime, String endTime, Boolean isEnd) throws Exception {
+        if(accountNumber==null||companyId==null||departmentId==null||positionId==null||jobNumber==null||startTime==null||endTime==null||isEnd==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Experience experience = new Experience(accountNumber, companyId, departmentId, positionId, jobNumber,
                 DateUtil.parse(startTime), DateUtil.parse(endTime), isEnd);
         return updateService.updateExperience(experience);
@@ -199,8 +254,11 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
-    @RequestMapping(value = "updateDepartment.do")
-    public boolean updateDepartment(int companyId,int departmentId,String name){
+    @RequestMapping(value = "/updateDepartment.do")
+    public boolean updateDepartment(Integer companyId,Integer departmentId,String name){
+        if(companyId==null||departmentId==null||name==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Department department = new Department(companyId, departmentId, name, null);
         return updateService.updateDepartment(department);
     }
@@ -213,8 +271,11 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
-    @RequestMapping(value = "updatePosition.do")
-    public boolean updatePosition(int companyId,int departmentId,int positionId,String name){
+    @RequestMapping(value = "/updatePosition.do")
+    public boolean updatePosition(Integer companyId,Integer departmentId,Integer positionId,String name){
+        if(companyId==null||departmentId==null||positionId==null||name==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         Position position = new Position(companyId, departmentId, positionId, name);
         return updateService.updatePosition(position);
     }
@@ -227,8 +288,11 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
-    @RequestMapping(value = "deletePosition.do")
-    public boolean deletePosition(int companyId,int departmentId,int positionId){
+    @RequestMapping(value = "/deletePosition.do")
+    public boolean deletePosition(Integer companyId,Integer departmentId,Integer positionId){
+        if(companyId==null||departmentId==null||positionId==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         return deleteService.deletePositionByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
     }
 
@@ -240,8 +304,11 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
-    @RequestMapping(value = "deleteDepartment.do")
-    public boolean deleteDepartment(int companyId,int departmentId){
+    @RequestMapping(value = "/deleteDepartment.do")
+    public boolean deleteDepartment(Integer companyId,Integer departmentId){
+        if(companyId==null||departmentId==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         return deleteService.deleteDepartmentByCompanyIdAndDepartmentId(companyId,departmentId);
     }
 
@@ -253,8 +320,11 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
-    @RequestMapping(value = "getDepartmentByCompanyId.do")
-    public List<Department> getDepartmentByCompanyId(int companyId){
+    @RequestMapping(value = "/getDepartmentByCompanyId.do")
+    public List<Department> getDepartmentByCompanyId(Integer companyId){
+        if(companyId==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         return retrieveService.retrieveDepartmentByCompanyId(companyId);
     }
 
@@ -266,8 +336,11 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
-    @RequestMapping(value = "getPositionByCompanyIdAndDepartmentId.do")
-    public List<Position> getPositionByCompanyIdAndDepartmentId(int companyId,int departmentId){
+    @RequestMapping(value = "/getPositionByCompanyIdAndDepartmentId.do")
+    public List<Position> getPositionByCompanyIdAndDepartmentId(Integer companyId,Integer departmentId){
+        if(companyId==null||departmentId==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         return retrieveService.retrievePositionByCompanyIdAndDepartmentId(companyId,departmentId);
     }
 
@@ -280,8 +353,11 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
-    @RequestMapping(value = "getEmployeeByCompanyIdAndDepartmentId.do")
-    public List<Employee> getEmployeeByCompanyIdAndDepartmentId(int companyId,int departmentId){
+    @RequestMapping(value = "/getEmployeeByCompanyIdAndDepartmentId.do")
+    public List<Employee> getEmployeeByCompanyIdAndDepartmentId(Integer companyId,Integer departmentId){
+        if(companyId==null||departmentId==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         return retrieveService.retrieveEmployeesByCompanyIdAndDepartmentId(companyId,departmentId);
     }
 
@@ -293,8 +369,11 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
-    @RequestMapping(value = "getEmployeeByCompanyIdAndDepartmentIdAndPositionId.do")
-    public List<Employee> getEmployeeByCompanyIdAndDepartmentIdAndPositionId(int companyId,int departmentId,int positionId){
+    @RequestMapping(value = "/getEmployeeByCompanyIdAndDepartmentIdAndPositionId.do")
+    public List<Employee> getEmployeeByCompanyIdAndDepartmentIdAndPositionId(Integer companyId,Integer departmentId,Integer positionId){
+        if(companyId==null||departmentId==null||positionId==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         return retrieveService.retrieveEmployeesByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
     }
     /**
