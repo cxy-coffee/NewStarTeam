@@ -47,6 +47,8 @@ public class ShiroConfig {
         map.put("/employeeLogin.do", "anon");
         map.put("/companyLogin.do", "anon");
         map.put("/managerLogin.do", "anon");
+        map.put("/checkLoginState.do", "anon");
+        map.put("/logout.do", "anon");
         map.put("/**", "authc");
         shiroFilter.setFilterChainDefinitionMap(map);
         return shiroFilter;

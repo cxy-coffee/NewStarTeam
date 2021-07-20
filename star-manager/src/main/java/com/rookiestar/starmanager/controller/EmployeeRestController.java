@@ -14,11 +14,9 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.persistence.criteria.CriteriaBuilder;
 
 /**
  * Controller class that handle the request of employee
@@ -59,7 +57,7 @@ public class EmployeeRestController {
      */
     @RequiresRoles(value = {RoleNames.EMPLOYEE,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
-        @RequestMapping("/selfRetrieveEmployee.do")
+    @RequestMapping("/selfRetrieveEmployee.do")
     public Employee selfRetrieveEmployee(){
         Session session = SecurityUtils.getSubject().getSession(false);
         int accountNumber = Integer.parseInt(session.getAttribute(AttributeNames.ACCOUNT_NUMBER).toString());

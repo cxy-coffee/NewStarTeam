@@ -119,17 +119,17 @@ public class CompanyRestControllerTest extends BaseTest {
     @Transactional
     public void hireEmployeeTest() throws Exception{
         DataBaseUtil.getInstance().initExperience(experienceRepository);
-        mvc.perform(MockMvcRequestBuilders.get("/hireEmployee.do?accountNumber=9&departmentId=1&positionId=1")
+        mvc.perform(MockMvcRequestBuilders.get("/hireEmployee.do?accountNumber=7&departmentId=1&positionId=1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .session(session)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("accountNumber").value(9))
+                .andExpect(MockMvcResultMatchers.jsonPath("accountNumber").value(7))
                 .andExpect(MockMvcResultMatchers.jsonPath("companyId").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("departmentId").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("positionId").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("jobNumber").value(9111))
+                .andExpect(MockMvcResultMatchers.jsonPath("jobNumber").value(7111))
                 .andExpect(MockMvcResultMatchers.jsonPath("isEnd").value(false))
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -202,7 +202,7 @@ public class CompanyRestControllerTest extends BaseTest {
                 .session(session)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"companyId\":1,\"name\":\"我的公司1\",\"legalRepresentativeName\":\"Alan\",\"email\":\"lihaoc@whu.edu.cn\",\"address\":\"湖北省武汉市洪山区\",\"phone\":\"88555273\",\"experiences\":null,\"departments\":null}")))
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"companyId\":1,\"name\":\"我的公司1\",\"legalRepresentativeName\":\"Alan\",\"email\":\"lihaoc@whu.edu.cn\",\"address\":\"湖北省武汉市洪山区\",\"phone\":\"88555273\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":null},{\"accountNumber\":6,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1621,\"startTime\":\"2011-01-11T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":null},{\"accountNumber\":7,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1721,\"startTime\":\"2012-01-12T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":null},{\"accountNumber\":8,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1821,\"startTime\":\"2013-01-13T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":null},{\"accountNumber\":9,\"companyId\":1,\"departmentId\":1,\"positionId\":2,\"jobNumber\":9112,\"startTime\":\"2021-07-20T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":null}],\"departments\":[{\"companyId\":1,\"departmentId\":1,\"name\":\"公司1部门1\",\"positions\":null},{\"companyId\":1,\"departmentId\":2,\"name\":\"公司1部门2\",\"positions\":null}]}")))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -282,9 +282,6 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"companyId\":3,\"name\":\"腾讯\",\"legalRepresentativeName\":\"马化腾\",\"email\":\"abcdef@qq.com\",\"address\":\"广东省深圳市南山区\",\"phone\":\"1342525262\"}")))
                 .andDo(MockMvcResultHandlers.print());
     }
-
-
-
 
     @Test
     @Transactional
