@@ -20,7 +20,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -385,7 +384,10 @@ public class CompanyRestController {
     @RequiresRoles(value = {RoleNames.MANAGER,RoleNames.COMPANY_MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping(value="getCompanyByCompanyId.do")
-    public Company getCompanyByCompanyId(int companyId){
+    public Company getCompanyByCompanyId(Integer companyId){
+        if(companyId==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
         return retrieveService.retrieveCompanyByCompanyId(companyId);
     }
 
