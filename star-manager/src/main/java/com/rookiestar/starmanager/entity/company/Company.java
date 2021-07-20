@@ -171,4 +171,18 @@ public class Company implements Serializable {
         Company company = (Company) o;
         return companyId == company.companyId && name.equals(company.name) && legalRepresentativeName.equals(company.legalRepresentativeName) && email.equals(company.email) && address.equals(company.address) && phone.equals(company.phone) && Objects.equals(experiences, company.experiences) && Objects.equals(departments, company.departments);
     }
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "companyId=" + companyId +
+                ", name='" + name + '\'' +
+                ", legalRepresentativeName='" + legalRepresentativeName + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", experiences=" + experiences +
+                ", departments=" + departments +
+                '}';
+    }
 }

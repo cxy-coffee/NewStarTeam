@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Scope;
  * @author 曹向阳
  * @date 2021/7/17
  */
+@SuppressWarnings("ALL")
 @Configuration
 public class RabbitConfig {
     @Value("${spring.rabbitmq.host}")

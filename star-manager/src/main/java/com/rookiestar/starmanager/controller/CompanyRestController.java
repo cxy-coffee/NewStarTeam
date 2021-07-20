@@ -391,5 +391,53 @@ public class CompanyRestController {
         return retrieveService.retrieveCompanyByCompanyId(companyId);
     }
 
+    @RequiresRoles(value={RoleNames.MANAGER,RoleNames.COMPANY_MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping(value = "getEmployeeByCompanyIdAndName.do")
+    public List<Employee> getEmployeeByCompanyIdAndName(String name){
+        if(name==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        Session session = SecurityUtils.getSubject().getSession(false);
+        int companyId = (int)session.getAttribute(AttributeNames.COMPANY_ID);
+        return retrieveService.retrieveEmployeesByCompanyIdAndName(companyId,name);
+    }
+
+    @RequiresRoles(value={RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping(value ="getEmployeeByCompanyIdAndGender.do")
+    public List<Employee> getEmployeeByCompanyIdAndGender(String gender){
+        if(gender==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        Session session = SecurityUtils.getSubject().getSession(false);
+        int companyId = (int)session.getAttribute(AttributeNames.COMPANY_ID);
+        return retrieveService.retrieveEmployeesByCompanyIdAndGender(companyId,gender);
+    }
+
+    @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping(value = "getEmployeeByCompanyIdAndEmail.do")
+    public Employee getEmployeeByCompanyIdAndEmail(String email){
+        if(email==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        Session session = SecurityUtils.getSubject().getSession(false);
+        int companyId = (int)session.getAttribute(AttributeNames.COMPANY_ID);
+        return retrieveService.retrieveEmployeesByCompanyIdAndEmail(companyId,email);
+    }
+
+    @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping(value = "getEmployeeByCompanyIdAndIdentifyNumber.do")
+    public Employee getEmployeeByCompanyIdAndIdentifyNumber(String identifyNumber){
+        if(identifyNumber==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        Session session=SecurityUtils.getSubject().getSession(false);
+        int companyId=(int)session.getAttribute(AttributeNames.COMPANY_ID);
+        return retrieveService.retrieveEmployeesByCompanyIdAndIdentifyNumber(companyId,identifyNumber);
+    }
+
 
 }

@@ -68,9 +68,30 @@ public class RetrieveServiceImpl implements RetrieveService{
     }
 
     @Override
+    public List<Employee> retrieveEmployeesByCompanyIdAndName(int companyId,String name) {
+        List<Employee> employees=employeeRepository.findByCompanyIdAndName(companyId,name);
+        perfectPresentEmployees(employees,companyId);
+        return employees;
+    }
+
+    @Override
     public Employee retrieveEmployeeByIdentifyNumber(String identifyNumber) {
         Employee employee=employeeRepository.findByIdentifyNumber(identifyNumber);
         perfectEmployee(employee);
+        return employee;
+    }
+
+    @Override
+    public List<Employee> retrieveEmployeesByCompanyIdAndGender(int companyId, String gender) {
+        List<Employee> employees=employeeRepository.findByCompanyIdAndGender(companyId,gender);
+        perfectPresentEmployees(employees,companyId);
+        return employees;
+    }
+
+    @Override
+    public Employee retrieveEmployeesByCompanyIdAndEmail(int companyId, String email) {
+        Employee employee=employeeRepository.findByCompanyIdAndEmail(companyId,email);
+        perfectPresentEmployee(employee,companyId);
         return employee;
     }
 
@@ -98,6 +119,30 @@ public class RetrieveServiceImpl implements RetrieveService{
             perfectExperience(experience);
         }
     }
+    private void perfectPresentEmployee(Employee employee ,int companyId){
+        if(employee==null){
+            return;
+        }
+        employee.setExperiences(experienceRepository.findByCompanyIdAndAccountNumber(companyId,employee.getAccountNumber()));
+        perfectExperiences(employee.getExperiences());
+    }
+
+    private void perfectPresentEmployees(List<Employee> employees ,int companyId){
+        if(employees==null){
+            return;
+        }
+        for (Employee employee:employees) {
+            perfectPresentEmployee(employee,companyId);
+        }
+    }
+
+    @Override
+    public Employee retrieveEmployeesByCompanyIdAndIdentifyNumber(int companyId, String identifyNumber) {
+        Employee employee=employeeRepository.findByCompanyIdAndIdentifyNumber(companyId,identifyNumber);
+        perfectPresentEmployee(employee,companyId);
+        return employee;
+    }
+
     private void perfectEmployee(Employee employee){
         if(employee==null){
             return;
@@ -127,6 +172,8 @@ public class RetrieveServiceImpl implements RetrieveService{
         }
         company.setDepartments(departmentRepository.findByCompanyId(company.getCompanyId()));
         company.setExperiences(experienceRepository.findByCompanyId(company.getCompanyId()));
+        perfectExperiences(company.getExperiences());
+        perfectDepartments(company.getDepartments());
     }
 
     private void perfectDepartments(List<Department> departments){

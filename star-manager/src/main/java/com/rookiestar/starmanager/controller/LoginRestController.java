@@ -62,7 +62,7 @@ public class LoginRestController {
         String code = emailService.generateVerificationCode();
         String content = "邮箱验证码为："+code;
 
-        Map<String,String> contentMap = new HashMap<>();
+        Map<String,String> contentMap = new HashMap<>(10);
         contentMap.put("to",to);
         contentMap.put("subject",subject);
         contentMap.put("content",content);
@@ -157,7 +157,7 @@ public class LoginRestController {
      * 返回值：String 如果成功，返回："登录成功"。否则返回错误信息。
      */
     @RequestMapping("/managerLogin.do")
-    public String managerLogin(Integer accountNumber, String password) throws Exception{
+    public String managerLogin(Integer accountNumber, String password){
         if(accountNumber==null||password==null){
             throw new RequestParameterException("请求参数不正确");
         }
