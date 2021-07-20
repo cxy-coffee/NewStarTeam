@@ -40,6 +40,8 @@ public class RetrieveServiceImplTest extends BaseTest {
     @Autowired
     private CompanyToReviewRepository companyToReviewRepository;
     @Autowired
+    private CompanyRepository companyRepository;
+    @Autowired
     private AssessmentRepository assessmentRepository;
     private final Map<Integer,Employee> employeeMap;
     private final Map<Integer,Experience> experienceMap;
@@ -198,6 +200,78 @@ public class RetrieveServiceImplTest extends BaseTest {
         companyToReviewList.add(new CompanyToReview(2,"我的公司2","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573"));
         List<CompanyToReview> companyToReviewList1 = retrieveService.retrieveAllCompanyToReview();
         Assert.assertEquals(companyToReviewList,companyToReviewList1);
+    }
+
+//    List<Employee> retrieveEmployeesByCompanyIdAndName(int companyId,String name);
+//
+//    List<Employee> retrieveEmployeesByCompanyIdAndGender(int companyId, String gender);
+//
+//    Employee retrieveEmployeesByCompanyIdAndEmail(int companyId, String email);
+//
+//    Employee retrieveEmployeesByCompanyIdAndIdentifyNumber(int companyId, String identifyNumber);
+
+
+    @Test
+    @Transactional
+    public void retrieveEmployeesByCompanyIdAndNameTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
+        employee.setExperiences(experienceRepository.findByCompanyIdAndAccountNumber(1,5));
+        List<Employee> employees=new ArrayList<>();
+        employees.add(employee);
+        List<Employee> actualEmployees=retrieveService.retrieveEmployeesByCompanyIdAndName(1,"三");
+        Assert.assertEquals(employees,actualEmployees);
+    }
+    @Test
+    @Transactional
+    public void retrieveEmployeesByCompanyIdAndIdentifyNumberTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
+        employee.setExperiences(experienceRepository.findByCompanyIdAndAccountNumber(1,5));
+
+        Employee actualEmployee=retrieveService.retrieveEmployeesByCompanyIdAndIdentifyNumber(1,"5");
+        Assert.assertEquals(employee,actualEmployee);
+    }
+    @Test
+    @Transactional
+    public void retrieveEmployeesByCompanyIdAndEmailTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
+        employee.setExperiences(experienceRepository.findByCompanyIdAndAccountNumber(1,5));
+        Employee actualEmployee=retrieveService.retrieveEmployeesByCompanyIdAndEmail(1,"2019302110260@whu.edu.cn");
+        Assert.assertEquals(employee,actualEmployee);
+    }
+    @Test
+    @Transactional
+    public void retrieveEmployeesByCompanyIdAndGenderTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
+        employee.setExperiences(experienceRepository.findByCompanyIdAndAccountNumber(1,5));
+        List<Employee> employees=new ArrayList<>();
+        employees.add(employee);
+        List<Employee> actualEmployees=retrieveService.retrieveEmployeesByCompanyIdAndGender(1,"男");
+        Assert.assertEquals(employees,actualEmployees);
+    }
+
+    @Test
+    @Transactional
+    public void retrieveCompanyByCompanyIdTest()throws Exception{
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initCompany(companyRepository);
+        DataBaseUtil.getInstance().initDepartment(departmentRepository);
+        DataBaseUtil.getInstance().initPosition(positionRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
+        Company company=new Company(1,"我的公司1","Alan","lihaoc@whu.edu.cn","湖北省武汉市洪山区","88555273",null,null);
+        company.setDepartments(departmentRepository.findByCompanyId(company.getCompanyId()));
+        company.setExperiences(experienceRepository.findByCompanyId(1));
+        Company actualCompany=retrieveService.retrieveCompanyByCompanyId(1);
+        System.out.println(actualCompany.toString());
+        Assert.assertEquals(company,actualCompany);
+
     }
 
 }

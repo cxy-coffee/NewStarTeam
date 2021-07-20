@@ -94,4 +94,40 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
      */
     @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and exp.departmentId=?2 and exp.positionId=?3")
     List<Employee> findByCompanyIdAndDepartmentIdAndPositionId(int companyId,int departmentId,int positionId);
+
+    /**
+     * get all employees whose names contain a certain string and is now working in the company
+     * @param companyId the companyId of the company that employees working in
+     * @param name the name of the employees
+     * @return the employees which match all the params
+     */
+    @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and emp.name like %?2% and exp.isEnd=false")
+    List<Employee> findByCompanyIdAndName(int companyId,String name);
+
+    /**
+     * get all employees in a company that have same gender
+     * @param companyId the companyId of the company that employees working in
+     * @param gender the gender of the employees to find
+     * @return the employees which match all the params
+     */
+    @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and emp.gender = ?2 and exp.isEnd=false")
+    List<Employee> findByCompanyIdAndGender(int companyId,String gender);
+
+    /**
+     * get an employee who's working in the company and having a email matches the param
+     * @param companyId the companyId of the company that employees working in
+     * @param email the email of the employee to find
+     * @return the employee who matches all the params
+     */
+    @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and emp.email = ?2 and exp.isEnd=false")
+    Employee findByCompanyIdAndEmail(int companyId,String email);
+
+    /**
+     * get an employee who's working in the company and having an identifyNumber matches the param
+     * @param companyId the companyId of the company that employees working in
+     * @param identifyNumber the identifyNumber of the employee to find
+     * @return the employee who matches all the params
+     */
+    @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and emp.identifyNumber = ?2 and exp.isEnd=false")
+    Employee findByCompanyIdAndIdentifyNumber(int companyId,String identifyNumber);
 }

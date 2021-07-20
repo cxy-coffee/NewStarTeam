@@ -151,4 +151,36 @@ public interface RetrieveService {
      * @return company which matches the param
      */
     Company retrieveCompanyByCompanyId(int companyId);
+
+    /**
+     * retrieve employees by its companyId and Name
+     * @param companyId the companyId of the employee to find
+     * @param name the name of the employee to find
+     * @return employees who matches all the params
+     */
+    List<Employee> retrieveEmployeesByCompanyIdAndName(int companyId,String name);
+
+    /**
+     * retrieve employees by its companyId and Name
+     * @param companyId the companyId of the employee to find
+     * @param gender the gender of the employee to find
+     * @return employees who matches all the params
+     */
+    List<Employee> retrieveEmployeesByCompanyIdAndGender(int companyId, String gender);
+
+    /**
+     * retrieve an employee by its companyId and Name
+     * @param companyId the companyId of the employee to find
+     * @param email the name of the employee to find
+     * @return employee who matches all the params
+     */
+    Employee retrieveEmployeesByCompanyIdAndEmail(int companyId, String email);
+
+    /**
+     * retrieve employees by its companyId and Name
+     * @param companyId the companyId of the employee to find
+     * @param identifyNumber the identifyNumber of the employee to find
+     * @return employee who matches all the params
+     */
+    Employee retrieveEmployeesByCompanyIdAndIdentifyNumber(int companyId, String identifyNumber);
 }

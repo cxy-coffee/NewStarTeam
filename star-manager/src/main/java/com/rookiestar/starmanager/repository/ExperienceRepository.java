@@ -47,4 +47,12 @@ public interface ExperienceRepository extends JpaRepository<Experience,Long> {
      * @return all the experiences which match all the params
      */
     List<Experience> findByCompanyId(int companyId);
+
+    /**
+     * get all experience of an account in a company
+     * @param companyId the company that the experience is associated with
+     * @param accountNumber the accountNumber of the experience to find
+     * @return the experiences which match all the params
+     */
+    List<Experience> findByCompanyIdAndAccountNumber(int companyId,int accountNumber);
 }
