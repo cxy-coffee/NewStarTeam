@@ -32,6 +32,7 @@ import org.junit.runners.Suite;
         , ManagerRepositoryTest.class
         , DepartmentRepositoryTest.class
         , PositionRepositoryTest.class
+        , CompanyRepositoryTest.class
 
         , RetrieveServiceImplTest.class
         , CreateServiceImplTest.class

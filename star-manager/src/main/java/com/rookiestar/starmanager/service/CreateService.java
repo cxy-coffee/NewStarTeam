@@ -45,4 +45,13 @@ public interface CreateService {
      * @return the CompanyToReview object to add to database
      */
     CompanyToReview addCompanyToReview(CompanyToReview companyToReview);
+
+    /**
+     * make a employee's jobHunting state to true, and update his info
+     * @param accountNumber the account number of the employee going job hunting
+     * @param idealPosition the ideal position number of the employee going job hunting
+     * @param degree the degree of the employee going job hunting
+     * @return true for success, false for non-success
+     */
+    boolean goJobHunting(int accountNumber,String idealPosition,String degree);
 }

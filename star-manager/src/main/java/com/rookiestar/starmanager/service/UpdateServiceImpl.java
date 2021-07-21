@@ -3,6 +3,7 @@ package com.rookiestar.starmanager.service;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.entity.position.Position;
 import com.rookiestar.starmanager.repository.*;
@@ -28,9 +29,10 @@ public class UpdateServiceImpl implements UpdateService{
     ExperienceRepository experienceRepository;
     @Autowired
     PositionRepository positionRepository;
+    @Autowired
+    JobHuntingRepository jobHuntingRepository;
     @Override
     public boolean updateEmployee(Employee employee) {
-        System.out.println(employee.getPassword()+"in update service");
         Employee employeeToUpdate=retrieveService.retrieveEmployeeByIdentifyNumber(employee.getIdentifyNumber());
         employeeToUpdate.setBirthday(employee.getBirthday());
         employeeToUpdate.setEmail(employee.getEmail());
@@ -63,4 +65,9 @@ public class UpdateServiceImpl implements UpdateService{
         return true;
     }
 
+    @Override
+    public boolean updateJobHunting(JobHunting jobHunting) {
+        jobHuntingRepository.updateJobHunting(jobHunting.getDegree(),jobHunting.getIdealPosition(),jobHunting.isJobHunting(), jobHunting.getAccountNumber());
+        return true;
+    }
 }

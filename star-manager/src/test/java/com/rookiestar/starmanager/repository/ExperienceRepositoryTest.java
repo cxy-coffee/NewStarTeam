@@ -57,7 +57,32 @@ public class ExperienceRepositoryTest extends BaseTest {
         Experience experience=experienceRepository.findByAccountNumberAndCompanyIdAndStartTime(5,1, DateUtil.parse("2010-01-10"));
         Experience actualExperience=experienceMap.get(5121);
         Assert.assertEquals(experience,actualExperience);
+    }
 
+    @Test
+    @Transactional
+    public void findByCompanyIdTest()throws Exception{
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        List<Experience> experienceList=new ArrayList<>();
+        Experience experience = new Experience(5, 1, 2, 1, 1521, DateUtil.parse("2010-01-10"), null, false);
+        Experience experience1 = new Experience(6, 1, 2, 1, 1621, DateUtil.parse("2011-01-11"), null, false);
+        Experience experience2 = new Experience(7, 1, 2, 1, 1721, DateUtil.parse("2012-01-12"), null, true);
+        Experience experience3 = new Experience(8, 1, 2, 1, 1821, DateUtil.parse("2013-01-13"), null, true);
+        experienceList.add(experience);
+        experienceList.add(experience1);
+        experienceList.add(experience2);
+        experienceList.add(experience3);
+        Assert.assertEquals(experienceList,experienceRepository.findByCompanyId(1));
+    }
+
+    @Test
+    @Transactional
+    public void findByCompanyIdAndAccountNumberTest()throws Exception{
+        DataBaseUtil.getInstance().initExperience(experienceRepository);
+        List<Experience> experienceList=new ArrayList<>();
+        Experience experience = new Experience(5, 1, 2, 1, 1521, DateUtil.parse("2010-01-10"), null, false);
+        experienceList.add(experience);
+        Assert.assertEquals(experienceList,experienceRepository.findByCompanyIdAndAccountNumber(1,5));
     }
 
 

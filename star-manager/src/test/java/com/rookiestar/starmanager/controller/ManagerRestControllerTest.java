@@ -103,44 +103,6 @@ public class ManagerRestControllerTest extends BaseTest {
 
     @Test
     @Transactional
-    public void updateDepartmentTest() throws Exception{
-        DataBaseUtil.getInstance().initDepartment(departmentRepository);
-        Department department=new Department(1,1,"公司1部门12314",positionRepository.findByCompanyIdAndDepartmentId(1,1));
-        Department actualDepartment = retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1, 1);
-        Assert.assertNotEquals(department,actualDepartment);
-        mvc.perform(MockMvcRequestBuilders.get("/updateDepartment.do?companyId=1&departmentId=1&name=公司1部门12314")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("true")))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-        actualDepartment=retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1,1);
-        Assert.assertEquals(department,actualDepartment);
-    }
-
-    @Test
-    @Transactional
-    public void updatePositionTest() throws Exception{
-        DataBaseUtil.getInstance().initPosition(positionRepository);
-        Position position=new Position(1,1,1,"hello test3");
-        Position actualPosition=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
-        Assert.assertNotEquals(position,actualPosition);
-        mvc.perform(MockMvcRequestBuilders.get("/updatePosition.do?companyId=1&departmentId=1&positionId=1&name=hello test3")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("true")))
-                .andDo(MockMvcResultHandlers.print());
-        actualPosition=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
-        Assert.assertEquals(position,actualPosition);
-    }
-
-    @Test
-    @Transactional
     public void getCompanyToReviewTest() throws Exception{
         DataBaseUtil.getInstance().initCompanyToReview(companyToReviewRepository);
         mvc.perform(MockMvcRequestBuilders.get("/getCompanyToReview.do")

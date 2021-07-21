@@ -5,6 +5,7 @@ import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.entity.manager.Manager;
 import com.rookiestar.starmanager.entity.position.Position;
@@ -37,6 +38,8 @@ public class RetrieveServiceImpl implements RetrieveService{
     private ManagerRepository managerRepository;
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
+    private JobHuntingRepository jobHuntingRepository;
 
     @Autowired
     private CompanyToReviewRepository companyToReviewRepository;
@@ -268,5 +271,64 @@ public class RetrieveServiceImpl implements RetrieveService{
         return company;
     }
 
+    @Override
+    public List<JobHunting> retrieveAllJobHuntings() {
+        List<JobHunting> jobHuntings=jobHuntingRepository.findAllCurrentJobHunting();
+        perfectJobHuntings(jobHuntings);
+        return jobHuntings;
+    }
 
+    private void perfectJobHuntings(List<JobHunting> jobHuntings) {
+        if(jobHuntings==null){
+            return;
+        }
+        for(JobHunting jobHunting:jobHuntings){
+            perfectJobHunting(jobHunting);
+        }
+    }
+
+    private void perfectJobHunting(JobHunting jobHunting) {
+        if(jobHunting==null){
+            return;
+        }
+        Employee employee=employeeRepository.findByAccountNumber(jobHunting.getAccountNumber());
+        jobHunting.setEmail(employee.getEmail());
+        jobHunting.setGender(employee.getGender());
+        jobHunting.setName(employee.getName());
+    }
+
+    @Override
+    public List<JobHunting> retrieveJobHuntingsByIdealPosition(String idealPosition) {
+        List<JobHunting> jobHuntings=jobHuntingRepository.findCurrentJobHuntingsByIdealPosition(idealPosition);
+        perfectJobHuntings(jobHuntings);
+        return jobHuntings;
+    }
+
+    @Override
+    public List<JobHunting> retrieveJobHuntingsByDegree(String degree) {
+        List<JobHunting> jobHuntings=jobHuntingRepository.findCurrentJobHuntingsByDegree(degree);
+        perfectJobHuntings(jobHuntings);
+        return jobHuntings;
+    }
+
+    @Override
+    public List<JobHunting> retrieveJobHuntingsByIdealPositionAndDegree(String idealPosition, String degree) {
+        List<JobHunting> jobHuntings=jobHuntingRepository.findCurrentJobHuntingsByIdealPositionAndDegree(idealPosition,degree);
+        perfectJobHuntings(jobHuntings);
+        return jobHuntings;
+    }
+
+    @Override
+    public JobHunting retrieveCurrentJobHuntingByAccountNumber(int accountNumber) {
+        JobHunting jobHunting=jobHuntingRepository.findCurrentJobHuntingByAccountNumber(accountNumber);
+        perfectJobHunting(jobHunting);
+        return jobHunting;
+    }
+
+    @Override
+    public JobHunting retrieveJobHuntingByAccountNumber(int accountNumber){
+        JobHunting jobHunting=jobHuntingRepository.findJobHuntingByAccountNumber(accountNumber);
+        perfectJobHunting(jobHunting);
+        return jobHunting;
+    }
 }

@@ -1,11 +1,14 @@
 package com.rookiestar.starmanager.util;
 
+import com.rookiestar.starmanager.constant.Degrees;
+import com.rookiestar.starmanager.constant.IdealPositions;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.entity.manager.Manager;
 import com.rookiestar.starmanager.entity.position.Position;
@@ -32,7 +35,7 @@ public class DataBaseUtil {
     private final Map<Integer, CompanyManager> companyManagerMap;
     private final Map<Integer, CompanyToReview> companyToReviewMap;
     private final Map<Integer, Manager> managerMap;
-
+    private final Map<Integer, JobHunting> jobHuntingMap;
     private DataBaseUtil() throws Exception{
         employeeMap = initEmployeeMap();
         experienceMap = initExperienceMap();
@@ -43,7 +46,9 @@ public class DataBaseUtil {
         companyManagerMap = initCompanyManagerMap();
         companyToReviewMap=initCompanyToReviewMap();
         managerMap = initManagerMap();
+        jobHuntingMap=initJobHuntingMap();
     }
+
 
 
 
@@ -70,6 +75,12 @@ public class DataBaseUtil {
         positionRepository.deleteAll();
         for(Map.Entry<Integer,Position> node:positionMap.entrySet()){
             positionRepository.save(node.getValue());
+        }
+    }
+    public void initJobHunting(JobHuntingRepository jobHuntingRepository) {
+        jobHuntingRepository.deleteAll();
+        for(Map.Entry<Integer,JobHunting> node:jobHuntingMap.entrySet()){
+            jobHuntingRepository.save(node.getValue());
         }
     }
     public void initEmployee(EmployeeRepository employeeRepository){
@@ -103,7 +114,7 @@ public class DataBaseUtil {
         }
     }
 
-    public void initManager(ManagerRepository managerRepository) throws Exception{
+    public void initManager(ManagerRepository managerRepository){
         managerRepository.deleteAll();
         for(Map.Entry<Integer,Manager> node:managerMap.entrySet()){
             managerRepository.save(node.getValue());
@@ -116,6 +127,15 @@ public class DataBaseUtil {
         map.put(6,new Employee("李四",DateUtil.parse("2001-01-11"),"女","2019302110261@whu.edu.cn","6",6,"456",null));
         map.put(7,new Employee("王五",DateUtil.parse("2002-01-12"),"男","2019302110262@whu.edu.cn","7",7,"123",null));
         map.put(8,new Employee("赵六",DateUtil.parse("2003-01-13"),"女","2019302110263@whu.edu.cn","8",8,"456",null));
+        return map;
+    }
+
+    private Map<Integer,JobHunting> initJobHuntingMap(){
+        Map<Integer,JobHunting> map=new HashMap<>(10);
+        map.put(5,new JobHunting(Degrees.BACHELOR,true, IdealPositions.DESIGNER,5));
+        map.put(6,new JobHunting(Degrees.DOCTOR,false, IdealPositions.BACKEND,6));
+        map.put(7,new JobHunting(Degrees.HIGH_SCHOOL,true, IdealPositions.FRONTEND,7));
+        map.put(8,new JobHunting(Degrees.MASTER,false, IdealPositions.MARKETING,8));
         return map;
     }
     private Map<Integer,Experience> initExperienceMap() throws Exception{
@@ -217,4 +237,5 @@ public class DataBaseUtil {
     public Map<Integer, Manager> getManagerMap() {
         return managerMap;
     }
+    public Map<Integer,JobHunting> getJobHuntingMap(){return jobHuntingMap;}
 }
