@@ -10,6 +10,8 @@ import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.entity.manager.Manager;
 import com.rookiestar.starmanager.entity.position.Position;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Date;
 import java.util.List;
@@ -36,6 +38,15 @@ public interface RetrieveService {
      * @return List<Employee>
      */
     List<Employee> retrievePresentEmployeesByCompany(int companyId);
+
+    /**
+     * retrieve present employees of the company with the companyId with page
+     *
+     * @param companyId companyId
+     * @param page page
+     * @return List<Employee>
+     */
+    List<Employee> retrievePresentEmployeesByCompanyPage(int companyId,int page);
 
     /**
      * Get employees by name
@@ -89,6 +100,13 @@ public interface RetrieveService {
      * @return the employee whose accountNumber matches the param
      */
     Employee retrieveEmployeeByAccountNumber(int accountNumber);
+    /**
+     * retrieve the employee by its accountNumber with page
+     * @param accountNumber the accountNumber of the employee to find
+     * @param page the index of pages
+     * @return Employee
+     */
+    Employee retrieveEmployeeByAccountNumberPage(int accountNumber,int page);
 
     /**
      * retrieve a department by its primary key
@@ -144,6 +162,12 @@ public interface RetrieveService {
      * @return all CompanyToReview objects.
      */
     List<CompanyToReview> retrieveAllCompanyToReview();
+    /**
+     * retrieve all CompanyToReview objects in database with page
+     * @param page page
+     * @return all CompanyToReview objects.
+     */
+    List<CompanyToReview> retrieveAllCompanyToReviewPage(int page);
 
     /**
      * retrieve a company by its companyId
@@ -163,10 +187,28 @@ public interface RetrieveService {
     /**
      * retrieve employees by its companyId and Name
      * @param companyId the companyId of the employee to find
+     * @param name the name of the employee to find
+     * @param page page
+     * @return employees who matches all the params with page
+     */
+    List<Employee> retrieveEmployeesByCompanyIdAndNamePage(int companyId,String name,int page);
+
+    /**
+     * retrieve employees by its companyId and Name
+     * @param companyId the companyId of the employee to find
      * @param gender the gender of the employee to find
      * @return employees who matches all the params
      */
     List<Employee> retrieveEmployeesByCompanyIdAndGender(int companyId, String gender);
+
+    /**
+     * retrieve employees by its companyId and Name with page
+     * @param companyId the companyId of the employee to find
+     * @param gender the gender of the employee to find
+     * @param page page
+     * @return employees who matches all the params
+     */
+    List<Employee> retrieveEmployeesByCompanyIdAndGender(int companyId, String gender, int page);
 
     /**
      * retrieve an employee by its companyId and Name
@@ -183,4 +225,7 @@ public interface RetrieveService {
      * @return employee who matches all the params
      */
     Employee retrieveEmployeesByCompanyIdAndIdentifyNumber(int companyId, String identifyNumber);
+
+
+
 }

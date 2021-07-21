@@ -1,6 +1,8 @@
 package com.rookiestar.starmanager.repository;
 
 import com.rookiestar.starmanager.entity.experience.Experience;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
@@ -20,6 +22,15 @@ public interface ExperienceRepository extends JpaRepository<Experience,Long> {
      * @return List<Experience>
      */
     List<Experience> findAllByAccountNumber(int accountNumber);
+
+    /**
+     * find all experiences of an employee with the accountNumber with page
+     *
+     * @param accountNumber accountNumber
+     * @param pageable pageable
+     * @return Page<Experience>
+     */
+    Page<Experience> findAllByAccountNumber(int accountNumber, Pageable pageable);
 
     /**
      * find an experience by accountNumber,companyId,departmentId,positionId

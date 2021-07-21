@@ -63,7 +63,21 @@ public class EmployeeRestController {
         int accountNumber = Integer.parseInt(session.getAttribute(AttributeNames.ACCOUNT_NUMBER).toString());
         return retrieveService.retrieveEmployeeByAccountNumber(accountNumber);
     }
-
-
-
+    /**
+     * 请求描述：员工自己查询员工基本信息
+     * 请求地址：  /selfRetrieveEmployeePage.do
+     * 请求参数：page 页码：1，2，3，。。。
+     * 返回值：Employee
+     */
+    @RequiresRoles(value = {RoleNames.EMPLOYEE,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping("/selfRetrieveEmployeePage.do")
+    public Employee selfRetrieveEmployeePage(Integer page){
+        if(page==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        Session session = SecurityUtils.getSubject().getSession(false);
+        int accountNumber = Integer.parseInt(session.getAttribute(AttributeNames.ACCOUNT_NUMBER).toString());
+        return retrieveService.retrieveEmployeeByAccountNumberPage(accountNumber,page);
+    }
 }

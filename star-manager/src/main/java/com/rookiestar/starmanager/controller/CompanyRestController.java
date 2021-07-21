@@ -77,6 +77,24 @@ public class CompanyRestController {
     }
 
     /**
+     * 请求描述：通过企业id获取该企业所有在职员工
+     * 请求地址：  /getPresentEmployeesPage.do
+     * 请求参数：page 页码：1，2，3，。。。
+     * 返回值：List<Employee>
+     */
+    @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping("/getPresentEmployeesPage.do")
+    public List<Employee> getPresentEmployeesPage(Integer page){
+        if(page==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        Session session = SecurityUtils.getSubject().getSession(false);
+        int companyId = (int)session.getAttribute(AttributeNames.COMPANY_ID);
+        return retrieveService.retrievePresentEmployeesByCompanyPage(companyId,page);
+    }
+
+    /**
      * 请求描述：录用员工，向数据库添加员工在职经历，生成工号和录用日期
      * 请求地址：  /hireEmployee.do
      * 请求参数：int accountNumber 员工账号，int departmentId 部门号，int positionId 职位号
@@ -391,6 +409,12 @@ public class CompanyRestController {
         return retrieveService.retrieveCompanyByCompanyId(companyId);
     }
 
+    /**
+     * 请求描述：通过员工姓名查询员工
+     * 请求地址：  /getEmployeeByCompanyIdAndName.do
+     * 请求参数：String name 员工姓名
+     * 返回值：List<Employee> 员工列表
+     */
     @RequiresRoles(value={RoleNames.MANAGER,RoleNames.COMPANY_MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping(value = "getEmployeeByCompanyIdAndName.do")
@@ -403,6 +427,30 @@ public class CompanyRestController {
         return retrieveService.retrieveEmployeesByCompanyIdAndName(companyId,name);
     }
 
+    /**
+     * 请求描述：通过员工姓名查询员工
+     * 请求地址：  /getEmployeeByCompanyIdAndNamePage.do
+     * 请求参数：String name 员工姓名,Integer page 页码：1，2，3，。。。
+     * 返回值：List<Employee> 员工列表
+     */
+    @RequiresRoles(value={RoleNames.MANAGER,RoleNames.COMPANY_MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping(value = "getEmployeeByCompanyIdAndNamePage.do")
+    public List<Employee> getEmployeeByCompanyIdAndNamePage(String name,Integer page){
+        if(name==null||page==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        Session session = SecurityUtils.getSubject().getSession(false);
+        int companyId = (int)session.getAttribute(AttributeNames.COMPANY_ID);
+        return retrieveService.retrieveEmployeesByCompanyIdAndNamePage(companyId,name,page);
+    }
+
+    /**
+     * 请求描述：通过性别查询员工信息
+     * 请求地址：  /getEmployeeByCompanyIdAndGender.do
+     * 请求参数：String gender 性别
+     * 返回值：List<Employee> 员工列表
+     */
     @RequiresRoles(value={RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping(value ="getEmployeeByCompanyIdAndGender.do")
@@ -415,6 +463,30 @@ public class CompanyRestController {
         return retrieveService.retrieveEmployeesByCompanyIdAndGender(companyId,gender);
     }
 
+    /**
+     * 请求描述：通过性别查询员工信息
+     * 请求地址：  /getEmployeeByCompanyIdAndGenderPage.do
+     * 请求参数：String gender 性别,Integer page 页码：1，2，3，。。。
+     * 返回值：List<Employee> 员工列表
+     */
+    @RequiresRoles(value={RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping(value ="getEmployeeByCompanyIdAndGenderPage.do")
+    public List<Employee> getEmployeeByCompanyIdAndGenderPage(String gender,Integer page){
+        if(gender==null||page==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        Session session = SecurityUtils.getSubject().getSession(false);
+        int companyId = (int)session.getAttribute(AttributeNames.COMPANY_ID);
+        return retrieveService.retrieveEmployeesByCompanyIdAndGender(companyId,gender,page);
+    }
+
+    /**
+     * 请求描述：通过邮箱查询员工信息
+     * 请求地址：  /getEmployeeByCompanyIdAndEmail.do
+     * 请求参数：String email 邮箱
+     * 返回值：Employee 员工
+     */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping(value = "getEmployeeByCompanyIdAndEmail.do")
@@ -427,6 +499,12 @@ public class CompanyRestController {
         return retrieveService.retrieveEmployeesByCompanyIdAndEmail(companyId,email);
     }
 
+    /**
+     * 请求描述：通过员工身份证号查询员工
+     * 请求地址：  /getEmployeeByCompanyIdAndIdentifyNumber.do
+     * 请求参数：String identifyNumber 员工身份证号
+     * 返回值：Employee 员工
+     */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
     @RequestMapping(value = "getEmployeeByCompanyIdAndIdentifyNumber.do")

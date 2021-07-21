@@ -78,4 +78,20 @@ public class ManagerRestController {
         return retrieveService.retrieveAllCompanyToReview();
     }
 
+    /**
+     * 请求描述： 获得所有待审核公司
+     * 请求地址： /getCompanyToReview.do
+     * 请求参数： page 页码：1，2，3，。。。
+     * 返回值：   List<CompanyToReview> 所有待审核公司的列表
+     */
+    @RequiresRoles(value = {RoleNames.MANAGER})
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping(value = "getCompanyToReviewPage.do")
+    public List<CompanyToReview> getCompanyToReviewPage(Integer page){
+        if(page==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        return retrieveService.retrieveAllCompanyToReviewPage(page);
+    }
+
 }

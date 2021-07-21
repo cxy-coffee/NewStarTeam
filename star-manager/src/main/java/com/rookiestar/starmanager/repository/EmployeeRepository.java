@@ -1,6 +1,8 @@
 package com.rookiestar.starmanager.repository;
 
 import com.rookiestar.starmanager.entity.employee.Employee;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -30,6 +32,15 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
      */
     @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and exp.isEnd=false")
     List<Employee> findPresentEmployeesByCompany(int companyId);
+    /**
+     * find present employees of a company with page
+     *
+     * @param companyId companyId
+     * @param pageable pageable
+     * @return Page<Employee>
+     */
+    @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and exp.isEnd=false")
+    Page<Employee> findPresentEmployeesByCompany(int companyId,Pageable pageable);
 
     /**
      * find the max accountNumber
@@ -105,6 +116,16 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
     List<Employee> findByCompanyIdAndName(int companyId,String name);
 
     /**
+     * get all employees whose names contain a certain string and is now working in the company with page
+     * @param companyId the companyId of the company that employees working in
+     * @param name the name of the employees
+     * @param pageable pageable
+     * @return the employees which match all the params
+     */
+    @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and emp.name like %?2% and exp.isEnd=false")
+    Page<Employee> findByCompanyIdAndName(int companyId,String name,Pageable pageable);
+
+    /**
      * get all employees in a company that have same gender
      * @param companyId the companyId of the company that employees working in
      * @param gender the gender of the employees to find
@@ -112,6 +133,16 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
      */
     @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and emp.gender = ?2 and exp.isEnd=false")
     List<Employee> findByCompanyIdAndGender(int companyId,String gender);
+
+    /**
+     * get all employees in a company that have same gender with page
+     * @param companyId the companyId of the company that employees working in
+     * @param gender the gender of the employees to find
+     * @param pageable pageable
+     * @return the employees which match all the params
+     */
+    @Query("select emp from Employee emp join Experience exp on emp.accountNumber=exp.accountNumber where exp.companyId=?1 and emp.gender = ?2 and exp.isEnd=false")
+    Page<Employee> findByCompanyIdAndGender(int companyId,String gender,Pageable pageable);
 
     /**
      * get an employee who's working in the company and having a email matches the param

@@ -10,6 +10,7 @@ import com.rookiestar.starmanager.repository.ExperienceRepository;
 import com.rookiestar.starmanager.service.RetrieveService;
 import com.rookiestar.starmanager.shiro.token.GenericToken;
 import com.rookiestar.starmanager.util.DataBaseUtil;
+import com.rookiestar.starmanager.util.DataBaseUtilPages;
 import com.rookiestar.starmanager.util.DateUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.SecurityManager;
@@ -115,6 +116,8 @@ public class EmployeeRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("{\"name\":\"张三\",\"birthday\":\"2000-01-10T00:00:00.000+08:00\",\"gender\":\"男\",\"email\":\"2019302110260@whu.edu.cn\",\"identifyNumber\":\"5\",\"accountNumber\":5,\"password\":\"123\",\"experiences\":[{\"accountNumber\":5,\"companyId\":1,\"departmentId\":2,\"positionId\":1,\"jobNumber\":1521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":false,\"assessment\":{\"accountNumber\":5,\"companyId\":1,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"51的表现\"}},{\"accountNumber\":5,\"companyId\":2,\"departmentId\":2,\"positionId\":1,\"jobNumber\":2521,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"endTime\":null,\"isEnd\":true,\"assessment\":{\"accountNumber\":5,\"companyId\":2,\"startTime\":\"2010-01-10T00:00:00.000+08:00\",\"absenteeismRate\":\"0/10\",\"performance\":\"52的表现\"}}]}")))
                 .andDo(MockMvcResultHandlers.print());
     }
+
+
 
 
     /*

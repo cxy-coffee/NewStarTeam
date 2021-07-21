@@ -8,6 +8,7 @@ import com.rookiestar.starmanager.entity.position.Position;
 import com.rookiestar.starmanager.repository.*;
 import com.rookiestar.starmanager.service.RetrieveService;
 import com.rookiestar.starmanager.util.DataBaseUtil;
+import com.rookiestar.starmanager.util.DataBaseUtilPages;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -61,8 +62,6 @@ public class ManagerRestControllerTest extends BaseTest {
     @Autowired
     private CompanyManagerRepository companyManagerRepository;
 
-
-
     @Before
     public void setUp() throws Exception{
         DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(wac);
@@ -76,8 +75,6 @@ public class ManagerRestControllerTest extends BaseTest {
         session = (MockHttpSession) result.getRequest().getSession();
         assert session != null;
     }
-
-
 
     @Test
     @Transactional
@@ -100,45 +97,6 @@ public class ManagerRestControllerTest extends BaseTest {
         Assert.assertEquals(company,actualCompany);
     }
 
-
-    @Test
-    @Transactional
-    public void updateDepartmentTest() throws Exception{
-        DataBaseUtil.getInstance().initDepartment(departmentRepository);
-        Department department=new Department(1,1,"公司1部门12314",positionRepository.findByCompanyIdAndDepartmentId(1,1));
-        Department actualDepartment = retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1, 1);
-        Assert.assertNotEquals(department,actualDepartment);
-        mvc.perform(MockMvcRequestBuilders.get("/updateDepartment.do?companyId=1&departmentId=1&name=公司1部门12314")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("true")))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-        actualDepartment=retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1,1);
-        Assert.assertEquals(department,actualDepartment);
-    }
-
-    @Test
-    @Transactional
-    public void updatePositionTest() throws Exception{
-        DataBaseUtil.getInstance().initPosition(positionRepository);
-        Position position=new Position(1,1,1,"hello test3");
-        Position actualPosition=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
-        Assert.assertNotEquals(position,actualPosition);
-        mvc.perform(MockMvcRequestBuilders.get("/updatePosition.do?companyId=1&departmentId=1&positionId=1&name=hello test3")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .session(session)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("true")))
-                .andDo(MockMvcResultHandlers.print());
-        actualPosition=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
-        Assert.assertEquals(position,actualPosition);
-    }
-
     @Test
     @Transactional
     public void getCompanyToReviewTest() throws Exception{
@@ -151,8 +109,30 @@ public class ManagerRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"companyId\":1,\"name\":\"我的公司1\",\"legalRepresentativeName\":\"Alan\",\"email\":\"lihaoc@whu.edu.cn\",\"address\":\"湖北省武汉市洪山区\",\"phone\":\"88555273\"},{\"companyId\":2,\"name\":\"我的公司2\",\"legalRepresentativeName\":\"Bob\",\"email\":\"2019302110243@whu.edu.cn\",\"address\":\"四川省成都市锦江区\",\"phone\":\"88555573\"}]")))
                 .andDo(MockMvcResultHandlers.print());
-
     }
 
+    @Test
+    @Transactional
+    public void getCompanyToReviewPageTest() throws Exception{
+        DataBaseUtilPages.getInstance().initCompanyToReview(companyToReviewRepository);
+        mvc.perform(MockMvcRequestBuilders.get("/getCompanyToReviewPage.do")
+                .param("page","2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"companyId\":6,\"name\":\"我的公司6\",\"legalRepresentativeName\":\"Bob\",\"email\":\"2019302110243@whu.edu.cn\",\"address\":\"四川省成都市锦江区\",\"phone\":\"88555573\"},{\"companyId\":7,\"name\":\"我的公司7\",\"legalRepresentativeName\":\"Bob\",\"email\":\"2019302110243@whu.edu.cn\",\"address\":\"四川省成都市锦江区\",\"phone\":\"88555573\"},{\"companyId\":8,\"name\":\"我的公司8\",\"legalRepresentativeName\":\"Bob\",\"email\":\"2019302110243@whu.edu.cn\",\"address\":\"四川省成都市锦江区\",\"phone\":\"88555573\"}]")))
+                .andDo(MockMvcResultHandlers.print());
 
+        mvc.perform(MockMvcRequestBuilders.get("/getCompanyToReviewPage.do")
+                .param("page","3")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[]")))
+                .andDo(MockMvcResultHandlers.print());
+    }
 }

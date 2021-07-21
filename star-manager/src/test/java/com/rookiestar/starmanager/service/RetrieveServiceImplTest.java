@@ -10,7 +10,9 @@ import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.entity.position.Position;
 import com.rookiestar.starmanager.repository.*;
 import com.rookiestar.starmanager.util.DataBaseUtil;
+import com.rookiestar.starmanager.util.DataBaseUtilPages;
 import com.rookiestar.starmanager.util.DateUtil;
+import com.rookiestar.starmanager.util.PageUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +88,18 @@ public class RetrieveServiceImplTest extends BaseTest {
         actualEmployees.add(new Employee(employeeMap.get(6),new Experience(experienceMap.get(6121),assessmentMap.get(61)),new Experience(experienceMap.get(6221),assessmentMap.get(62))));
 
         Assert.assertEquals(employees,actualEmployees);
+    }
+
+    @Test
+    @Transactional
+    public void retrievePresentEmployeesByCompanyPageTest() throws Exception{
+        DataBaseUtilPages.getInstance().initEmployee(employeeRepository);
+        DataBaseUtilPages.getInstance().initExperience(experienceRepository);
+        DataBaseUtilPages.getInstance().initAssessment(assessmentRepository);
+
+        Assert.assertEquals("[Employee{name='员工10', birthday=Fri Mar 12 00:00:00 CST 2010, gender='女', email='员工10的email', identifyNumber='10', accountNumber=10, password='123', experiences=[Experience{accountNumber=10, companyId=3, departmentId=1, positionId=1, jobNumber=31011, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=10, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='103的表现'}}]}, Employee{name='员工11', birthday=Sat Mar 12 00:00:00 CST 2011, gender='男', email='员工11的email', identifyNumber='11', accountNumber=11, password='123', experiences=[Experience{accountNumber=11, companyId=3, departmentId=1, positionId=1, jobNumber=31111, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=11, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='113的表现'}}]}, Employee{name='员工12', birthday=Mon Mar 12 00:00:00 CST 2012, gender='女', email='员工12的email', identifyNumber='12', accountNumber=12, password='123', experiences=[Experience{accountNumber=12, companyId=3, departmentId=1, positionId=1, jobNumber=31211, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=12, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='123的表现'}}]}, Employee{name='员工13', birthday=Tue Mar 12 00:00:00 CST 2013, gender='男', email='员工13的email', identifyNumber='13', accountNumber=13, password='123', experiences=[Experience{accountNumber=13, companyId=3, departmentId=1, positionId=1, jobNumber=31311, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=13, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='133的表现'}}]}, Employee{name='员工14', birthday=Wed Mar 12 00:00:00 CST 2014, gender='女', email='员工14的email', identifyNumber='14', accountNumber=14, password='123', experiences=[Experience{accountNumber=14, companyId=3, departmentId=1, positionId=1, jobNumber=31411, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=14, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='143的表现'}}]}]",retrieveService.retrievePresentEmployeesByCompanyPage(3,1).toString());
+        Assert.assertEquals("[Employee{name='员工20', birthday=Thu Mar 12 00:00:00 CST 2020, gender='女', email='员工20的email', identifyNumber='20', accountNumber=20, password='123', experiences=[Experience{accountNumber=20, companyId=3, departmentId=1, positionId=1, jobNumber=32011, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=20, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='203的表现'}}]}, Employee{name='员工21', birthday=Fri Mar 12 00:00:00 CST 2021, gender='男', email='员工21的email', identifyNumber='21', accountNumber=21, password='123', experiences=[Experience{accountNumber=21, companyId=3, departmentId=1, positionId=1, jobNumber=32111, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=21, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='213的表现'}}]}, Employee{name='员工22', birthday=Sat Mar 12 00:00:00 CST 2022, gender='女', email='员工22的email', identifyNumber='22', accountNumber=22, password='123', experiences=[Experience{accountNumber=22, companyId=3, departmentId=1, positionId=1, jobNumber=32211, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=22, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='223的表现'}}]}, Employee{name='员工23', birthday=Sun Mar 12 00:00:00 CST 2023, gender='男', email='员工23的email', identifyNumber='23', accountNumber=23, password='123', experiences=[Experience{accountNumber=23, companyId=3, departmentId=1, positionId=1, jobNumber=32311, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=23, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='233的表现'}}]}, Employee{name='跳槽哥', birthday=Sat Jan 01 00:00:00 CST 2000, gender='男', email='2875233439@qq.com', identifyNumber='25', accountNumber=25, password='123', experiences=[Experience{accountNumber=25, companyId=3, departmentId=2, positionId=1, jobNumber=32521, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=25, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='253的表现'}}]}]",retrieveService.retrievePresentEmployeesByCompanyPage(3,3).toString());
+        Assert.assertEquals("[]",retrieveService.retrievePresentEmployeesByCompanyPage(3,4).toString());
     }
 
     @Test
@@ -216,12 +230,23 @@ public class RetrieveServiceImplTest extends BaseTest {
     public void retrieveEmployeesByCompanyIdAndNameTest() throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
         Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
         employee.setExperiences(experienceRepository.findByCompanyIdAndAccountNumber(1,5));
         List<Employee> employees=new ArrayList<>();
         employees.add(employee);
         List<Employee> actualEmployees=retrieveService.retrieveEmployeesByCompanyIdAndName(1,"三");
         Assert.assertEquals(employees,actualEmployees);
+    }
+    @Test
+    @Transactional
+    public void retrieveEmployeesByCompanyIdAndNamePageTest() throws Exception{
+        DataBaseUtilPages.getInstance().initEmployee(employeeRepository);
+        DataBaseUtilPages.getInstance().initExperience(experienceRepository);
+        DataBaseUtilPages.getInstance().initAssessment(assessmentRepository);
+
+        Assert.assertEquals("[Employee{name='员工20', birthday=Thu Mar 12 00:00:00 CST 2020, gender='女', email='员工20的email', identifyNumber='20', accountNumber=20, password='123', experiences=[Experience{accountNumber=20, companyId=3, departmentId=1, positionId=1, jobNumber=32011, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=20, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='203的表现'}}]}, Employee{name='员工21', birthday=Fri Mar 12 00:00:00 CST 2021, gender='男', email='员工21的email', identifyNumber='21', accountNumber=21, password='123', experiences=[Experience{accountNumber=21, companyId=3, departmentId=1, positionId=1, jobNumber=32111, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=21, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='213的表现'}}]}, Employee{name='员工22', birthday=Sat Mar 12 00:00:00 CST 2022, gender='女', email='员工22的email', identifyNumber='22', accountNumber=22, password='123', experiences=[Experience{accountNumber=22, companyId=3, departmentId=1, positionId=1, jobNumber=32211, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=22, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='223的表现'}}]}, Employee{name='员工23', birthday=Sun Mar 12 00:00:00 CST 2023, gender='男', email='员工23的email', identifyNumber='23', accountNumber=23, password='123', experiences=[Experience{accountNumber=23, companyId=3, departmentId=1, positionId=1, jobNumber=32311, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=23, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='233的表现'}}]}]",retrieveService.retrieveEmployeesByCompanyIdAndNamePage(3,"工", 3).toString());
+        Assert.assertEquals("[]",retrieveService.retrieveEmployeesByCompanyIdAndNamePage(3,"工", 4).toString());
     }
     @Test
     @Transactional
@@ -249,12 +274,23 @@ public class RetrieveServiceImplTest extends BaseTest {
     public void retrieveEmployeesByCompanyIdAndGenderTest() throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
         Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
         employee.setExperiences(experienceRepository.findByCompanyIdAndAccountNumber(1,5));
         List<Employee> employees=new ArrayList<>();
         employees.add(employee);
         List<Employee> actualEmployees=retrieveService.retrieveEmployeesByCompanyIdAndGender(1,"男");
         Assert.assertEquals(employees,actualEmployees);
+    }
+    @Test
+    @Transactional
+    public void retrieveEmployeesByCompanyIdAndGenderPageTest() throws Exception{
+        DataBaseUtilPages.getInstance().initEmployee(employeeRepository);
+        DataBaseUtilPages.getInstance().initExperience(experienceRepository);
+        DataBaseUtilPages.getInstance().initAssessment(assessmentRepository);
+
+        Assert.assertEquals("[Employee{name='员工21', birthday=Fri Mar 12 00:00:00 CST 2021, gender='男', email='员工21的email', identifyNumber='21', accountNumber=21, password='123', experiences=[Experience{accountNumber=21, companyId=3, departmentId=1, positionId=1, jobNumber=32111, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=21, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='213的表现'}}]}, Employee{name='员工23', birthday=Sun Mar 12 00:00:00 CST 2023, gender='男', email='员工23的email', identifyNumber='23', accountNumber=23, password='123', experiences=[Experience{accountNumber=23, companyId=3, departmentId=1, positionId=1, jobNumber=32311, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=23, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='233的表现'}}]}, Employee{name='跳槽哥', birthday=Sat Jan 01 00:00:00 CST 2000, gender='男', email='2875233439@qq.com', identifyNumber='25', accountNumber=25, password='123', experiences=[Experience{accountNumber=25, companyId=3, departmentId=2, positionId=1, jobNumber=32521, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=false, assessment=Assessment{accountNumber=25, companyId=3, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='253的表现'}}]}]",retrieveService.retrieveEmployeesByCompanyIdAndGender(3,"男",2).toString());
+        Assert.assertEquals("[]",retrieveService.retrieveEmployeesByCompanyIdAndGender(3,"男",3).toString());
     }
 
     @Test
@@ -272,6 +308,28 @@ public class RetrieveServiceImplTest extends BaseTest {
         System.out.println(actualCompany.toString());
         Assert.assertEquals(company,actualCompany);
 
+    }
+
+    @Test
+    @Transactional
+    public void retrieveEmployeeByAccountNumberPage() throws Exception{
+        DataBaseUtilPages.getInstance().initEmployee(employeeRepository);
+        DataBaseUtilPages.getInstance().initExperience(experienceRepository);
+        DataBaseUtilPages.getInstance().initAssessment(assessmentRepository);
+
+        Employee employee2 = retrieveService.retrieveEmployeeByAccountNumberPage(25,2);
+        Assert.assertEquals("Employee{name='跳槽哥', birthday=Sat Jan 01 00:00:00 CST 2000, gender='男', email='2875233439@qq.com', identifyNumber='25', accountNumber=25, password='123', experiences=[Experience{accountNumber=25, companyId=8, departmentId=2, positionId=1, jobNumber=82521, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=true, assessment=Assessment{accountNumber=25, companyId=8, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='258的表现'}}, Experience{accountNumber=25, companyId=9, departmentId=2, positionId=1, jobNumber=92521, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=true, assessment=Assessment{accountNumber=25, companyId=9, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='259的表现'}}, Experience{accountNumber=25, companyId=10, departmentId=2, positionId=1, jobNumber=102521, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=true, assessment=Assessment{accountNumber=25, companyId=10, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='2510的表现'}}, Experience{accountNumber=25, companyId=11, departmentId=2, positionId=1, jobNumber=112521, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=true, assessment=Assessment{accountNumber=25, companyId=11, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='2511的表现'}}, Experience{accountNumber=25, companyId=12, departmentId=2, positionId=1, jobNumber=122521, startTime=Fri Mar 12 00:00:00 CST 2077, endTime=null, end=true, assessment=Assessment{accountNumber=25, companyId=12, startTime=Fri Mar 12 00:00:00 CST 2077, absenteeismRate='0/10', performance='2512的表现'}}]}",employee2.toString());
+    }
+
+    @Test
+    @Transactional
+    public void retrieveAllCompanyToReviewPageTest() throws Exception{
+        DataBaseUtilPages.getInstance().initCompanyToReview(companyToReviewRepository);
+
+        Assert.assertEquals("[CompanyToReview{companyId=1, name='我的公司1', legalRepresentativeName='Alan', email='lihaoc@whu.edu.cn', address='湖北省武汉市洪山区', phone='88555273'}, CompanyToReview{companyId=2, name='我的公司2', legalRepresentativeName='Bob', email='2019302110243@whu.edu.cn', address='四川省成都市锦江区', phone='88555573'}, CompanyToReview{companyId=3, name='我的公司3', legalRepresentativeName='Bob', email='2019302110243@whu.edu.cn', address='四川省成都市锦江区', phone='88555573'}, CompanyToReview{companyId=4, name='我的公司4', legalRepresentativeName='Bob', email='2019302110243@whu.edu.cn', address='四川省成都市锦江区', phone='88555573'}, CompanyToReview{companyId=5, name='我的公司5', legalRepresentativeName='Bob', email='2019302110243@whu.edu.cn', address='四川省成都市锦江区', phone='88555573'}]",retrieveService.retrieveAllCompanyToReviewPage(1).toString());
+
+        Assert.assertEquals("[CompanyToReview{companyId=6, name='我的公司6', legalRepresentativeName='Bob', email='2019302110243@whu.edu.cn', address='四川省成都市锦江区', phone='88555573'}, CompanyToReview{companyId=7, name='我的公司7', legalRepresentativeName='Bob', email='2019302110243@whu.edu.cn', address='四川省成都市锦江区', phone='88555573'}, CompanyToReview{companyId=8, name='我的公司8', legalRepresentativeName='Bob', email='2019302110243@whu.edu.cn', address='四川省成都市锦江区', phone='88555573'}]",retrieveService.retrieveAllCompanyToReviewPage(2).toString());
+        Assert.assertEquals("[]",retrieveService.retrieveAllCompanyToReviewPage(3).toString());
     }
 
 }

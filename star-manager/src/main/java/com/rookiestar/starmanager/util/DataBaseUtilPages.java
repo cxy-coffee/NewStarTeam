@@ -154,6 +154,12 @@ public class DataBaseUtilPages {
         Map<Integer,CompanyToReview> map = new HashMap<>(5);
         map.put(1,new CompanyToReview(1,"我的公司1","Alan","lihaoc@whu.edu.cn","湖北省武汉市洪山区","88555273"));
         map.put(2,new CompanyToReview(2,"我的公司2","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573"));
+        map.put(3,new CompanyToReview(3,"我的公司3","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573"));
+        map.put(4,new CompanyToReview(4,"我的公司4","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573"));
+        map.put(5,new CompanyToReview(5,"我的公司5","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573"));
+        map.put(6,new CompanyToReview(6,"我的公司6","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573"));
+        map.put(7,new CompanyToReview(7,"我的公司7","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573"));
+        map.put(8,new CompanyToReview(8,"我的公司8","Bob","2019302110243@whu.edu.cn","四川省成都市锦江区","88555573"));
         return map;
     }
     private Map<Integer,Department> initDepartmentMap(){

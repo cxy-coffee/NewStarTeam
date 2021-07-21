@@ -9,6 +9,7 @@ import com.rookiestar.starmanager.entity.position.Position;
 import com.rookiestar.starmanager.repository.*;
 import com.rookiestar.starmanager.service.RetrieveService;
 import com.rookiestar.starmanager.util.DataBaseUtil;
+import com.rookiestar.starmanager.util.DataBaseUtilPages;
 import com.rookiestar.starmanager.util.DateUtil;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -104,6 +105,7 @@ public class CompanyRestControllerTest extends BaseTest {
     public void getPresentEmployeesTest() throws Exception{
         DataBaseUtil.getInstance().initExperience(experienceRepository);
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
 
         mvc.perform(MockMvcRequestBuilders.get("/getPresentEmployees.do")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -418,6 +420,7 @@ public class CompanyRestControllerTest extends BaseTest {
     public void getEmployeeByCompanyIdAndNameTest() throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
         mvc.perform(MockMvcRequestBuilders.get("/getEmployeeByCompanyIdAndName.do?name=张")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -432,6 +435,7 @@ public class CompanyRestControllerTest extends BaseTest {
     public void getEmployeeByCompanyIdAndGenderTest() throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
+        DataBaseUtil.getInstance().initAssessment(assessmentRepository);
         mvc.perform(MockMvcRequestBuilders.get("/getEmployeeByCompanyIdAndGender.do?gender=男")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
