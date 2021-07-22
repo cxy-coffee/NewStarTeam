@@ -1,11 +1,14 @@
 package com.rookiestar.starmanager.util;
 
+import com.rookiestar.starmanager.constant.Degrees;
+import com.rookiestar.starmanager.constant.IdealPositions;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.entity.manager.Manager;
 import com.rookiestar.starmanager.entity.position.Position;
@@ -32,6 +35,7 @@ public class DataBaseUtilPages {
     private final Map<Integer, CompanyManager> companyManagerMap;
     private final Map<Integer, CompanyToReview> companyToReviewMap;
     private final Map<Integer, Manager> managerMap;
+    private final Map<Integer, JobHunting> jobHuntingMap;
 
     public static DataBaseUtilPages getInstance() throws Exception{
         if(instance==null){
@@ -50,6 +54,7 @@ public class DataBaseUtilPages {
         companyManagerMap = initCompanyManagerMap();
         companyToReviewMap=initCompanyToReviewMap();
         managerMap = initManagerMap();
+        jobHuntingMap=initJobHuntingMap();
     }
 
     public void initCompany(CompanyRepository companyRepository){
@@ -104,6 +109,12 @@ public class DataBaseUtilPages {
         managerRepository.deleteAll();
         for(Map.Entry<Integer,Manager> node:managerMap.entrySet()){
             managerRepository.save(node.getValue());
+        }
+    }
+    public void initJobHunting(JobHuntingRepository jobHuntingRepository) {
+        jobHuntingRepository.deleteAll();
+        for(Map.Entry<Integer,JobHunting> node:jobHuntingMap.entrySet()){
+            jobHuntingRepository.save(node.getValue());
         }
     }
 
@@ -164,30 +175,30 @@ public class DataBaseUtilPages {
     }
     private Map<Integer,Department> initDepartmentMap(){
         Map<Integer,Department> map = new HashMap<>(10);
-        map.put(11,new Department(1,1,"公司1部门1",null));
-        map.put(12,new Department(1,2,"公司1部门2",null));
-        map.put(21,new Department(2,1,"公司2部门1",null));
-        map.put(22,new Department(2,2,"公司2部门2",null));
+        map.put(11,new Department(1,1,"部门1",null));
+        map.put(12,new Department(1,2,"部门2",null));
+        map.put(21,new Department(2,1,"部门1",null));
+        map.put(22,new Department(2,2,"部门2",null));
 
-        map.put(31,new Department(3,1,"公司3部门1",null));
-        map.put(32,new Department(3,2,"公司3部门2",null));
+        map.put(31,new Department(3,1,"部门1",null));
+        map.put(32,new Department(3,2,"部门2",null));
         return map;
     }
     private Map<Integer,Position> initPositionMap(){
         Map<Integer,Position> map = new HashMap<>(20);
-        map.put(111,new Position(1,1,1,"公司1部门1员工"));
-        map.put(112,new Position(1,1,2,"公司1部门1经理"));
-        map.put(121,new Position(1,2,1,"公司1部门2员工"));
-        map.put(122,new Position(1,2,2,"公司1部门2经理"));
-        map.put(211,new Position(2,1,1,"公司2部门1员工"));
-        map.put(212,new Position(2,1,2,"公司2部门1经理"));
-        map.put(221,new Position(2,2,1,"公司2部门2员工"));
-        map.put(222,new Position(2,2,2,"公司2部门2经理"));
+        map.put(111,new Position(1,1,1,"员工"));
+        map.put(112,new Position(1,1,2,"经理"));
+        map.put(121,new Position(1,2,1,"员工"));
+        map.put(122,new Position(1,2,2,"经理"));
+        map.put(211,new Position(2,1,1,"员工"));
+        map.put(212,new Position(2,1,2,"经理"));
+        map.put(221,new Position(2,2,1,"员工"));
+        map.put(222,new Position(2,2,2,"经理"));
 
-        map.put(311,new Position(3,1,1,"公司3部门1员工"));
-        map.put(312,new Position(3,1,2,"公司3部门1经理"));
-        map.put(321,new Position(3,2,1,"公司3部门2员工"));
-        map.put(322,new Position(3,2,2,"公司3部门2经理"));
+        map.put(311,new Position(3,1,1,"员工"));
+        map.put(312,new Position(3,1,2,"经理"));
+        map.put(321,new Position(3,2,1,"员工"));
+        map.put(322,new Position(3,2,2,"经理"));
         return map;
     }
     private Map<Integer,Assessment> initAssessmentMap() throws Exception{
@@ -223,6 +234,14 @@ public class DataBaseUtilPages {
         map.put(666,new Manager("超管一号","86199",DateUtil.parse("2077-01-01"),"2019302110260@whu.edu.cn","男",666,"888"));
         return map;
     }
+    private Map<Integer,JobHunting> initJobHuntingMap(){
+        Map<Integer,JobHunting> map=new HashMap<>(10);
+        map.put(5,new JobHunting(Degrees.BACHELOR,true, IdealPositions.DESIGNER,5));
+        map.put(6,new JobHunting(Degrees.DOCTOR,false, IdealPositions.BACKEND,6));
+        map.put(7,new JobHunting(Degrees.HIGH_SCHOOL,true, IdealPositions.FRONTEND,7));
+        map.put(8,new JobHunting(Degrees.MASTER,false, IdealPositions.MARKETING,8));
+        return map;
+    }
 
     public Map<Integer, Employee> getEmployeeMap() {
         return employeeMap;
@@ -251,4 +270,5 @@ public class DataBaseUtilPages {
     public Map<Integer, Manager> getManagerMap() {
         return managerMap;
     }
+    public Map<Integer,JobHunting> getJobHuntingMap(){return jobHuntingMap;}
 }

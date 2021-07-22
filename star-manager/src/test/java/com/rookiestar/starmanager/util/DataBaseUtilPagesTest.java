@@ -32,6 +32,8 @@ public class DataBaseUtilPagesTest extends BaseTest {
     private ManagerRepository managerRepository;
     @Autowired
     private CompanyToReviewRepository companyToReviewRepository;
+    @Autowired
+    private JobHuntingRepository jobHuntingRepository;
     @Test
     public void testInit() throws Exception{
         DataBaseUtilPages.getInstance().initCompany(companyRepository);
@@ -43,5 +45,6 @@ public class DataBaseUtilPagesTest extends BaseTest {
         DataBaseUtilPages.getInstance().initCompanyManager(companyManagerRepository);
         DataBaseUtilPages.getInstance().initManager(managerRepository);
         DataBaseUtilPages.getInstance().initCompanyToReview(companyToReviewRepository);
+        DataBaseUtilPages.getInstance().initJobHunting(jobHuntingRepository);
     }
 }

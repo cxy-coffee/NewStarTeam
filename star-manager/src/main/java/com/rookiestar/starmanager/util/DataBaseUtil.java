@@ -113,7 +113,6 @@ public class DataBaseUtil {
             companyManagerRepository.save(node.getValue());
         }
     }
-
     public void initManager(ManagerRepository managerRepository){
         managerRepository.deleteAll();
         for(Map.Entry<Integer,Manager> node:managerMap.entrySet()){
@@ -129,7 +128,6 @@ public class DataBaseUtil {
         map.put(8,new Employee("赵六",DateUtil.parse("2003-01-13"),"女","2019302110263@whu.edu.cn","8",8,"456",null));
         return map;
     }
-
     private Map<Integer,JobHunting> initJobHuntingMap(){
         Map<Integer,JobHunting> map=new HashMap<>(10);
         map.put(5,new JobHunting(Degrees.BACHELOR,true, IdealPositions.DESIGNER,5));
@@ -164,22 +162,22 @@ public class DataBaseUtil {
     }
     private Map<Integer,Department> initDepartmentMap(){
         Map<Integer,Department> map = new HashMap<>(10);
-        map.put(11,new Department(1,1,"公司1部门1",null));
-        map.put(12,new Department(1,2,"公司1部门2",null));
-        map.put(21,new Department(2,1,"公司2部门1",null));
-        map.put(22,new Department(2,2,"公司2部门2",null));
+        map.put(11,new Department(1,1,"部门1",null));
+        map.put(12,new Department(1,2,"部门2",null));
+        map.put(21,new Department(2,1,"部门1",null));
+        map.put(22,new Department(2,2,"部门2",null));
         return map;
     }
     private Map<Integer,Position> initPositionMap(){
         Map<Integer,Position> map = new HashMap<>(20);
-        map.put(111,new Position(1,1,1,"公司1部门1员工"));
-        map.put(112,new Position(1,1,2,"公司1部门1经理"));
-        map.put(121,new Position(1,2,1,"公司1部门2员工"));
-        map.put(122,new Position(1,2,2,"公司1部门2经理"));
-        map.put(211,new Position(2,1,1,"公司2部门1员工"));
-        map.put(212,new Position(2,1,2,"公司2部门1经理"));
-        map.put(221,new Position(2,2,1,"公司2部门2员工"));
-        map.put(222,new Position(2,2,2,"公司2部门2经理"));
+        map.put(111,new Position(1,1,1,"员工"));
+        map.put(112,new Position(1,1,2,"经理"));
+        map.put(121,new Position(1,2,1,"员工"));
+        map.put(122,new Position(1,2,2,"经理"));
+        map.put(211,new Position(2,1,1,"员工"));
+        map.put(212,new Position(2,1,2,"经理"));
+        map.put(221,new Position(2,2,1,"员工"));
+        map.put(222,new Position(2,2,2,"经理"));
         return map;
     }
     private Map<Integer,Assessment> initAssessmentMap() throws Exception{
