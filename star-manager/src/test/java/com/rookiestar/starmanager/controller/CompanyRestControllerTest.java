@@ -58,7 +58,8 @@ public class CompanyRestControllerTest extends BaseTest {
     private RetrieveService retrieveService;
     @Autowired
     private CompanyToReviewRepository companyToReviewRepository;
-
+    @Autowired
+    private JobHuntingRepository jobHuntingRepository;
     @Before
     public void setUp() throws Exception{
         DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(wac);
@@ -476,6 +477,64 @@ public class CompanyRestControllerTest extends BaseTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @Transactional
+    public void getJobHuntingByIdealPositionAndDegreeTest() throws Exception{
+        DataBaseUtil.getInstance().initJobHunting(jobHuntingRepository);
+        mvc.perform(MockMvcRequestBuilders.get("/getJobHuntingByIdealPositionAndDegree.do?idealPosition=前端工程师&degree=不限")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"degree\":\"高中\",\"jobHunting\":true,\"idealPosition\":\"前端工程师\",\"accountNumber\":7,\"name\":\"王五\",\"email\":\"2019302110262@whu.edu.cn\",\"gender\":\"男\"}]")))
+                .andDo(MockMvcResultHandlers.print());
+        mvc.perform(MockMvcRequestBuilders.get("/getJobHuntingByIdealPositionAndDegree.do?idealPosition=不限&degree=不限")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"degree\":\"本科\",\"jobHunting\":true,\"idealPosition\":\"设计师\",\"accountNumber\":5,\"name\":\"张三\",\"email\":\"2019302110260@whu.edu.cn\",\"gender\":\"男\"},{\"degree\":\"高中\",\"jobHunting\":true,\"idealPosition\":\"前端工程师\",\"accountNumber\":7,\"name\":\"王五\",\"email\":\"2019302110262@whu.edu.cn\",\"gender\":\"男\"}]")))
+                .andDo(MockMvcResultHandlers.print());
+        mvc.perform(MockMvcRequestBuilders.get("/getJobHuntingByIdealPositionAndDegree.do?idealPosition=不限&degree=高中")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"degree\":\"高中\",\"jobHunting\":true,\"idealPosition\":\"前端工程师\",\"accountNumber\":7,\"name\":\"王五\",\"email\":\"2019302110262@whu.edu.cn\",\"gender\":\"男\"}]")))
+                .andDo(MockMvcResultHandlers.print());
+        mvc.perform(MockMvcRequestBuilders.get("/getJobHuntingByIdealPositionAndDegree.do?idealPosition=市场营销&degree=硕士")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[]")))
+                .andDo(MockMvcResultHandlers.print());
+        mvc.perform(MockMvcRequestBuilders.get("/getJobHuntingByIdealPositionAndDegree.do?idealPosition=前端工程师&degree=高中")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[{\"degree\":\"高中\",\"jobHunting\":true,\"idealPosition\":\"前端工程师\",\"accountNumber\":7,\"name\":\"王五\",\"email\":\"2019302110262@whu.edu.cn\",\"gender\":\"男\"}]")))
+                .andDo(MockMvcResultHandlers.print());
+    }
+    @Test
+    @Transactional
+    public void sendInvitationTest() throws Exception{
+        DataBaseUtil.getInstance().initJobHunting(jobHuntingRepository);
+        mvc.perform(MockMvcRequestBuilders.get("/sendInvitation.do?accountNumber=5")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("true")))
+                .andDo(MockMvcResultHandlers.print());
+    }
     /*
     @Test
     @Transactional

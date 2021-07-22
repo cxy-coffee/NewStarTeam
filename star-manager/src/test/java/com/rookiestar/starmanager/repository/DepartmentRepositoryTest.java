@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,4 +45,13 @@ public class DepartmentRepositoryTest extends BaseTest {
         Assert.assertNull(department);
     }
 
+    @Test
+    @Transactional
+    public void findByCompanyIdTest()throws Exception{
+        DataBaseUtil.getInstance().initDepartment(departmentRepository);
+        List<Department> departmentList=new ArrayList<>();
+        departmentList.add(new Department(1,1,"公司1部门1",null));
+        departmentList.add(new Department(1,2,"公司1部门2",null));
+        Assert.assertEquals(departmentRepository.findByCompanyId(1),departmentList);
+    }
 }

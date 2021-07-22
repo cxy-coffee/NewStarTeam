@@ -4,6 +4,7 @@ import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.repository.*;
 import com.rookiestar.starmanager.util.DateUtil;
@@ -31,6 +32,10 @@ public class CreateServiceImpl implements CreateService {
     private CompanyRepository companyRepository;
     @Autowired
     private CompanyToReviewRepository companyToReviewRepository;
+    @Autowired
+    private JobHuntingRepository jobHuntingRepository;
+    @Autowired
+    private UpdateService updateService;
 
     @Override
     public Employee registerEmployee(Employee employee) {
@@ -86,5 +91,20 @@ public class CreateServiceImpl implements CreateService {
 
     private int generateCompanyToReviewId(CompanyToReview companyToReview){
         return companyToReviewRepository.findMaxCompanyToReviewId()+1;
+    }
+
+    @Override
+    public boolean goJobHunting(int accountNumber,String idealPosition,String degree) {
+        JobHunting jobHunting = jobHuntingRepository.findJobHuntingByAccountNumber(accountNumber);
+        if(jobHunting==null){
+            jobHunting=new JobHunting(degree,true,idealPosition,accountNumber);
+            jobHuntingRepository.save(jobHunting);
+        }else {
+            jobHunting.setJobHunting(true);
+            jobHunting.setDegree(degree);
+            jobHunting.setIdealPosition(idealPosition);
+            updateService.updateJobHunting(jobHunting);
+        }
+        return true;
     }
 }

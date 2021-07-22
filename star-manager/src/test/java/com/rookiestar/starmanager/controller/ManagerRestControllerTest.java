@@ -62,6 +62,8 @@ public class ManagerRestControllerTest extends BaseTest {
     @Autowired
     private CompanyManagerRepository companyManagerRepository;
 
+
+
     @Before
     public void setUp() throws Exception{
         DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(wac);
@@ -75,6 +77,8 @@ public class ManagerRestControllerTest extends BaseTest {
         session = (MockHttpSession) result.getRequest().getSession();
         assert session != null;
     }
+
+
 
     @Test
     @Transactional
@@ -134,5 +138,8 @@ public class ManagerRestControllerTest extends BaseTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.equalTo("[]")))
                 .andDo(MockMvcResultHandlers.print());
+
     }
+
+
 }

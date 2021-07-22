@@ -4,6 +4,7 @@ package com.rookiestar.starmanager.service;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.entity.position.Position;
 
@@ -46,4 +47,11 @@ public interface UpdateService {
      * @return update result, true for success and false for non-success
      */
     boolean updatePosition(Position position);
+
+    /**
+     * update the jobHunting
+     * @param jobHunting jobHunting to update
+     * @return update result, true for success and false for non-success
+     */
+    boolean updateJobHunting(JobHunting jobHunting);
 }

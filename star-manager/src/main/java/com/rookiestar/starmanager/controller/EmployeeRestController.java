@@ -4,7 +4,9 @@ import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.constant.PermissionNames;
 import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.exception.RequestParameterException;
+import com.rookiestar.starmanager.service.CreateService;
 import com.rookiestar.starmanager.service.RetrieveService;
 import com.rookiestar.starmanager.service.UpdateService;
 import com.rookiestar.starmanager.util.DateUtil;
@@ -30,6 +32,8 @@ public class EmployeeRestController {
     private UpdateService updateService;
     @Autowired
     private RetrieveService retrieveService;
+    @Autowired
+    private CreateService createService;
     /**
      * 请求描述：更新员工基本信息
      * 请求地址：  /updateEmployee.do
@@ -79,5 +83,45 @@ public class EmployeeRestController {
         Session session = SecurityUtils.getSubject().getSession(false);
         int accountNumber = Integer.parseInt(session.getAttribute(AttributeNames.ACCOUNT_NUMBER).toString());
         return retrieveService.retrieveEmployeeByAccountNumberPage(accountNumber,page);
+    }
+}
+
+    /**
+     * 请求描述：员工将自己的求职状态置为true，更新自己的学历、意向职位等信息
+     * 请求地址： /goJobHunting.do
+     * 请求参数： 设置的学历和意向职位
+     * 返回值： 是否成功
+     */
+    @RequiresRoles(value = {RoleNames.EMPLOYEE,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ,PermissionNames.WRITE})
+    @RequestMapping("/goJobHunting.do")
+    public boolean goJobHunting(String idealPosition,String degree){
+        if(idealPosition==null||degree==null){
+            throw new RequestParameterException("请求参数不正确");
+        }
+        Session session = SecurityUtils.getSubject().getSession(false);
+        int accountNumber = Integer.parseInt(session.getAttribute(AttributeNames.ACCOUNT_NUMBER).toString());
+        return createService.goJobHunting(accountNumber,idealPosition,degree);
+    }
+
+    /**
+     * 请求描述：员工将自己的求职状态置为false
+     * 请求地址： /stopJobHunting.do
+     * 请求参数： 无
+     * 返回值： 是否成功
+     */
+    @RequiresRoles(value = {RoleNames.EMPLOYEE,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.WRITE})
+    @RequestMapping("/stopJobHunting.do")
+    public boolean stopJobHunting(){
+        Session session = SecurityUtils.getSubject().getSession(false);
+        int accountNumber = Integer.parseInt(session.getAttribute(AttributeNames.ACCOUNT_NUMBER).toString());
+        JobHunting jobHunting=retrieveService.retrieveJobHuntingByAccountNumber(accountNumber);
+        if(jobHunting==null){
+            return true;
+        }
+        jobHunting.setJobHunting(false);
+        updateService.updateJobHunting(jobHunting);
+        return true;
     }
 }

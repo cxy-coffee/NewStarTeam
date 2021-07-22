@@ -4,6 +4,7 @@ import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author chris
@@ -16,7 +17,9 @@ public interface CompanyToReviewRepository extends JpaRepository<CompanyToReview
      * delete a CompanyToReview object in the database having the exact companyId
      * @param companyId the companyId of the CompanyToReview object to delete
      */
+    @Transactional(rollbackFor = Exception.class)
     void deleteCompanyToReviewByCompanyId(int companyId);
+
 
     /**
      * find the biggest Id of all companyToReview objects in the database

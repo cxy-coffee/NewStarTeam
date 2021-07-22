@@ -56,4 +56,11 @@ public class CompanyToReviewRepositoryTest extends BaseTest {
         Assert.assertEquals(expectCompanyToReview,actualCompanyToReview);
     }
 
+    @Test
+    @Transactional
+    public void findMaxCompanyToReviewIdTest()throws Exception{
+        DataBaseUtil.getInstance().initCompanyToReview(companyToReviewRepository);
+        Assert.assertEquals(2,companyToReviewRepository.findMaxCompanyToReviewId());
+    }
+
 }

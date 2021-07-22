@@ -5,6 +5,7 @@ import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.entity.manager.Manager;
 import com.rookiestar.starmanager.entity.position.Position;
@@ -41,7 +42,71 @@ public class RetrieveServiceImpl implements RetrieveService{
     @Autowired
     private CompanyRepository companyRepository;
     @Autowired
+    private JobHuntingRepository jobHuntingRepository;
+
+    @Autowired
     private CompanyToReviewRepository companyToReviewRepository;
+
+    @Override
+    public List<Employee> retrieveAllEmployeesByCompany(int companyId) {
+        List<Employee> employees = employeeRepository.findAllEmployeesByCompany(companyId);
+        perfectEmployees(employees);
+        return employees;
+    }
+
+    @Override
+    public List<Employee> retrievePresentEmployeesByCompany(int companyId) {
+        List<Employee> employees = employeeRepository.findPresentEmployeesByCompany(companyId);
+        perfectEmployees(employees);
+        return employees;
+    }
+
+    /**
+     * Get employees by name
+     * @param name the name of the employees to find
+     * @return employees whose name containing String name
+     */
+    @Override
+    public List<Employee> retrieveEmployeesByName(String name) {
+        List<Employee> employees=employeeRepository.findEmployeesByNameContaining(name);
+        perfectEmployees(employees);
+        return employees;
+    }
+
+    @Override
+    public List<Employee> retrieveEmployeesByCompanyIdAndName(int companyId,String name) {
+        List<Employee> employees=employeeRepository.findByCompanyIdAndName(companyId,name);
+        perfectPresentEmployees(employees,companyId);
+        return employees;
+    }
+
+    @Override
+    public Employee retrieveEmployeeByIdentifyNumber(String identifyNumber) {
+        Employee employee=employeeRepository.findByIdentifyNumber(identifyNumber);
+        perfectEmployee(employee);
+        return employee;
+    }
+
+    @Override
+    public List<Employee> retrieveEmployeesByCompanyIdAndGender(int companyId, String gender) {
+        List<Employee> employees=employeeRepository.findByCompanyIdAndGender(companyId,gender);
+        perfectPresentEmployees(employees,companyId);
+        return employees;
+    }
+
+    @Override
+    public Employee retrieveEmployeesByCompanyIdAndEmail(int companyId, String email) {
+        Employee employee=employeeRepository.findByCompanyIdAndEmail(companyId,email);
+        perfectPresentEmployee(employee,companyId);
+        return employee;
+    }
+
+    @Override
+    public List<Employee> retrieveEmployeesByGender(String gender) {
+        List<Employee> employees=employeeRepository.findEmployeesByGender(gender);
+        perfectEmployees(employees);
+        return employees;
+    }
 
     /**
      *完整化数据
@@ -67,6 +132,7 @@ public class RetrieveServiceImpl implements RetrieveService{
         employee.setExperiences(experienceRepository.findByCompanyIdAndAccountNumber(companyId,employee.getAccountNumber()));
         perfectExperiences(employee.getExperiences());
     }
+
     private void perfectPresentEmployees(List<Employee> employees ,int companyId){
         if(employees==null){
             return;
@@ -75,6 +141,14 @@ public class RetrieveServiceImpl implements RetrieveService{
             perfectPresentEmployee(employee,companyId);
         }
     }
+
+    @Override
+    public Employee retrieveEmployeesByCompanyIdAndIdentifyNumber(int companyId, String identifyNumber) {
+        Employee employee=employeeRepository.findByCompanyIdAndIdentifyNumber(companyId,identifyNumber);
+        perfectPresentEmployee(employee,companyId);
+        return employee;
+    }
+
     private void perfectEmployee(Employee employee){
         if(employee==null){
             return;
@@ -97,6 +171,7 @@ public class RetrieveServiceImpl implements RetrieveService{
             perfectEmployee(employee);
         }
     }
+
     private void perfectDepartment(Department department){
         if(department==null){
             return;
@@ -113,6 +188,7 @@ public class RetrieveServiceImpl implements RetrieveService{
         perfectExperiences(company.getExperiences());
         perfectDepartments(company.getDepartments());
     }
+
     private void perfectDepartments(List<Department> departments){
         if(departments==null){
             return;
@@ -243,9 +319,6 @@ public class RetrieveServiceImpl implements RetrieveService{
         return assessmentRepository.findByAccountNumberAndCompanyIdAndStartTime(accountNumber,companyId,startTime);
     }
 
-    /**
-     *返回员工经历
-     */
     @Override
     public Experience retrieveExperienceByAccountNumberAndCompanyIdAndStartTime(int accountNumber, int companyId, Date startTime) {
         Experience experience=experienceRepository.findByAccountNumberAndCompanyIdAndStartTime(accountNumber,companyId,startTime);
@@ -253,9 +326,15 @@ public class RetrieveServiceImpl implements RetrieveService{
         return experience;
     }
 
-    /**
-     *返回部门
-     */
+    @Override
+    public Employee retrieveEmployeeByEmail(String email) {
+        Employee employee=employeeRepository.findByEmail(email);
+        perfectEmployee(employee);
+        return employee;
+    }
+
+
+
     @Override
     public Department retrieveDepartmentByCompanyIdAndDepartmentId(int companyId, int departmentId) {
         Department department=departmentRepository.findByCompanyIdAndDepartmentId(companyId,departmentId);
@@ -266,18 +345,22 @@ public class RetrieveServiceImpl implements RetrieveService{
     }
 
     @Override
+    public Position retrievePositionByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId) {
+        return positionRepository.findByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
+    }
+
+    @Override
     public List<Department> retrieveDepartmentByCompanyId(int companyId) {
         List<Department> departments=departmentRepository.findByCompanyId(companyId);
         perfectDepartments(departments);
         return departments;
     }
 
-    /**
-     *返回职位
-     */
     @Override
-    public Position retrievePositionByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId) {
-        return positionRepository.findByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
+    public List<Employee> retrieveEmployeesByCompanyIdAndDepartmentId(int companyId, int departmentId) {
+        List<Employee> employees=employeeRepository.findByCompanyIdAndDepartmentId(companyId,departmentId);
+        perfectEmployees(employees);
+        return employees;
     }
 
     @Override
@@ -285,9 +368,21 @@ public class RetrieveServiceImpl implements RetrieveService{
         return positionRepository.findByCompanyIdAndDepartmentId(companyId,departmentId);
     }
 
-    /**
-     *返回待确认企业
-     */
+    @Override
+    public Employee retrieveEmployeeByAccountNumber(int accountNumber) {
+        Employee employee = employeeRepository.findByAccountNumber(accountNumber);
+        perfectEmployee(employee);
+        return employee;
+    }
+
+
+    @Override
+    public List<Employee> retrieveEmployeesByCompanyIdAndDepartmentIdAndPositionId(int companyId, int departmentId, int positionId) {
+        List<Employee> employees=employeeRepository.findByCompanyIdAndDepartmentIdAndPositionId(companyId,departmentId,positionId);
+        perfectEmployees(employees);
+        return employees;
+    }
+
     @Override
     public List<CompanyToReview> retrieveAllCompanyToReview() {
         return companyToReviewRepository.findAll();
@@ -298,13 +393,72 @@ public class RetrieveServiceImpl implements RetrieveService{
         return companyToReviewRepository.findAll(PageUtil.getPageable(page-1,"companyId")).getContent();
     }
 
-    /**
-     *返回企业
-     */
+
     @Override
     public Company retrieveCompanyByCompanyId(int companyId) {
         Company company=companyRepository.findByCompanyId(companyId);
         perfectCompany(company);
         return company;
+    }
+
+    @Override
+    public List<JobHunting> retrieveAllJobHuntings() {
+        List<JobHunting> jobHuntings=jobHuntingRepository.findAllCurrentJobHunting();
+        perfectJobHuntings(jobHuntings);
+        return jobHuntings;
+    }
+
+    private void perfectJobHuntings(List<JobHunting> jobHuntings) {
+        if(jobHuntings==null){
+            return;
+        }
+        for(JobHunting jobHunting:jobHuntings){
+            perfectJobHunting(jobHunting);
+        }
+    }
+
+    private void perfectJobHunting(JobHunting jobHunting) {
+        if(jobHunting==null){
+            return;
+        }
+        Employee employee=employeeRepository.findByAccountNumber(jobHunting.getAccountNumber());
+        jobHunting.setEmail(employee.getEmail());
+        jobHunting.setGender(employee.getGender());
+        jobHunting.setName(employee.getName());
+    }
+
+    @Override
+    public List<JobHunting> retrieveJobHuntingsByIdealPosition(String idealPosition) {
+        List<JobHunting> jobHuntings=jobHuntingRepository.findCurrentJobHuntingsByIdealPosition(idealPosition);
+        perfectJobHuntings(jobHuntings);
+        return jobHuntings;
+    }
+
+    @Override
+    public List<JobHunting> retrieveJobHuntingsByDegree(String degree) {
+        List<JobHunting> jobHuntings=jobHuntingRepository.findCurrentJobHuntingsByDegree(degree);
+        perfectJobHuntings(jobHuntings);
+        return jobHuntings;
+    }
+
+    @Override
+    public List<JobHunting> retrieveJobHuntingsByIdealPositionAndDegree(String idealPosition, String degree) {
+        List<JobHunting> jobHuntings=jobHuntingRepository.findCurrentJobHuntingsByIdealPositionAndDegree(idealPosition,degree);
+        perfectJobHuntings(jobHuntings);
+        return jobHuntings;
+    }
+
+    @Override
+    public JobHunting retrieveCurrentJobHuntingByAccountNumber(int accountNumber) {
+        JobHunting jobHunting=jobHuntingRepository.findCurrentJobHuntingByAccountNumber(accountNumber);
+        perfectJobHunting(jobHunting);
+        return jobHunting;
+    }
+
+    @Override
+    public JobHunting retrieveJobHuntingByAccountNumber(int accountNumber){
+        JobHunting jobHunting=jobHuntingRepository.findJobHuntingByAccountNumber(accountNumber);
+        perfectJobHunting(jobHunting);
+        return jobHunting;
     }
 }

@@ -1,13 +1,12 @@
 package com.rookiestar.starmanager.controller;
 
+import com.rookiestar.starmanager.constant.*;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.entity.experience.Experience;
-import com.rookiestar.starmanager.constant.AttributeNames;
-import com.rookiestar.starmanager.constant.PermissionNames;
-import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.entity.position.Position;
 import com.rookiestar.starmanager.exception.HireException;
 import com.rookiestar.starmanager.exception.RequestParameterException;
@@ -112,7 +111,11 @@ public class CompanyRestController {
         if(employee==null){
             throw new HireException("员工尚未注册");
         }
-
+        JobHunting jobHunting=retrieveService.retrieveCurrentJobHuntingByAccountNumber(accountNumber);
+        if(jobHunting!=null){
+            jobHunting.setJobHunting(false);
+            updateService.updateJobHunting(jobHunting);
+        }
         Session session = SecurityUtils.getSubject().getSession(false);
         int companyId = (int)session.getAttribute(AttributeNames.COMPANY_ID);
 
@@ -401,7 +404,7 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.MANAGER,RoleNames.COMPANY_MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
-    @RequestMapping(value="getCompanyByCompanyId.do")
+    @RequestMapping(value="/getCompanyByCompanyId.do")
     public Company getCompanyByCompanyId(Integer companyId){
         if(companyId==null){
             throw new RequestParameterException("请求参数不正确");
@@ -417,7 +420,7 @@ public class CompanyRestController {
      */
     @RequiresRoles(value={RoleNames.MANAGER,RoleNames.COMPANY_MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
-    @RequestMapping(value = "getEmployeeByCompanyIdAndName.do")
+    @RequestMapping(value = "/getEmployeeByCompanyIdAndName.do")
     public List<Employee> getEmployeeByCompanyIdAndName(String name){
         if(name==null){
             throw new RequestParameterException("请求参数不正确");
@@ -453,7 +456,7 @@ public class CompanyRestController {
      */
     @RequiresRoles(value={RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
-    @RequestMapping(value ="getEmployeeByCompanyIdAndGender.do")
+    @RequestMapping(value ="/getEmployeeByCompanyIdAndGender.do")
     public List<Employee> getEmployeeByCompanyIdAndGender(String gender){
         if(gender==null){
             throw new RequestParameterException("请求参数不正确");
@@ -489,7 +492,7 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
-    @RequestMapping(value = "getEmployeeByCompanyIdAndEmail.do")
+    @RequestMapping(value = "/getEmployeeByCompanyIdAndEmail.do")
     public Employee getEmployeeByCompanyIdAndEmail(String email){
         if(email==null){
             throw new RequestParameterException("请求参数不正确");
@@ -507,7 +510,7 @@ public class CompanyRestController {
      */
     @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.READ})
-    @RequestMapping(value = "getEmployeeByCompanyIdAndIdentifyNumber.do")
+    @RequestMapping(value = "/getEmployeeByCompanyIdAndIdentifyNumber.do")
     public Employee getEmployeeByCompanyIdAndIdentifyNumber(String identifyNumber){
         if(identifyNumber==null){
             throw new RequestParameterException("请求参数不正确");
@@ -517,5 +520,56 @@ public class CompanyRestController {
         return retrieveService.retrieveEmployeesByCompanyIdAndIdentifyNumber(companyId,identifyNumber);
     }
 
+    /**
+     * 请求描述：通过意向职位和学历查询正在求职的员工信息
+     * 请求地址：    /getJobHuntingByIdealPositionAndDegree.do
+     * 请求参数：String idealPosition 意向职位 String degree 学历
+     * 返回值：List<JobHunting> 正在求职员工的列表
+     */
+    @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping(value = "/getJobHuntingByIdealPositionAndDegree.do")
+    public List<JobHunting> getJobHuntingByIdealPositionAndDegree(String idealPosition,String degree){
+        if(idealPosition==null||degree==null) {
+            throw new RequestParameterException("请求参数不正确");
+        }
+        int flag=0;
+        flag+= idealPosition.equals(IdealPositions.ANY) ?0:1;
+        flag+= degree.equals(Degrees.ANY) ?0:2;
+        switch (flag){
+            case 0:
+                return retrieveService.retrieveAllJobHuntings();
+            case 1:
+                return retrieveService.retrieveJobHuntingsByIdealPosition(idealPosition);
+            case 2:
+                return retrieveService.retrieveJobHuntingsByDegree(degree);
+            case 3:
+                return retrieveService.retrieveJobHuntingsByIdealPositionAndDegree(idealPosition,degree);
+            default:
+                return null;
+        }
+    }
 
+    /**
+     * 请求描述：向满足公司要求的求职者发送面试邀请
+     * 请求地址：    /sendInvitation.do
+     * 请求参数：int accountNumber 求职者的账号
+     * 返回值：boolean 发送是否成功
+     */
+    @RequiresRoles(value = {RoleNames.COMPANY_MANAGER,RoleNames.MANAGER},logical = Logical.OR)
+    @RequiresPermissions(value = {PermissionNames.READ})
+    @RequestMapping(value = "/sendInvitation.do")
+    public boolean sendInvitation(int accountNumber){
+        Session session = SecurityUtils.getSubject().getSession(false);
+        int companyId = (int)session.getAttribute(AttributeNames.COMPANY_ID);
+        Company company=retrieveService.retrieveCompanyByCompanyId(companyId);
+        JobHunting jobHunting=retrieveService.retrieveJobHuntingByAccountNumber(accountNumber);
+        String content = "您好，"+jobHunting.getName()+"，"+company.getName()+"对您的求职信息很有兴趣， 希望和您进一步联络， 进行面试";
+        Map<String,String> contentMap = new HashMap<>(10);
+        contentMap.put("to",jobHunting.getEmail());
+        contentMap.put("subject","面试通知");
+        contentMap.put("content",content);
+        messageProducer.sendNotice(contentMap);
+        return true;
+    }
 }

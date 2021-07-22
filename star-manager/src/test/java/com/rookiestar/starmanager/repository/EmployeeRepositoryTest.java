@@ -108,6 +108,7 @@ public class EmployeeRepositoryTest extends BaseTest {
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
 
+
         List<Employee> employees=employeeRepository.findEmployeesByNameContaining("张");
         for (Employee employee:employees) {
             employee.setBirthday(DateUtil.format(employee.getBirthday()));
@@ -131,7 +132,7 @@ public class EmployeeRepositoryTest extends BaseTest {
 
     @Test
     @Transactional
-    public void findEmployeeByIdentifyNumberTest()throws Exception{
+    public void findByIdentifyNumberTest()throws Exception{
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
         Employee employee=employeeRepository.findByIdentifyNumber("5");
@@ -177,6 +178,75 @@ public class EmployeeRepositoryTest extends BaseTest {
         Employee actualEmployee=employeeMap.get(5);
         Assert.assertEquals(employee,actualEmployee);
     }
+
+    @Test
+    @Transactional
+    public void findByCompanyIdAndDepartmentIdTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        List<Employee> employeeList=new ArrayList<>();
+        Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
+        Employee employee1=new Employee("李四",DateUtil.parse("2001-01-11"),"女","2019302110261@whu.edu.cn","6",6,"456",null);
+        Employee employee2=new Employee("王五",DateUtil.parse("2002-01-12"),"男","2019302110262@whu.edu.cn","7",7,"123",null);
+        Employee employee3=new Employee("赵六",DateUtil.parse("2003-01-13"),"女","2019302110263@whu.edu.cn","8",8,"456",null);
+        employeeList.add(employee);
+        employeeList.add(employee1);
+        employeeList.add(employee2);
+        employeeList.add(employee3);
+        Assert.assertEquals(employeeList,employeeRepository.findByCompanyIdAndDepartmentId(1,2));
+    }
+
+    @Test
+    @Transactional
+    public void findByCompanyIdAndDepartmentIdAndPositionIdTest() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        List<Employee> employeeList=new ArrayList<>();
+        Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
+        Employee employee1=new Employee("李四",DateUtil.parse("2001-01-11"),"女","2019302110261@whu.edu.cn","6",6,"456",null);
+        Employee employee2=new Employee("王五",DateUtil.parse("2002-01-12"),"男","2019302110262@whu.edu.cn","7",7,"123",null);
+        Employee employee3=new Employee("赵六",DateUtil.parse("2003-01-13"),"女","2019302110263@whu.edu.cn","8",8,"456",null);
+        employeeList.add(employee);
+        employeeList.add(employee1);
+        employeeList.add(employee2);
+        employeeList.add(employee3);
+        Assert.assertEquals(employeeList,employeeRepository.findByCompanyIdAndDepartmentIdAndPositionId(1,2,1));
+    }
+
+    @Test
+    @Transactional
+    public void findByCompanyIdAndName() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        List<Employee> employeeList=new ArrayList<>();
+        Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
+        employeeList.add(employee);
+        Assert.assertEquals(employeeList,employeeRepository.findByCompanyIdAndName(1,"三"));
+    }
+
+    @Test
+    @Transactional
+    public void findByCompanyIdAndGender() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        List<Employee> employeeList=new ArrayList<>();
+        Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
+        employeeList.add(employee);
+        Assert.assertEquals(employeeList,employeeRepository.findByCompanyIdAndGender(1,"男"));
+    }
+    @Test
+    @Transactional
+    public void findByCompanyIdAndEmail() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
+        Assert.assertEquals(employee,employeeRepository.findByCompanyIdAndEmail(1,"2019302110260@whu.edu.cn"));
+    }
+
+    @Test
+    @Transactional
+    public void findByCompanyIdAndIdentifyNumber() throws Exception{
+        DataBaseUtil.getInstance().initEmployee(employeeRepository);
+        Employee employee=new Employee("张三",DateUtil.parse("2000-01-10"),"男","2019302110260@whu.edu.cn","5",5,"123",null);
+        Assert.assertEquals(employee,employeeRepository.findByCompanyIdAndIdentifyNumber(1,"5"));
+    }
+
+
 
 
 }

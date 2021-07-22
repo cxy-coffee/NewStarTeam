@@ -7,6 +7,7 @@ import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
 import com.rookiestar.starmanager.entity.department.Department;
 import com.rookiestar.starmanager.entity.employee.Employee;
+import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.entity.manager.Manager;
 import com.rookiestar.starmanager.entity.position.Position;
@@ -226,6 +227,46 @@ public interface RetrieveService {
      */
     Employee retrieveEmployeesByCompanyIdAndIdentifyNumber(int companyId, String identifyNumber);
 
+    /**
+     * retrieve all the jobHuntings who are looking for a job now
+     * @return all jobHuntings looking for a job
+     */
+    List<JobHunting> retrieveAllJobHuntings();
 
+    /**
+     * retrieve jobHuntings who are looking for a job now by their ideal position
+     * @param idealPosition the ideal position of the jobHuntings to find
+     * @return jobHuntings looking for a job with the ideal position matches
+     */
+    List<JobHunting> retrieveJobHuntingsByIdealPosition(String idealPosition);
 
+    /**
+     * retrieve jobHuntings who are looking for a job now by their ideal position
+     * @param degree the degree of the jobHuntings to find
+     * @return jobHuntings looking for a job with the degree matches
+     */
+    List<JobHunting> retrieveJobHuntingsByDegree(String degree);
+
+    /**
+     * retrieve jobHuntings who are looking for a job now by their ideal position and degree
+     * @param idealPosition the ideal position of the jobHuntings to find
+     * @param degree the degree of the jobHuntings to find
+     * @return jobHuntings looking for a job with the ideal position and degree matches
+     */
+    List<JobHunting> retrieveJobHuntingsByIdealPositionAndDegree(String idealPosition,String degree);
+
+    /**
+     * retrieve a jobHunting who is looking for a job now by his accountNumber
+     * @param accountNumber the account number of the jobHunting to find
+     * @return jobHunting looking for a job with the account number matches
+     */
+    JobHunting retrieveCurrentJobHuntingByAccountNumber(int accountNumber);
+
+    /**
+     * retrieve a jobHunting, no matter he's looking for a job or not, by his accountNumber
+     * @param accountNumber the account number of the jobHunting to find
+     * @return jobHunting with the account number matches
+     */
+    JobHunting retrieveJobHuntingByAccountNumber(int accountNumber);
 }
+
