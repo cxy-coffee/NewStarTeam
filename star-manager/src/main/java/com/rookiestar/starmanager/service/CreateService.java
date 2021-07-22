@@ -2,6 +2,7 @@ package com.rookiestar.starmanager.service;
 
 import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
+import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
 
@@ -54,4 +55,11 @@ public interface CreateService {
      * @return true for success, false for non-success
      */
     boolean goJobHunting(int accountNumber,String idealPosition,String degree);
+
+    /**
+     * init a companyManager
+     * @param company company
+     * @return CompanyManager
+     */
+    CompanyManager initCompanyManager(Company company);
 }
