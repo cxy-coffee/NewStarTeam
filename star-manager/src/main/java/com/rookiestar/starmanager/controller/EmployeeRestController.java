@@ -84,7 +84,7 @@ public class EmployeeRestController {
         int accountNumber = Integer.parseInt(session.getAttribute(AttributeNames.ACCOUNT_NUMBER).toString());
         return retrieveService.retrieveEmployeeByAccountNumberPage(accountNumber,page);
     }
-}
+
 
     /**
      * 请求描述：员工将自己的求职状态置为true，更新自己的学历、意向职位等信息

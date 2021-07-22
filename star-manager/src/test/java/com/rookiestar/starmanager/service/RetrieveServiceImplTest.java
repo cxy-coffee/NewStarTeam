@@ -84,8 +84,8 @@ public class RetrieveServiceImplTest extends BaseTest {
         List<Employee> employees = retrieveService.retrievePresentEmployeesByCompany(1);
 
         List<Employee> actualEmployees = new ArrayList<>();
-        actualEmployees.add(new Employee(employeeMap.get(5),new Experience(experienceMap.get(5121),assessmentMap.get(51)),new Experience(experienceMap.get(5221),assessmentMap.get(52))));
-        actualEmployees.add(new Employee(employeeMap.get(6),new Experience(experienceMap.get(6121),assessmentMap.get(61)),new Experience(experienceMap.get(6221),assessmentMap.get(62))));
+        actualEmployees.add(new Employee(employeeMap.get(5),new Experience(experienceMap.get(5121),assessmentMap.get(51))));
+        actualEmployees.add(new Employee(employeeMap.get(6),new Experience(experienceMap.get(6121),assessmentMap.get(61))));
 
         Assert.assertEquals(employees,actualEmployees);
     }

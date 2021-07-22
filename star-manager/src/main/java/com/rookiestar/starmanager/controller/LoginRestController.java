@@ -229,7 +229,12 @@ public class LoginRestController {
                 +"公司地址："+companyToReview.getAddress()+"\n"
                 +"公司电话："+companyToReview.getPhone()+"\n"
                 +"请您确认。";
-        emailService.sendSimpleEmail("2019302110260@whu.edu.cn","注册通知",content);
+
+        Map<String,String> contentMap = new HashMap<>(5);
+        contentMap.put("to",email);
+        contentMap.put("subject","注册通知");
+        contentMap.put("content",content);
+        messageProducer.sendNotice(contentMap);
         return newCompanyToReview;
     }
 }

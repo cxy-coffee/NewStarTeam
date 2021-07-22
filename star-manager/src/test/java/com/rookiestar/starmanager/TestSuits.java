@@ -1,9 +1,6 @@
 package com.rookiestar.starmanager;
 
-import com.rookiestar.starmanager.controller.CompanyRestControllerTest;
-import com.rookiestar.starmanager.controller.EmployeeRestControllerTest;
-import com.rookiestar.starmanager.controller.LoginRestControllerTest;
-import com.rookiestar.starmanager.controller.ManagerRestControllerTest;
+import com.rookiestar.starmanager.controller.*;
 import com.rookiestar.starmanager.repository.AssessmentRepositoryTest;
 import com.rookiestar.starmanager.repository.CompanyManagerRepositoryTest;
 import com.rookiestar.starmanager.repository.EmployeeRepositoryTest;
@@ -40,7 +37,9 @@ import org.junit.runners.Suite;
         , DeleteServiceImplTest.class
 
         , CompanyRestControllerTest.class
+        , CompanyRestControllerPageTest.class
         , EmployeeRestControllerTest.class
+        , EmployeeRestControllerPageTest.class
         , ManagerRestControllerTest.class
         , LoginRestControllerTest.class
 })
