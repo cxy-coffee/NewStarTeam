@@ -50,8 +50,8 @@ public class DepartmentRepositoryTest extends BaseTest {
     public void findByCompanyIdTest()throws Exception{
         DataBaseUtil.getInstance().initDepartment(departmentRepository);
         List<Department> departmentList=new ArrayList<>();
-        departmentList.add(new Department(1,1,"公司1部门1",null));
-        departmentList.add(new Department(1,2,"公司1部门2",null));
+        departmentList.add(new Department(1,1,"部门1",null));
+        departmentList.add(new Department(1,2,"部门2",null));
         Assert.assertEquals(departmentRepository.findByCompanyId(1),departmentList);
     }
 }

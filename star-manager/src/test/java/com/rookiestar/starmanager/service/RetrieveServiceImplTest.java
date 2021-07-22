@@ -181,7 +181,7 @@ public class RetrieveServiceImplTest extends BaseTest {
     public void retrieveDepartmentByCompanyIdAndDepartmentIdTest()throws Exception{
         DataBaseUtil.getInstance().initDepartment(departmentRepository);
         Department department=retrieveService.retrieveDepartmentByCompanyIdAndDepartmentId(1,1);
-        Department actualDepartment=new Department(1,1,"公司1部门1",null);
+        Department actualDepartment=new Department(1,1,"部门1",null);
         actualDepartment.setPositions(positionRepository.findByCompanyIdAndDepartmentId(actualDepartment.getCompanyId(), actualDepartment.getDepartmentId()));
         Assert.assertEquals(department,actualDepartment);
     }
@@ -191,7 +191,7 @@ public class RetrieveServiceImplTest extends BaseTest {
     public void retrievePositionByCompanyIdAndDepartmentIdAndPositionIdTest()throws Exception{
         DataBaseUtil.getInstance().initPosition(positionRepository);
         Position position=retrieveService.retrievePositionByCompanyIdAndDepartmentIdAndPositionId(1,1,1);
-        Position actualPosition=new Position(1,1,1,"公司1部门1员工");
+        Position actualPosition=new Position(1,1,1,"员工");
         Assert.assertEquals(position,actualPosition);
     }
 

@@ -50,8 +50,8 @@ public class PositionRepositoryTest extends BaseTest {
     public void findByCompanyIdAndDepartmentIdTest()throws Exception{
         DataBaseUtil.getInstance().initPosition(positionRepository);
         List<Position> positionList=new ArrayList<>();
-        Position position=new Position(1,1,1,"公司1部门1员工");
-        Position position1=new Position(1,1,2,"公司1部门1经理");
+        Position position=new Position(1,1,1,"员工");
+        Position position1=new Position(1,1,2,"经理");
         positionList.add(position);
         positionList.add(position1);
         Assert.assertEquals(positionList,positionRepository.findByCompanyIdAndDepartmentId(1,1));
