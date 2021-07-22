@@ -2,6 +2,7 @@ package com.rookiestar.starmanager.repository;
 
 import com.rookiestar.starmanager.entity.department.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public interface DepartmentRepository extends JpaRepository<Department,Long> {
      * @param companyId the companyId of the department to delete
      * @param departmentId the departmentId of the department to delete
      */
+    @Transactional(rollbackFor = Exception.class)
     void deleteDepartmentByCompanyIdAndDepartmentId(int companyId,int departmentId);
 
     /**
