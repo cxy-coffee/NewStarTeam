@@ -1,0 +1,242 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+		    "path" : "pages/rigister/rigister",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "您好！今日之星",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		
+		
+		{
+			"path": "pages/employeeOperate/employeeOperate",
+			"style": {
+				"navigationBarTitleText": "员工信息",
+				"enablePullDownRefresh": false
+			}
+
+		},
+		
+		{
+			"path": "pages/changeInfo/changeInfo",
+			"style": {
+				"navigationBarTitleText": "修改信息",
+				"enablePullDownRefresh": false
+			}
+
+		},
+		
+		{
+			"path": "pages/companyOperate/companyOperate",
+			"style": {
+				"navigationBarTitleText": "",
+				"h5": {
+					"titleNView": {
+						"titleSize": "20px",
+						"buttons": [{
+							"fontSize": "20px",
+							"color": "#ffffff",
+							"float": "left",
+							"type": "back"
+						}]
+					}
+				}
+			}
+
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/changeEmployeeInfo/changeEmployeeInfo",
+			"style": {
+				"navigationBarTitleText": "修改员工信息",
+				"enablePullDownRefresh": false
+			}
+
+		},
+
+		{
+			"path": "pages/add/add",
+			"style": {
+				//标题内容：添加员工
+				"navigationBarTitleText": "添加员工",
+				"h5": {
+					"titleNView": {
+						"titleSize": "20px"
+					}
+				}
+			}
+
+		},
+		{
+			"path": "pages/rigisterconfirm/confirm",
+			"style": {
+				"navigationBarTitleText": "公司验证",
+				"h5": {
+					"titleNView": {
+						"titleSize": "20px"
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/showEmployee/showEmployee",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}
+
+
+		, {
+			"path": "pages/employeeOperate/employeeOperate",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}
+
+	    
+        ,{
+            "path" : "pages/companyrigister/companyrigister",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "企业登录",
+                "h5": {
+						"titleNView": {
+							"titleSize": "20px"
+						}
+                }
+            }
+            
+        }
+        ,{
+            "path" : "pages/companyinfo/companyinfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/confirm/confirm",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "请输入验证码",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/changeCompanyInfo/changeCompanyInfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "修改部门信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/employeerigister/rigister",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "员工登录",
+                "h5": {
+						"titleNView": {
+							"titleSize": "20px"
+						}
+                }
+            }
+			            
+        },
+		{
+		    "path" : "pages/hire/hire",
+		    "style" :                                                                                    
+		    {
+		        //标题内容
+		        "navigationBarTitleText": "分配工作",
+		        "h5": {
+		        	"titleNView": {
+		        		"titleSize": "20px"
+		        	}
+		        }
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/signUp/signUp",
+            "style" :                                                                                    
+            {
+               //标题内容
+               "navigationBarTitleText": "注册企业账户",
+               "h5": {
+					"titleNView": {
+						"titleSize": "20px"
+					}
+               }
+            }
+            
+        },
+		{
+		    "path" : "pages/managerRigister/managerRigister",
+		    "style" :                                                                                    
+		    {
+		       //标题内容
+		       "navigationBarTitleText": "管理员登录",
+		       "h5": {
+					"titleNView": {
+						"titleSize": "20px"
+					}
+		       }
+		    }
+		    
+		},
+		{
+		    "path" : "pages/managerOperate/managerOperate",
+		    "style" :                                                                                    
+		    {
+		       //标题内容
+		       "navigationBarTitleText": "审核公司注册申请",
+		       "h5": {
+					"titleNView": {
+						"titleSize": "20px"
+					}
+		       }
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/searchEmployee/searchEmployee",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/findJob/findJob",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+    ],
+	"globalStyle": {
+			"navigationBarTextStyle": "black",
+			"navigationBarTitleText": "uni-app",
+			"navigationBarBackgroundColor": "#F8F8F8",
+			"backgroundColor": "#F8F8F8"
+		}
+}
