@@ -4,6 +4,7 @@ import com.rookiestar.starmanager.entity.employee.JobHunting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -68,6 +69,7 @@ public interface JobHuntingRepository extends JpaRepository<JobHunting,Long> {
      * @param accountNumber the accountNumber to locate the jobHunting
      */
     @Modifying
+    @Transactional(rollbackFor = Exception.class)
     @Query("update JobHunting set degree = ?1 , idealPosition=?2, jobHunting=?3 where accountNumber=?4")
     void updateJobHunting(String degree, String idealPosition, boolean jobHunting,int accountNumber);
 }
