@@ -3,6 +3,7 @@ package com.rookiestar.starmanager.controller;
 import com.rookiestar.starmanager.exception.CheckVerificationCodeException;
 import com.rookiestar.starmanager.exception.HireException;
 import com.rookiestar.starmanager.exception.RequestParameterException;
+import com.rookiestar.starmanager.exception.UpdateEmployeeException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -80,6 +81,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = HireException.class)
     @ResponseBody
     public String hireException(Exception exception){
+        logger.info(exception.getMessage());
+        return  exception.getMessage();
+    }
+
+    /**
+     * 更新员工异常
+     */
+    @ExceptionHandler(value = UpdateEmployeeException.class)
+    @ResponseBody
+    public String updateEmployeeException(Exception exception){
         logger.info(exception.getMessage());
         return  exception.getMessage();
     }

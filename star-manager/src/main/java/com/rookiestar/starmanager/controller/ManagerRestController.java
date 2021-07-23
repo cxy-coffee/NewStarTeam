@@ -4,6 +4,7 @@ package com.rookiestar.starmanager.controller;
 import com.rookiestar.starmanager.constant.PermissionNames;
 import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.entity.company.Company;
+import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.exception.RequestParameterException;
 import com.rookiestar.starmanager.rabbit.MessageProducer;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
@@ -53,7 +54,10 @@ public class ManagerRestController {
         deleteService.deleteCompanyToReviewByCompanyId(companyId);
         Company company=new Company(name,legalRepresentativeName,email,address,phone);
         Company newCompany=createService.registerCompany(company);
-        String content = "您的公司注册申请已被管理员通过，您的公司ID为："+company.getCompanyId();
+
+        CompanyManager companyManager = createService.initCompanyManager(newCompany);
+        String content = "您的公司注册申请已被管理员通过，您的公司ID为："+company.getCompanyId()+"。\n您的临时管理员email为："+companyManager.getEmail()+",工号为："+companyManager.getJobNumber()+",密码为："+companyManager.getPassword();
+
 
         Map<String,String> contentMap = new HashMap<>(10);
         contentMap.put("to",email);

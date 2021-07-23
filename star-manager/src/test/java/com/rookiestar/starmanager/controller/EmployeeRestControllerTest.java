@@ -5,8 +5,10 @@ import com.rookiestar.starmanager.constant.AttributeNames;
 import com.rookiestar.starmanager.constant.Degrees;
 import com.rookiestar.starmanager.constant.IdealPositions;
 import com.rookiestar.starmanager.constant.UserTypes;
+import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.employee.JobHunting;
+import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.repository.AssessmentRepository;
 import com.rookiestar.starmanager.repository.EmployeeRepository;
 import com.rookiestar.starmanager.repository.ExperienceRepository;
@@ -42,6 +44,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -69,6 +73,15 @@ public class EmployeeRestControllerTest extends BaseTest {
     @Autowired
     private JobHuntingRepository jobHuntingRepository;
 
+    private final Map<Integer, Employee> employeeMap;
+    private final Map<Integer, Experience> experienceMap;
+    private final Map<Integer, Assessment> assessmentMap;
+
+    public EmployeeRestControllerTest() throws Exception{
+        employeeMap = DataBaseUtil.getInstance().getEmployeeMap();
+        experienceMap = DataBaseUtil.getInstance().getExperienceMap();
+        assessmentMap = DataBaseUtil.getInstance().getAssessmentMap();
+    }
 
     @Before
     public void setUp() throws Exception{
@@ -90,20 +103,28 @@ public class EmployeeRestControllerTest extends BaseTest {
         DataBaseUtil.getInstance().initEmployee(employeeRepository);
         DataBaseUtil.getInstance().initExperience(experienceRepository);
 
-        Employee employee=new Employee("张三", DateUtil.parse("2001-01-20"),"男","199","5",5,"123",null);
-        Employee actualEmployee=DataBaseUtil.getInstance().getEmployeeMap().get(5);
-        System.out.println(actualEmployee.getPassword());
-        employee.setExperiences(experienceRepository.findAllByAccountNumber(5));
-        Assert.assertNotEquals(employee,actualEmployee);
-        mvc.perform(MockMvcRequestBuilders.get("/updateEmployee.do?birthday=2001-01-20&email=199&identifyNumber=5")
+        Employee employee = new Employee(employeeMap.get(5),new Experience(experienceMap.get(5121),assessmentMap.get(51)),new Experience(experienceMap.get(5221),assessmentMap.get(52)));
+        employee.setName("张三1");
+        employee.setGender("跨性别者");
+        employee.setBirthday(DateUtil.parse("2001-01-20"));
+        employee.setEmail("199");
+        Employee actualEmployee1=employeeRepository.findByAccountNumber(5);
+        Assert.assertNotEquals(employee,actualEmployee1);
+        mvc.perform(MockMvcRequestBuilders.get("/updateEmployee.do")
+                .param("accountNumber","5")
+                .param("name","张三1")
+                .param("gender","跨性别者")
+                .param("birthday","2001-01-20")
+                .param("email","199")
+                .param("identifyNumber","5")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .session(session)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
-        actualEmployee=retrieveService.retrieveEmployeeByIdentifyNumber("5");
-        Assert.assertEquals(actualEmployee,employee);
+        Employee actualEmployee2=employeeRepository.findByAccountNumber(5);
+        Assert.assertEquals(employee,actualEmployee2);
     }
 
     @Test

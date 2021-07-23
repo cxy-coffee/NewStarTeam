@@ -4,6 +4,7 @@ import com.rookiestar.starmanager.BaseTest;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
+import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.experience.Experience;
 import com.rookiestar.starmanager.repository.*;
@@ -34,6 +35,8 @@ public class CreateServiceImplTest extends BaseTest {
     private CompanyRepository companyRepository;
     @Autowired
     private CompanyToReviewRepository companyToReviewRepository;
+    @Autowired
+    private CompanyManagerRepository companyManagerRepository;
 
     @Test
     @Transactional
@@ -97,6 +100,19 @@ public class CreateServiceImplTest extends BaseTest {
         CompanyToReview expectCompanyToReview = new CompanyToReview(3,"腾讯","马化腾","abcdef@qq.com","广东省深圳市南山区","1342525262");
 
         Assert.assertEquals(expectCompanyToReview,actualCompanyToReview);
+    }
+
+    @Test
+    @Transactional
+    public void initCompanyManagerTest() throws Exception{
+        DataBaseUtil.getInstance().initCompanyManager(companyManagerRepository);
+
+        Company company = new Company(114514,"测试公司","我是伞兵","2019302110260@whu.edu.cn","停机坪","8838438",null,null);
+        createService.initCompanyManager(company);
+
+        CompanyManager companyManager = companyManagerRepository.findByCompanyIdAndEmailAndJobNumber(114514, "2019302110260@whu.edu.cn", 123456);
+
+        Assert.assertEquals(new CompanyManager(114514,"2019302110260@whu.edu.cn",123456,"123456"),companyManager);
     }
 
 }

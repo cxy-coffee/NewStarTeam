@@ -6,6 +6,7 @@ import com.rookiestar.starmanager.constant.RoleNames;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.exception.RequestParameterException;
+import com.rookiestar.starmanager.exception.UpdateEmployeeException;
 import com.rookiestar.starmanager.service.CreateService;
 import com.rookiestar.starmanager.service.RetrieveService;
 import com.rookiestar.starmanager.service.UpdateService;
@@ -37,19 +38,27 @@ public class EmployeeRestController {
     /**
      * 请求描述：更新员工基本信息
      * 请求地址：  /updateEmployee.do
-     * 请求参数：String birthday 出生年月日（yyyy-MM-dd）,String email 邮箱,String identifyNumber 身份证号
+     * 请求参数：Integer accountNumber 账号,String name 姓名,String gender 性别,String birthday 出生年月日（yyyy-MM-dd）,String email 邮箱,String identifyNumber 身份证号
      * 返回值：boolean 更新是否成功
      */
     @RequiresRoles(value = {RoleNames.EMPLOYEE,RoleNames.MANAGER},logical = Logical.OR)
     @RequiresPermissions(value = {PermissionNames.WRITE})
     @RequestMapping(value = "/updateEmployee.do")
-    public boolean updateEmployee(String birthday,String email, String identifyNumber) throws Exception {
-        if(birthday==null||email==null||identifyNumber==null){
+    public boolean updateEmployee(Integer accountNumber,String name,String gender,String birthday,String email, String identifyNumber) throws Exception {
+        if(accountNumber==null||name==null||gender==null||birthday==null||email==null||identifyNumber==null){
             throw new RequestParameterException("请求参数不正确");
         }
-        Employee employee=retrieveService.retrieveEmployeeByIdentifyNumber(identifyNumber);
+
+        Employee employee = retrieveService.retrieveEmployeeByAccountNumber(accountNumber);
+
+        if(!"未设定".equals(employee.getIdentifyNumber())&&!identifyNumber.equals(employee.getIdentifyNumber())){
+            throw new UpdateEmployeeException("身份证不能修改");
+        }
+        employee.setName(name);
+        employee.setGender(gender);
         employee.setBirthday(DateUtil.parse(birthday));
         employee.setEmail(email);
+        employee.setIdentifyNumber(identifyNumber);
         return updateService.updateEmployee(employee);
     }
 

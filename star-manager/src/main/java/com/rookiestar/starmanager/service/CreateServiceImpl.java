@@ -3,6 +3,7 @@ package com.rookiestar.starmanager.service;
 import com.rookiestar.starmanager.entity.assessment.Assessment;
 import com.rookiestar.starmanager.entity.company.Company;
 import com.rookiestar.starmanager.entity.company.CompanyToReview;
+import com.rookiestar.starmanager.entity.companymanager.CompanyManager;
 import com.rookiestar.starmanager.entity.employee.Employee;
 import com.rookiestar.starmanager.entity.employee.JobHunting;
 import com.rookiestar.starmanager.entity.experience.Experience;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Service class that handle create service
@@ -36,6 +38,8 @@ public class CreateServiceImpl implements CreateService {
     private JobHuntingRepository jobHuntingRepository;
     @Autowired
     private UpdateService updateService;
+    @Autowired
+    private CompanyManagerRepository companyManagerRepository;
 
     @Override
     public Employee registerEmployee(Employee employee) {
@@ -106,5 +110,17 @@ public class CreateServiceImpl implements CreateService {
             updateService.updateJobHunting(jobHunting);
         }
         return true;
+    }
+
+    @Override
+    public CompanyManager initCompanyManager(Company company) {
+        Random random = new Random();
+        StringBuilder code = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            code.append(random.nextInt(10));
+        }
+        CompanyManager companyManager = new CompanyManager(company.getCompanyId(),company.getEmail(),123456,code.toString());
+        companyManagerRepository.save(companyManager);
+        return companyManager;
     }
 }
